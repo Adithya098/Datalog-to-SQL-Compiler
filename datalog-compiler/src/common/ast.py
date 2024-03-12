@@ -1,0 +1,2 @@
+class AbstractSyntaxTree:
+    pass

@@ -1,2 +1,2 @@
-def interpret():
-    print("Hello World")
+def interpret(ast):
+    return None
