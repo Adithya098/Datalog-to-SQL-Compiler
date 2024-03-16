@@ -67,9 +67,9 @@ def p_body(p):
          | literal
     '''
     if len(p) == 4:
-        p[0] = ('body', p[1], p[2], p[3])
+        p[0] = ('body', [p[1]] + p[3][1])
     else:
-        p[0] = ('body', p[1])
+        p[0] = ('body', [p[1]])
 
 def p_literal(p):
     '''
@@ -102,9 +102,9 @@ def p_terms(p):
           | term
     '''
     if len(p) == 4:
-        p[0] = ('terms', p[1], p[2], p[3])
+        p[0] = ('terms', [p[1]] + p[3][1])
     else:
-        p[0] = ('terms', p[1])
+        p[0] = ('terms', [p[1]])
 
 def p_term(p):
     '''
