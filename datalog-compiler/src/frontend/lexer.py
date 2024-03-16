@@ -42,7 +42,7 @@ t_RIGHT_BRACKET = r'\)'
 t_HEAD_AND_BODY_SEPARATOR = r'\:='
 t_NOT_EQUAL = r'\!='
 t_EQUAL = r'\='
-t_VARIABLE = r'A-Z\w*'
+t_VARIABLE = r'[A-Z]\w*'
 t_IDENTIFIER=r'^[^A-Z\(\`\'\)\=\:\.\~\?\"\%\s][^\(\`\'\)\=\:\.\~\?\"\%\s]*'
 
 t_ignore_COMMENT = r'\%.*'
