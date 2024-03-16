@@ -37,7 +37,7 @@ def p_retraction(p):
     '''
     retraction : clause TILDE
     '''
-    p[0] = ('clause', p[1], p[2])
+    p[0] = ('retraction', p[1], p[2])
 
 def p_query(p):
     '''
