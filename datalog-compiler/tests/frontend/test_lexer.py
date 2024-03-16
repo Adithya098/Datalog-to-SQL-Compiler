@@ -13,7 +13,7 @@ class TestLexer(unittest.TestCase):
         ["?", "QUESTION_MARK", "?"],
         ["(", "LEFT_BRACKET", "("],
         [")", "RIGHT_BRACKET", ")"],
-        [":=", "HEAD_AND_BODY_SEPARATOR", ":="],
+        [":=", "HEAD_AND_BODY_SEPARATOR", ":-"],
         ["!=", "NOT_EQUAL", "!="],
         ["=", "EQUAL", "="],
         ["\"abcd\"", "STRING", "abcd"],
