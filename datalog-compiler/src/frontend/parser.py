@@ -59,7 +59,7 @@ def p_clause(p):
     if len(p) == 4:
         p[0] = ('clause', p[1], p[2], p[3])
     else:
-        p[0] = ('clasue', p[1])
+        p[0] = ('clause', p[1])
 
 def p_body(p):
     '''
