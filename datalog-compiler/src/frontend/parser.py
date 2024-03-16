@@ -78,10 +78,11 @@ def p_literal(p):
             | predicate
             | term EQUAL term
             | term NOT_EQUAL term
+            | VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     '''
-    # Note: Not expressing <VARIABLE> :- <external-sym> ( <terms> ) as BNF doesn't
-    # explicitly define external-sym
-    if len(p) == 5:
+    if len(p) == 6:
+        p[0] = ('literal', p[1], p[2], p[3], p[4], p[5])
+    elif len(p) == 5:
         p[0] = ('literal', p[1], p[2], p[3], p[4])
     elif len(p) == 4:
         p[0] = ('literal', p[1], p[2], p[3])
