@@ -30,7 +30,7 @@ Rule 20    literal -> term EQUAL term
 Rule 21    literal -> term NOT_EQUAL term
 Rule 22    predicate -> IDENTIFIER
 Rule 23    predicate -> STRING
-Rule 24    terms -> term terms
+Rule 24    terms -> term COMMA terms
 Rule 25    terms -> term
 Rule 26    term -> VARIABLE
 Rule 27    term -> constant
@@ -42,7 +42,7 @@ Rule 31    constant -> BOOLEAN
 Terminals, with rules where they appear
 
 BOOLEAN              : 31
-COMMA                : 15
+COMMA                : 15 24
 COMMENT              : 
 DECIMAL              : 9
 EQUAL                : 20
@@ -337,17 +337,12 @@ state 15
 
     EQUAL           reduce using rule 26 (term -> VARIABLE .)
     NOT_EQUAL       reduce using rule 26 (term -> VARIABLE .)
-    VARIABLE        reduce using rule 26 (term -> VARIABLE .)
-    IDENTIFIER      reduce using rule 26 (term -> VARIABLE .)
-    STRING          reduce using rule 26 (term -> VARIABLE .)
-    INTEGER         reduce using rule 26 (term -> VARIABLE .)
-    BOOLEAN         reduce using rule 26 (term -> VARIABLE .)
+    COMMA           reduce using rule 26 (term -> VARIABLE .)
     RIGHT_BRACKET   reduce using rule 26 (term -> VARIABLE .)
     QUESTION_MARK   reduce using rule 26 (term -> VARIABLE .)
     HEAD_AND_BODY_SEPARATOR reduce using rule 26 (term -> VARIABLE .)
     DECIMAL         reduce using rule 26 (term -> VARIABLE .)
     TILDE           reduce using rule 26 (term -> VARIABLE .)
-    COMMA           reduce using rule 26 (term -> VARIABLE .)
 
 
 state 16
@@ -356,17 +351,12 @@ state 16
 
     EQUAL           reduce using rule 27 (term -> constant .)
     NOT_EQUAL       reduce using rule 27 (term -> constant .)
-    VARIABLE        reduce using rule 27 (term -> constant .)
-    IDENTIFIER      reduce using rule 27 (term -> constant .)
-    STRING          reduce using rule 27 (term -> constant .)
-    INTEGER         reduce using rule 27 (term -> constant .)
-    BOOLEAN         reduce using rule 27 (term -> constant .)
+    COMMA           reduce using rule 27 (term -> constant .)
     RIGHT_BRACKET   reduce using rule 27 (term -> constant .)
     QUESTION_MARK   reduce using rule 27 (term -> constant .)
     HEAD_AND_BODY_SEPARATOR reduce using rule 27 (term -> constant .)
     DECIMAL         reduce using rule 27 (term -> constant .)
     TILDE           reduce using rule 27 (term -> constant .)
-    COMMA           reduce using rule 27 (term -> constant .)
 
 
 state 17
@@ -375,17 +365,12 @@ state 17
 
     EQUAL           reduce using rule 30 (constant -> INTEGER .)
     NOT_EQUAL       reduce using rule 30 (constant -> INTEGER .)
-    VARIABLE        reduce using rule 30 (constant -> INTEGER .)
-    IDENTIFIER      reduce using rule 30 (constant -> INTEGER .)
-    STRING          reduce using rule 30 (constant -> INTEGER .)
-    INTEGER         reduce using rule 30 (constant -> INTEGER .)
-    BOOLEAN         reduce using rule 30 (constant -> INTEGER .)
+    COMMA           reduce using rule 30 (constant -> INTEGER .)
     RIGHT_BRACKET   reduce using rule 30 (constant -> INTEGER .)
     QUESTION_MARK   reduce using rule 30 (constant -> INTEGER .)
     HEAD_AND_BODY_SEPARATOR reduce using rule 30 (constant -> INTEGER .)
     DECIMAL         reduce using rule 30 (constant -> INTEGER .)
     TILDE           reduce using rule 30 (constant -> INTEGER .)
-    COMMA           reduce using rule 30 (constant -> INTEGER .)
 
 
 state 18
@@ -394,17 +379,12 @@ state 18
 
     EQUAL           reduce using rule 31 (constant -> BOOLEAN .)
     NOT_EQUAL       reduce using rule 31 (constant -> BOOLEAN .)
-    VARIABLE        reduce using rule 31 (constant -> BOOLEAN .)
-    IDENTIFIER      reduce using rule 31 (constant -> BOOLEAN .)
-    STRING          reduce using rule 31 (constant -> BOOLEAN .)
-    INTEGER         reduce using rule 31 (constant -> BOOLEAN .)
-    BOOLEAN         reduce using rule 31 (constant -> BOOLEAN .)
+    COMMA           reduce using rule 31 (constant -> BOOLEAN .)
     RIGHT_BRACKET   reduce using rule 31 (constant -> BOOLEAN .)
     QUESTION_MARK   reduce using rule 31 (constant -> BOOLEAN .)
     HEAD_AND_BODY_SEPARATOR reduce using rule 31 (constant -> BOOLEAN .)
     DECIMAL         reduce using rule 31 (constant -> BOOLEAN .)
     TILDE           reduce using rule 31 (constant -> BOOLEAN .)
-    COMMA           reduce using rule 31 (constant -> BOOLEAN .)
 
 
 state 19
@@ -495,7 +475,7 @@ state 25
 
     (17) literal -> predicate LEFT_BRACKET . RIGHT_BRACKET
     (18) literal -> predicate LEFT_BRACKET . terms RIGHT_BRACKET
-    (24) terms -> . term terms
+    (24) terms -> . term COMMA terms
     (25) terms -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
@@ -604,60 +584,35 @@ state 32
 
 state 33
 
-    (24) terms -> term . terms
+    (24) terms -> term . COMMA terms
     (25) terms -> term .
-    (24) terms -> . term terms
-    (25) terms -> . term
-    (26) term -> . VARIABLE
-    (27) term -> . constant
-    (28) constant -> . IDENTIFIER
-    (29) constant -> . STRING
-    (30) constant -> . INTEGER
-    (31) constant -> . BOOLEAN
 
+    COMMA           shift and go to state 40
     RIGHT_BRACKET   reduce using rule 25 (terms -> term .)
-    VARIABLE        shift and go to state 15
-    IDENTIFIER      shift and go to state 34
-    STRING          shift and go to state 35
-    INTEGER         shift and go to state 17
-    BOOLEAN         shift and go to state 18
 
-    term                           shift and go to state 33
-    terms                          shift and go to state 40
-    constant                       shift and go to state 16
 
 state 34
 
     (28) constant -> IDENTIFIER .
 
-    VARIABLE        reduce using rule 28 (constant -> IDENTIFIER .)
-    IDENTIFIER      reduce using rule 28 (constant -> IDENTIFIER .)
-    STRING          reduce using rule 28 (constant -> IDENTIFIER .)
-    INTEGER         reduce using rule 28 (constant -> IDENTIFIER .)
-    BOOLEAN         reduce using rule 28 (constant -> IDENTIFIER .)
+    COMMA           reduce using rule 28 (constant -> IDENTIFIER .)
     RIGHT_BRACKET   reduce using rule 28 (constant -> IDENTIFIER .)
     QUESTION_MARK   reduce using rule 28 (constant -> IDENTIFIER .)
     HEAD_AND_BODY_SEPARATOR reduce using rule 28 (constant -> IDENTIFIER .)
     DECIMAL         reduce using rule 28 (constant -> IDENTIFIER .)
     TILDE           reduce using rule 28 (constant -> IDENTIFIER .)
-    COMMA           reduce using rule 28 (constant -> IDENTIFIER .)
 
 
 state 35
 
     (29) constant -> STRING .
 
-    VARIABLE        reduce using rule 29 (constant -> STRING .)
-    IDENTIFIER      reduce using rule 29 (constant -> STRING .)
-    STRING          reduce using rule 29 (constant -> STRING .)
-    INTEGER         reduce using rule 29 (constant -> STRING .)
-    BOOLEAN         reduce using rule 29 (constant -> STRING .)
+    COMMA           reduce using rule 29 (constant -> STRING .)
     RIGHT_BRACKET   reduce using rule 29 (constant -> STRING .)
     QUESTION_MARK   reduce using rule 29 (constant -> STRING .)
     HEAD_AND_BODY_SEPARATOR reduce using rule 29 (constant -> STRING .)
     DECIMAL         reduce using rule 29 (constant -> STRING .)
     TILDE           reduce using rule 29 (constant -> STRING .)
-    COMMA           reduce using rule 29 (constant -> STRING .)
 
 
 state 36
@@ -726,10 +681,25 @@ state 39
 
 state 40
 
-    (24) terms -> term terms .
+    (24) terms -> term COMMA . terms
+    (24) terms -> . term COMMA terms
+    (25) terms -> . term
+    (26) term -> . VARIABLE
+    (27) term -> . constant
+    (28) constant -> . IDENTIFIER
+    (29) constant -> . STRING
+    (30) constant -> . INTEGER
+    (31) constant -> . BOOLEAN
 
-    RIGHT_BRACKET   reduce using rule 24 (terms -> term terms .)
+    VARIABLE        shift and go to state 15
+    IDENTIFIER      shift and go to state 34
+    STRING          shift and go to state 35
+    INTEGER         shift and go to state 17
+    BOOLEAN         shift and go to state 18
 
+    term                           shift and go to state 33
+    terms                          shift and go to state 42
+    constant                       shift and go to state 16
 
 state 41
 
@@ -737,6 +707,13 @@ state 41
 
     DECIMAL         reduce using rule 15 (body -> literal COMMA body .)
     TILDE           reduce using rule 15 (body -> literal COMMA body .)
+
+
+state 42
+
+    (24) terms -> term COMMA terms .
+
+    RIGHT_BRACKET   reduce using rule 24 (terms -> term COMMA terms .)
 
 WARNING: 
 WARNING: Conflicts:

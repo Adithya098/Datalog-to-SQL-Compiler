@@ -97,13 +97,13 @@ def p_predicate(p):
 
 def p_terms(p):
     '''
-    terms : term terms
+    terms : term COMMA terms
           | term
     '''
-    if len(p) == 3:
-        p[0] = ('terms', [p[1]] + p[2][1])
+    if len(p) == 4:
+        p[0] = ('terms', p[1], p[2], p[3])
     else:
-        p[0] = ('terms', [p[1]])
+        p[0] = ('terms', p[1])
 
 def p_term(p):
     '''
