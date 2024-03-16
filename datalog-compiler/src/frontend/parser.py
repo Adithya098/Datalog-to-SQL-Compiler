@@ -47,9 +47,9 @@ def p_query(p):
 
 def p_requirement(p):
     '''
-    requirement : LEFT_BRACKET IDENTIFIER RIGHT_BRACKET
+    requirement : LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL
     '''
-    p[0] = ('requirement', p[1], p[2], p[3])
+    p[0] = ('requirement', p[1], p[2], p[3], p[4])
 
 def p_clause(p):
     '''

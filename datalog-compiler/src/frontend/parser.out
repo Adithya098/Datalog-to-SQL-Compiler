@@ -18,7 +18,7 @@ Rule 8     statement -> requirement
 Rule 9     assertion -> clause DECIMAL
 Rule 10    retraction -> clause TILDE
 Rule 11    query -> literal QUESTION_MARK
-Rule 12    requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET
+Rule 12    requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL
 Rule 13    clause -> literal HEAD_AND_BODY_SEPARATOR body
 Rule 14    clause -> literal
 Rule 15    body -> literal COMMA body
@@ -45,7 +45,7 @@ Terminals, with rules where they appear
 BOOLEAN              : 32
 COMMA                : 15 25
 COMMENT              : 
-DECIMAL              : 9
+DECIMAL              : 9 12
 EQUAL                : 20
 HEAD_AND_BODY_SEPARATOR : 13 22
 IDENTIFIER           : 12 22 23 29
@@ -92,7 +92,7 @@ state 0
     (9) assertion -> . clause DECIMAL
     (10) retraction -> . clause TILDE
     (11) query -> . literal QUESTION_MARK
-    (12) requirement -> . LEFT_BRACKET IDENTIFIER RIGHT_BRACKET
+    (12) requirement -> . LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL
     (13) clause -> . literal HEAD_AND_BODY_SEPARATOR body
     (14) clause -> . literal
     (17) literal -> . predicate LEFT_BRACKET RIGHT_BRACKET
@@ -152,7 +152,7 @@ state 2
     (9) assertion -> . clause DECIMAL
     (10) retraction -> . clause TILDE
     (11) query -> . literal QUESTION_MARK
-    (12) requirement -> . LEFT_BRACKET IDENTIFIER RIGHT_BRACKET
+    (12) requirement -> . LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL
     (13) clause -> . literal HEAD_AND_BODY_SEPARATOR body
     (14) clause -> . literal
     (17) literal -> . predicate LEFT_BRACKET RIGHT_BRACKET
@@ -276,7 +276,7 @@ state 9
 
 state 10
 
-    (12) requirement -> LEFT_BRACKET . IDENTIFIER RIGHT_BRACKET
+    (12) requirement -> LEFT_BRACKET . IDENTIFIER RIGHT_BRACKET DECIMAL
 
     IDENTIFIER      shift and go to state 24
 
@@ -466,7 +466,7 @@ state 23
 
 state 24
 
-    (12) requirement -> LEFT_BRACKET IDENTIFIER . RIGHT_BRACKET
+    (12) requirement -> LEFT_BRACKET IDENTIFIER . RIGHT_BRACKET DECIMAL
 
     RIGHT_BRACKET   shift and go to state 31
 
@@ -560,15 +560,9 @@ state 30
 
 state 31
 
-    (12) requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET .
+    (12) requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET . DECIMAL
 
-    LEFT_BRACKET    reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET .)
-    VARIABLE        reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET .)
-    IDENTIFIER      reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET .)
-    STRING          reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET .)
-    INTEGER         reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET .)
-    BOOLEAN         reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET .)
-    $end            reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET .)
+    DECIMAL         shift and go to state 42
 
 
 state 32
@@ -586,7 +580,7 @@ state 33
 
     (18) literal -> predicate LEFT_BRACKET terms . RIGHT_BRACKET
 
-    RIGHT_BRACKET   shift and go to state 42
+    RIGHT_BRACKET   shift and go to state 43
 
 
 state 34
@@ -594,7 +588,7 @@ state 34
     (25) terms -> term . COMMA terms
     (26) terms -> term .
 
-    COMMA           shift and go to state 43
+    COMMA           shift and go to state 44
     RIGHT_BRACKET   reduce using rule 26 (terms -> term .)
 
 
@@ -660,7 +654,7 @@ state 40
 
     (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER . LEFT_BRACKET terms RIGHT_BRACKET
 
-    LEFT_BRACKET    shift and go to state 44
+    LEFT_BRACKET    shift and go to state 45
 
 
 state 41
@@ -690,12 +684,25 @@ state 41
     BOOLEAN         shift and go to state 18
 
     literal                        shift and go to state 29
-    body                           shift and go to state 45
+    body                           shift and go to state 46
     predicate                      shift and go to state 12
     term                           shift and go to state 13
     constant                       shift and go to state 16
 
 state 42
+
+    (12) requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .
+
+    LEFT_BRACKET    reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
+    VARIABLE        reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
+    IDENTIFIER      reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
+    STRING          reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
+    INTEGER         reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
+    BOOLEAN         reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
+    $end            reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
+
+
+state 43
 
     (18) literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET .
 
@@ -706,7 +713,7 @@ state 42
     COMMA           reduce using rule 18 (literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET .)
 
 
-state 43
+state 44
 
     (25) terms -> term COMMA . terms
     (25) terms -> . term COMMA terms
@@ -725,10 +732,10 @@ state 43
     BOOLEAN         shift and go to state 18
 
     term                           shift and go to state 34
-    terms                          shift and go to state 46
+    terms                          shift and go to state 47
     constant                       shift and go to state 16
 
-state 44
+state 45
 
     (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET . terms RIGHT_BRACKET
     (25) terms -> . term COMMA terms
@@ -746,11 +753,11 @@ state 44
     INTEGER         shift and go to state 17
     BOOLEAN         shift and go to state 18
 
-    terms                          shift and go to state 47
+    terms                          shift and go to state 48
     term                           shift and go to state 34
     constant                       shift and go to state 16
 
-state 45
+state 46
 
     (15) body -> literal COMMA body .
 
@@ -758,21 +765,21 @@ state 45
     TILDE           reduce using rule 15 (body -> literal COMMA body .)
 
 
-state 46
+state 47
 
     (25) terms -> term COMMA terms .
 
     RIGHT_BRACKET   reduce using rule 25 (terms -> term COMMA terms .)
 
 
-state 47
+state 48
 
     (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms . RIGHT_BRACKET
 
-    RIGHT_BRACKET   shift and go to state 48
+    RIGHT_BRACKET   shift and go to state 49
 
 
-state 48
+state 49
 
     (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .
 
