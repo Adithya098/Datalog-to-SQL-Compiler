@@ -42,18 +42,20 @@ t_RIGHT_BRACKET = r'\)'
 t_HEAD_AND_BODY_SEPARATOR = r'\:='
 t_NOT_EQUAL = r'\!='
 t_EQUAL = r'\='
-t_VARIABLE = r'[A-Z]\w*'
-t_IDENTIFIER=r'[^[(A-Z)(`\')=:~?\"%\s][^[(`\')=:~?\"%\s]+'
+t_VARIABLE = r'A-Z\w*'
+t_IDENTIFIER=r'^[^A-Z\(\`\'\)\=\:\.\~\?\"\%\s][^\(\`\'\)\=\:\.\~\?\"\%\s]*'
 
 t_ignore_COMMENT = r'\%.*'
 
 t_ignore = ' \t\n'
 
-def t_error(_):
-    raise Exception("Illegal character")    
+def t_error(t):
+    print("Error found while lexing: " + str(t))
+    raise Exception("Lexing Error")
+
+lexer = lex.lex()
 
 def get_tokens(data):
-    lexer = lex.lex()
     lexer.input(data)
     tokens = []
     while True:

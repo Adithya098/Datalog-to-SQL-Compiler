@@ -1,2 +1,2 @@
 def interpret(ast):
-    return "Hello World"
+    return "Dummy SQL Query"
