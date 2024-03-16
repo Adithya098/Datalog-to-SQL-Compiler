@@ -1,32 +1,64 @@
-from src.frontend.token import Token
+import ply.lex as lex
 
-def lex(datalog_query_string):
-    def advance_start_and_current():
-        nonlocal start
-        nonlocal current
-        start += 1
-        current += 1
+tokens = (
+    'IDENTIFIER',
+    'VARIABLE',
+    'STRING',
+    'INTEGER',
+    'BOOLEAN',
+    'DECIMAL',
+    'COMMA',
+    'TILDE',
+    'QUESTION_MARK',
+    'LEFT_BRACKET',
+    'RIGHT_BRACKET',
+    "HEAD_AND_BODY_SEPARATOR",
+    'NOT_EQUAL',
+    'EQUAL',
+    'COMMENT'
+)
 
-    start = 0
-    current = 0
+def t_BOOLEAN(t):
+    r'\btrue|false\b'
+    t.value = t.value == 'true'
+    return t
+
+def t_STRING(t):
+    r'"(?:[^\\]|\\.)*"'
+    t.value = t.value[1:-1]
+    return t
+
+def t_INTEGER(t):
+    r'-?(?:0|[1-9][0-9]*)'
+    t.value = int(t.value)
+    return t
+
+t_DECIMAL = r'\.'
+t_COMMA = r'\,'
+t_TILDE = r'\~'
+t_QUESTION_MARK = r'\?'
+t_LEFT_BRACKET = r'\('
+t_RIGHT_BRACKET = r'\)'
+t_HEAD_AND_BODY_SEPARATOR = r'\:='
+t_NOT_EQUAL = r'\!='
+t_EQUAL = r'\='
+t_VARIABLE = r'[A-Z]\w*'
+t_IDENTIFIER=r'[^[(A-Z)(`\')=:~?\"%\s][^[(`\')=:~?\"%\s]+'
+
+t_ignore_COMMENT = r'\%.*'
+
+t_ignore = ' \t\n'
+
+def t_error(_):
+    raise Exception("Illegal character")    
+
+def get_tokens(data):
+    lexer = lex.lex()
+    lexer.input(data)
     tokens = []
-
-    for ch in datalog_query_string:
-        match ch:
-            case "(":
-                tokens.append(Token.LEFT_BRACKET)
-                advance_start_and_current()
-            case ")":
-                tokens.append(Token.RIGHT_BRACKET)
-                advance_start_and_current()
-            case "[":
-                tokens.append(Token.LEFT_SQUARE_BRACKET)
-                advance_start_and_current()
-            case "]":
-                tokens.append(Token.RIGHT_SQUARE_BRACKET)
-                advance_start_and_current()
-
+    while True:
+        token = lexer.token()
+        if not token:
+            break
+        tokens.append(token)
     return tokens
-            
-        
-        
