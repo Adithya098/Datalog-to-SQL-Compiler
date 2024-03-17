@@ -1,4 +1,5 @@
 from backend.sql_statement import get_create_and_insert_statement, get_insert_statement
+from common.node_names import *
 
 class Interpreter:
     def __init__(self):
@@ -12,7 +13,7 @@ class Interpreter:
         return tup[idx]
 
     def check_value_of_statement(self, statement):
-        if self.get_node_name(statement) == 'assertion':
+        if self.get_node_name(statement) == ASSERTION_NODE:
             return "CREATE_AND_INSERT"
         return "UNSUPPORTED_STATEMENT"
 
@@ -27,17 +28,17 @@ class Interpreter:
 
     def interpret_create_and_insert_statement(self, statement):
         table_name = self.traverse_and_get_value(
-            ['assertion', 'clause', 'literal', 'predicate'],
+            [ASSERTION_NODE, CLAUSE_NODE, LITERAL_NODE, PREDICATE_NODE],
             statement
         )
         terms = self.traverse_and_get_value(
-            ['assertion', 'clause', 'literal', 'terms'],
+            [ASSERTION_NODE, CLAUSE_NODE, LITERAL_NODE, TERMS_NODE],
             statement,
             [1, 1, 3, 1]
         )
         columns = []
         for term in terms:
-            columns.append(self.traverse_and_get_value(['term', 'constant'], term))
+            columns.append(self.traverse_and_get_value([TERM_NODE, CONSTANT_NODE], term))
         if table_name in self.table_names:
             return get_insert_statement(table_name, columns)
         self.table_names.add(table_name)
@@ -46,7 +47,7 @@ class Interpreter:
     def interpret_statements(self, statements):
         sql_translations = []
         for statement_node, statement in statements:
-            assert statement_node == 'statement'
+            assert statement_node == STATEMENT_NODE
             type_of_statement = self.check_value_of_statement(statement)
             if type_of_statement == "CREATE_AND_INSERT":
                 sql_translations.extend(self.interpret_create_and_insert_statement(statement))
@@ -55,5 +56,5 @@ class Interpreter:
         return sql_translations
 
     def interpret(self, ast):
-        assert self.get_node_name(ast) == 'program'
+        assert self.get_node_name(ast) == PROGRAM_NODE
         return self.interpret_statements(ast[1])

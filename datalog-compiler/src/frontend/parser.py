@@ -1,5 +1,6 @@
 import ply.yacc as yacc
 from frontend.lexer import tokens
+from common.node_names import *
 
 def p_program(p):
     '''
@@ -8,11 +9,11 @@ def p_program(p):
             | empty
     '''
     if len(p) == 3:
-        p[0] = ('program', [p[1]] + p[2][1])
+        p[0] = (PROGRAM_NODE, [p[1]] + p[2][1])
     elif len(p) == 2:
-        p[0] = ('program', [p[1]])
+        p[0] = (PROGRAM_NODE, [p[1]])
     else:
-        p[0] = ('program', [])
+        p[0] = (PROGRAM_NODE, [])
 
 def p_empty(_):
     'empty :'
@@ -25,31 +26,31 @@ def p_statement(p):
               | query
               | requirement
     '''
-    p[0] = ('statement', p[1])
+    p[0] = (STATEMENT_NODE, p[1])
 
 def p_assertion(p):
     '''
     assertion : clause DECIMAL
     '''
-    p[0] = ('assertion', p[1])
+    p[0] = (ASSERTION_NODE, p[1])
 
 def p_retraction(p):
     '''
     retraction : clause TILDE
     '''
-    p[0] = ('retraction', p[1])
+    p[0] = (RETRACTION_NODE, p[1])
 
 def p_query(p):
     '''
     query : literal QUESTION_MARK
     '''
-    p[0] = ('query', p[1])
+    p[0] = (QUERY_NODE, p[1])
 
 def p_requirement(p):
     '''
     requirement : LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL
     '''
-    p[0] = ('requirement', p[2])
+    p[0] = (REQUIREMENT_NODE, p[2])
 
 def p_clause(p):
     '''
@@ -57,9 +58,9 @@ def p_clause(p):
            | literal
     '''
     if len(p) == 4:
-        p[0] = ('clause', p[1], p[3])
+        p[0] = (CLAUSE_NODE, p[1], p[3])
     else:
-        p[0] = ('clause', p[1])
+        p[0] = (CLAUSE_NODE, p[1])
 
 def p_body(p):
     '''
@@ -67,9 +68,9 @@ def p_body(p):
          | literal
     '''
     if len(p) == 4:
-        p[0] = ('body', [p[1]] + p[3][1])
+        p[0] = (BODY_NODE, [p[1]] + p[3][1])
     else:
-        p[0] = ('body', [p[1]])
+        p[0] = (BODY_NODE, [p[1]])
 
 def p_literal(p):
     '''
@@ -81,20 +82,20 @@ def p_literal(p):
             | VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     '''
     if len(p) == 6:
-        p[0] = ('literal', p[1], p[2], p[3], p[4], p[5])
+        p[0] = (LITERAL_NODE, p[1], p[2], p[3], p[4], p[5])
     elif len(p) == 5:
-        p[0] = ('literal', p[1], p[2], p[3], p[4])
+        p[0] = (LITERAL_NODE, p[1], p[2], p[3], p[4])
     elif len(p) == 4:
-        p[0] = ('literal', p[1], p[2], p[3])
+        p[0] = (LITERAL_NODE, p[1], p[2], p[3])
     else:
-        p[0] = ('literal', p[1])
+        p[0] = (LITERAL_NODE, p[1])
 
 def p_predicate(p):
     '''
     predicate : IDENTIFIER
               | STRING
     '''
-    p[0] = ('predicate', p[1])
+    p[0] = (PREDICATE_NODE, p[1])
 
 def p_terms(p):
     '''
@@ -102,16 +103,16 @@ def p_terms(p):
           | term
     '''
     if len(p) == 4:
-        p[0] = ('terms', [p[1]] + p[3][1])
+        p[0] = (TERMS_NODE, [p[1]] + p[3][1])
     else:
-        p[0] = ('terms', [p[1]])
+        p[0] = (TERMS_NODE, [p[1]])
 
 def p_term(p):
     '''
     term : VARIABLE
          | constant
     '''
-    p[0] = ('term', p[1])
+    p[0] = (TERM_NODE, p[1])
 
 def p_constant(p):
     '''
@@ -120,7 +121,7 @@ def p_constant(p):
              | INTEGER
              | BOOLEAN
     '''
-    p[0] = ('constant', p[1])
+    p[0] = (CONSTANT_NODE, p[1])
 
 def p_error(p):
     print("Error when parsing: " + str(p))
