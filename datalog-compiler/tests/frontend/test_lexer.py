@@ -1,5 +1,5 @@
 import unittest
-from frontend.lexer import get_tokens
+from src.frontend.lexer import get_tokens
 from parameterized import parameterized
 
 
