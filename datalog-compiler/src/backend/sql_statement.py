@@ -4,7 +4,7 @@ def get_create_statement(table_name, columns):
     sql_statements = []
     sql_statement = "CREATE TABLE {table_name} (".format(table_name=table_name)
     for idx in range(len(columns)):
-        sql_statement += COLUMN_PREFIX + str(idx) + " TEXT NONNULL,"
+        sql_statement += COLUMN_PREFIX + str(idx) + " TEXT NOT NULL,"
     sql_statement += " PRIMARY KEY ("
     for idx in range(len(columns)):
         if idx == len(columns) - 1:
