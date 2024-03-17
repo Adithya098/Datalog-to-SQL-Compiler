@@ -1,8 +1,8 @@
-from backend.sql_statement import get_create_and_insert_statement
+from backend.sql_statement import get_create_and_insert_statement, get_insert_statement
 
 class Interpreter:
-    def __int__(self):
-        pass
+    def __init__(self):
+        self.table_names = set()
 
     def get_node_name(self, tup):
         return tup[0]
@@ -38,6 +38,9 @@ class Interpreter:
         columns = []
         for term in terms:
             columns.append(self.traverse_and_get_value(['term', 'constant'], term))
+        if table_name in self.table_names:
+            return get_insert_statement(table_name, columns)
+        self.table_names.add(table_name)
         return get_create_and_insert_statement(table_name, columns)
 
     def interpret_statements(self, statements):

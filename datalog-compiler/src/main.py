@@ -15,6 +15,7 @@ if __name__ == "__main__":
             # datalog_query = input('What is the datalog query?\n')
             datalog_query = '''
             s(x, y).
+            s(y, z).
             '''
             res = generate_sql_query_from_datalog_query(datalog_query)
             # Temporarily disabling the REPL
