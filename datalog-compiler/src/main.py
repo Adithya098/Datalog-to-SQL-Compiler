@@ -1,8 +1,9 @@
 from frontend import parser
-from backend import interpreter
+from backend.interpreter import Interpreter
 import traceback
 
 def generate_sql_query_from_datalog_query(datalog_query):
+    interpreter = Interpreter()
     ast = parser.parse(datalog_query)
     sql_statements = interpreter.interpret(ast)
     for sql_statement in sql_statements:
