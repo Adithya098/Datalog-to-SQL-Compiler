@@ -1,5 +1,5 @@
 import unittest
-from src.frontend.lexer import get_tokens
+from frontend.lexer import get_tokens
 from parameterized import parameterized
 
 
@@ -13,7 +13,7 @@ class TestLexer(unittest.TestCase):
         ["?", "QUESTION_MARK", "?"],
         ["(", "LEFT_BRACKET", "("],
         [")", "RIGHT_BRACKET", ")"],
-        [":=", "HEAD_AND_BODY_SEPARATOR", ":-"],
+        [":-", "HEAD_AND_BODY_SEPARATOR", ":-"],
         ["!=", "NOT_EQUAL", "!="],
         ["=", "EQUAL", "="],
         ["\"abcd\"", "STRING", "abcd"],

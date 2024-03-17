@@ -7,13 +7,14 @@ def generate_sql_query_from_datalog_query(datalog_query, interpreter=Interpreter
     sql_statements = interpreter.interpret(ast)
     for sql_statement in sql_statements:
         print(sql_statement)
+    return sql_statements
 
 if __name__ == "__main__":
     interpreter = Interpreter()
     while True:
         try:
             datalog_query = input('What is the datalog query?\n')
-            res = generate_sql_query_from_datalog_query(datalog_query, interpreter)
+            generate_sql_query_from_datalog_query(datalog_query, interpreter)
         except KeyboardInterrupt:
             print("Quitting")
             break
