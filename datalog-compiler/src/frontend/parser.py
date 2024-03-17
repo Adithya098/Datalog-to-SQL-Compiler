@@ -31,25 +31,25 @@ def p_assertion(p):
     '''
     assertion : clause DECIMAL
     '''
-    p[0] = ('assertion', p[1], p[2])
+    p[0] = ('assertion', p[1])
 
 def p_retraction(p):
     '''
     retraction : clause TILDE
     '''
-    p[0] = ('retraction', p[1], p[2])
+    p[0] = ('retraction', p[1])
 
 def p_query(p):
     '''
     query : literal QUESTION_MARK
     '''
-    p[0] = ('query', p[1], p[2])
+    p[0] = ('query', p[1])
 
 def p_requirement(p):
     '''
     requirement : LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL
     '''
-    p[0] = ('requirement', p[1], p[2], p[3], p[4])
+    p[0] = ('requirement', p[2])
 
 def p_clause(p):
     '''
@@ -57,7 +57,7 @@ def p_clause(p):
            | literal
     '''
     if len(p) == 4:
-        p[0] = ('clause', p[1], p[2], p[3])
+        p[0] = ('clause', p[1], p[3])
     else:
         p[0] = ('clause', p[1])
 
