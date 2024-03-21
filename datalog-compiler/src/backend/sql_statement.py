@@ -45,7 +45,7 @@ def get_basic_query_statement(table_name, constraints):
         constraints_converted = []
         for idx, val in constraints.items():
             constraints_converted.append(get_column_name(idx) + "=" + "'" + str(val) + "'")
-        sql_statement += "AND ".join(constraints_converted)
+        sql_statement += " AND ".join(constraints_converted)
     sql_statement += ";"
     sql_statements.append(sql_statement)
     return sql_statements
