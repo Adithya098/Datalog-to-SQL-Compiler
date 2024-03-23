@@ -70,6 +70,8 @@ def create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recu
         if view.name == name:
             is_recursive = True
         for idx, col in enumerate(cols):
+            if col == "_":
+                continue
             if col in joins_dic:
                 joins_dic[col].append((name, idx))
             else:

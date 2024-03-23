@@ -15,7 +15,8 @@ tokens = (
     "HEAD_AND_BODY_SEPARATOR",
     'NOT_EQUAL',
     'EQUAL',
-    'COMMENT'
+    'COMMENT',
+    'IGNORE'
 )
 
 def t_BOOLEAN(t):
@@ -44,6 +45,7 @@ t_NOT_EQUAL = r'\!='
 t_EQUAL = r'\='
 t_VARIABLE = r'[A-Z]\w*'
 t_IDENTIFIER=r'[a-z][a-zA-Z0-9_-]*'
+t_IGNORE = r'\_'
 
 t_ignore_COMMENT = r'\%.*'
 

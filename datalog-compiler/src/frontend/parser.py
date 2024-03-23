@@ -111,6 +111,7 @@ def p_term(p):
     '''
     term : VARIABLE
          | constant
+         | IGNORE
     '''
     p[0] = (TERM_NODE, p[1])
 

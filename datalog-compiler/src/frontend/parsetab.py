@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BOOLEAN COMMA COMMENT DECIMAL EQUAL HEAD_AND_BODY_SEPARATOR IDENTIFIER INTEGER LEFT_BRACKET NOT_EQUAL QUESTION_MARK RIGHT_BRACKET STRING TILDE VARIABLE\n    program : statement program\n            | statement\n            | empty\n    empty :\n    statement : assertion\n              | retraction\n              | query\n              | requirement\n    \n    assertion : clause DECIMAL\n    \n    retraction : clause TILDE\n    \n    query : literal QUESTION_MARK\n    \n    requirement : LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL\n    \n    clause : literal HEAD_AND_BODY_SEPARATOR body\n           | literal\n    \n    body : literal COMMA body\n         | literal\n    \n    literal : predicate LEFT_BRACKET RIGHT_BRACKET\n            | predicate LEFT_BRACKET terms RIGHT_BRACKET\n            | predicate\n            | term EQUAL term\n            | term NOT_EQUAL term\n            | VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET\n    \n    predicate : IDENTIFIER\n              | STRING\n    \n    terms : term COMMA terms\n          | term\n    \n    term : VARIABLE\n         | constant\n    \n    constant : IDENTIFIER\n             | STRING\n             | INTEGER\n             | BOOLEAN\n    '
+_lr_signature = 'BOOLEAN COMMA COMMENT DECIMAL EQUAL HEAD_AND_BODY_SEPARATOR IDENTIFIER IGNORE INTEGER LEFT_BRACKET NOT_EQUAL QUESTION_MARK RIGHT_BRACKET STRING TILDE VARIABLE\n    program : statement program\n            | statement\n            | empty\n    empty :\n    statement : assertion\n              | retraction\n              | query\n              | requirement\n    \n    assertion : clause DECIMAL\n    \n    retraction : clause TILDE\n    \n    query : literal QUESTION_MARK\n    \n    requirement : LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL\n    \n    clause : literal HEAD_AND_BODY_SEPARATOR body\n           | literal\n    \n    body : literal COMMA body\n         | literal\n    \n    literal : predicate LEFT_BRACKET RIGHT_BRACKET\n            | predicate LEFT_BRACKET terms RIGHT_BRACKET\n            | predicate\n            | term EQUAL term\n            | term NOT_EQUAL term\n            | VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET\n    \n    predicate : IDENTIFIER\n              | STRING\n    \n    terms : term COMMA terms\n          | term\n    \n    term : VARIABLE\n         | constant\n         | IGNORE\n    \n    constant : IDENTIFIER\n             | STRING\n             | INTEGER\n             | BOOLEAN\n    '
     
-_lr_action_items = {'$end':([0,1,2,3,4,5,6,7,19,20,21,22,42,],[-4,0,-2,-3,-5,-6,-7,-8,-1,-9,-10,-11,-12,]),'LEFT_BRACKET':([0,2,4,5,6,7,11,12,15,20,21,22,40,42,],[10,10,-5,-6,-7,-8,-23,25,-24,-9,-10,-11,45,-12,]),'VARIABLE':([0,2,4,5,6,7,20,21,22,23,25,26,27,41,42,44,45,],[14,14,-5,-6,-7,-8,-9,-10,-11,14,35,35,35,14,-12,35,35,]),'IDENTIFIER':([0,2,4,5,6,7,10,20,21,22,23,25,26,27,28,41,42,44,45,],[11,11,-5,-6,-7,-8,24,-9,-10,-11,11,36,36,36,40,11,-12,36,36,]),'STRING':([0,2,4,5,6,7,20,21,22,23,25,26,27,41,42,44,45,],[15,15,-5,-6,-7,-8,-9,-10,-11,15,37,37,37,15,-12,37,37,]),'INTEGER':([0,2,4,5,6,7,20,21,22,23,25,26,27,41,42,44,45,],[17,17,-5,-6,-7,-8,-9,-10,-11,17,17,17,17,17,-12,17,17,]),'BOOLEAN':([0,2,4,5,6,7,20,21,22,23,25,26,27,41,42,44,45,],[18,18,-5,-6,-7,-8,-9,-10,-11,18,18,18,18,18,-12,18,18,]),'DECIMAL':([8,9,11,12,15,16,17,18,29,30,31,32,35,36,37,38,39,43,46,49,],[20,-14,-23,-19,-24,-28,-31,-32,-16,-13,42,-17,-27,-29,-30,-20,-21,-18,-15,-22,]),'TILDE':([8,9,11,12,15,16,17,18,29,30,32,35,36,37,38,39,43,46,49,],[21,-14,-23,-19,-24,-28,-31,-32,-16,-13,-17,-27,-29,-30,-20,-21,-18,-15,-22,]),'QUESTION_MARK':([9,11,12,15,16,17,18,32,35,36,37,38,39,43,49,],[22,-23,-19,-24,-28,-31,-32,-17,-27,-29,-30,-20,-21,-18,-22,]),'HEAD_AND_BODY_SEPARATOR':([9,11,12,14,15,16,17,18,32,35,36,37,38,39,43,49,],[23,-23,-19,28,-24,-28,-31,-32,-17,-27,-29,-30,-20,-21,-18,-22,]),'COMMA':([11,12,15,16,17,18,29,32,34,35,36,37,38,39,43,49,],[-23,-19,-24,-28,-31,-32,41,-17,44,-27,-29,-30,-20,-21,-18,-22,]),'EQUAL':([11,13,14,15,16,17,18,],[-29,26,-27,-30,-28,-31,-32,]),'NOT_EQUAL':([11,13,14,15,16,17,18,],[-29,27,-27,-30,-28,-31,-32,]),'RIGHT_BRACKET':([16,17,18,24,25,33,34,35,36,37,47,48,],[-28,-31,-32,31,32,43,-26,-27,-29,-30,-25,49,]),}
+_lr_action_items = {'$end':([0,1,2,3,4,5,6,7,20,21,22,23,43,],[-4,0,-2,-3,-5,-6,-7,-8,-1,-9,-10,-11,-12,]),'LEFT_BRACKET':([0,2,4,5,6,7,11,12,15,21,22,23,41,43,],[10,10,-5,-6,-7,-8,-23,26,-24,-9,-10,-11,46,-12,]),'VARIABLE':([0,2,4,5,6,7,21,22,23,24,26,27,28,42,43,45,46,],[14,14,-5,-6,-7,-8,-9,-10,-11,14,36,36,36,14,-12,36,36,]),'IDENTIFIER':([0,2,4,5,6,7,10,21,22,23,24,26,27,28,29,42,43,45,46,],[11,11,-5,-6,-7,-8,25,-9,-10,-11,11,37,37,37,41,11,-12,37,37,]),'STRING':([0,2,4,5,6,7,21,22,23,24,26,27,28,42,43,45,46,],[15,15,-5,-6,-7,-8,-9,-10,-11,15,38,38,38,15,-12,38,38,]),'IGNORE':([0,2,4,5,6,7,21,22,23,24,26,27,28,42,43,45,46,],[17,17,-5,-6,-7,-8,-9,-10,-11,17,17,17,17,17,-12,17,17,]),'INTEGER':([0,2,4,5,6,7,21,22,23,24,26,27,28,42,43,45,46,],[18,18,-5,-6,-7,-8,-9,-10,-11,18,18,18,18,18,-12,18,18,]),'BOOLEAN':([0,2,4,5,6,7,21,22,23,24,26,27,28,42,43,45,46,],[19,19,-5,-6,-7,-8,-9,-10,-11,19,19,19,19,19,-12,19,19,]),'DECIMAL':([8,9,11,12,15,16,17,18,19,30,31,32,33,36,37,38,39,40,44,47,50,],[21,-14,-23,-19,-24,-28,-29,-32,-33,-16,-13,43,-17,-27,-30,-31,-20,-21,-18,-15,-22,]),'TILDE':([8,9,11,12,15,16,17,18,19,30,31,33,36,37,38,39,40,44,47,50,],[22,-14,-23,-19,-24,-28,-29,-32,-33,-16,-13,-17,-27,-30,-31,-20,-21,-18,-15,-22,]),'QUESTION_MARK':([9,11,12,15,16,17,18,19,33,36,37,38,39,40,44,50,],[23,-23,-19,-24,-28,-29,-32,-33,-17,-27,-30,-31,-20,-21,-18,-22,]),'HEAD_AND_BODY_SEPARATOR':([9,11,12,14,15,16,17,18,19,33,36,37,38,39,40,44,50,],[24,-23,-19,29,-24,-28,-29,-32,-33,-17,-27,-30,-31,-20,-21,-18,-22,]),'COMMA':([11,12,15,16,17,18,19,30,33,35,36,37,38,39,40,44,50,],[-23,-19,-24,-28,-29,-32,-33,42,-17,45,-27,-30,-31,-20,-21,-18,-22,]),'EQUAL':([11,13,14,15,16,17,18,19,],[-30,27,-27,-31,-28,-29,-32,-33,]),'NOT_EQUAL':([11,13,14,15,16,17,18,19,],[-30,28,-27,-31,-28,-29,-32,-33,]),'RIGHT_BRACKET':([16,17,18,19,25,26,34,35,36,37,38,48,49,],[-28,-29,-32,-33,32,33,44,-26,-27,-30,-31,-25,50,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,2,],[1,19,]),'statement':([0,2,],[2,2,]),'empty':([0,2,],[3,3,]),'assertion':([0,2,],[4,4,]),'retraction':([0,2,],[5,5,]),'query':([0,2,],[6,6,]),'requirement':([0,2,],[7,7,]),'clause':([0,2,],[8,8,]),'literal':([0,2,23,41,],[9,9,29,29,]),'predicate':([0,2,23,41,],[12,12,12,12,]),'term':([0,2,23,25,26,27,41,44,45,],[13,13,13,34,38,39,13,34,34,]),'constant':([0,2,23,25,26,27,41,44,45,],[16,16,16,16,16,16,16,16,16,]),'body':([23,41,],[30,46,]),'terms':([25,44,45,],[33,47,48,]),}
+_lr_goto_items = {'program':([0,2,],[1,20,]),'statement':([0,2,],[2,2,]),'empty':([0,2,],[3,3,]),'assertion':([0,2,],[4,4,]),'retraction':([0,2,],[5,5,]),'query':([0,2,],[6,6,]),'requirement':([0,2,],[7,7,]),'clause':([0,2,],[8,8,]),'literal':([0,2,24,42,],[9,9,30,30,]),'predicate':([0,2,24,42,],[12,12,12,12,]),'term':([0,2,24,26,27,28,42,45,46,],[13,13,13,35,39,40,13,35,35,]),'constant':([0,2,24,26,27,28,42,45,46,],[16,16,16,16,16,16,16,16,16,]),'body':([24,42,],[31,47,]),'terms':([26,45,46,],[34,48,49,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,36 +27,37 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> statement program','program',2,'p_program','parser.py',6),
-  ('program -> statement','program',1,'p_program','parser.py',7),
-  ('program -> empty','program',1,'p_program','parser.py',8),
-  ('empty -> <empty>','empty',0,'p_empty','parser.py',18),
-  ('statement -> assertion','statement',1,'p_statement','parser.py',23),
-  ('statement -> retraction','statement',1,'p_statement','parser.py',24),
-  ('statement -> query','statement',1,'p_statement','parser.py',25),
-  ('statement -> requirement','statement',1,'p_statement','parser.py',26),
-  ('assertion -> clause DECIMAL','assertion',2,'p_assertion','parser.py',32),
-  ('retraction -> clause TILDE','retraction',2,'p_retraction','parser.py',38),
-  ('query -> literal QUESTION_MARK','query',2,'p_query','parser.py',44),
-  ('requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL','requirement',4,'p_requirement','parser.py',50),
-  ('clause -> literal HEAD_AND_BODY_SEPARATOR body','clause',3,'p_clause','parser.py',56),
-  ('clause -> literal','clause',1,'p_clause','parser.py',57),
-  ('body -> literal COMMA body','body',3,'p_body','parser.py',66),
-  ('body -> literal','body',1,'p_body','parser.py',67),
-  ('literal -> predicate LEFT_BRACKET RIGHT_BRACKET','literal',3,'p_literal','parser.py',76),
-  ('literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET','literal',4,'p_literal','parser.py',77),
-  ('literal -> predicate','literal',1,'p_literal','parser.py',78),
-  ('literal -> term EQUAL term','literal',3,'p_literal','parser.py',79),
-  ('literal -> term NOT_EQUAL term','literal',3,'p_literal','parser.py',80),
-  ('literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET','literal',6,'p_literal','parser.py',81),
-  ('predicate -> IDENTIFIER','predicate',1,'p_predicate','parser.py',94),
-  ('predicate -> STRING','predicate',1,'p_predicate','parser.py',95),
-  ('terms -> term COMMA terms','terms',3,'p_terms','parser.py',101),
-  ('terms -> term','terms',1,'p_terms','parser.py',102),
-  ('term -> VARIABLE','term',1,'p_term','parser.py',111),
-  ('term -> constant','term',1,'p_term','parser.py',112),
-  ('constant -> IDENTIFIER','constant',1,'p_constant','parser.py',118),
-  ('constant -> STRING','constant',1,'p_constant','parser.py',119),
-  ('constant -> INTEGER','constant',1,'p_constant','parser.py',120),
-  ('constant -> BOOLEAN','constant',1,'p_constant','parser.py',121),
+  ('program -> statement program','program',2,'p_program','parser.py',7),
+  ('program -> statement','program',1,'p_program','parser.py',8),
+  ('program -> empty','program',1,'p_program','parser.py',9),
+  ('empty -> <empty>','empty',0,'p_empty','parser.py',19),
+  ('statement -> assertion','statement',1,'p_statement','parser.py',24),
+  ('statement -> retraction','statement',1,'p_statement','parser.py',25),
+  ('statement -> query','statement',1,'p_statement','parser.py',26),
+  ('statement -> requirement','statement',1,'p_statement','parser.py',27),
+  ('assertion -> clause DECIMAL','assertion',2,'p_assertion','parser.py',33),
+  ('retraction -> clause TILDE','retraction',2,'p_retraction','parser.py',39),
+  ('query -> literal QUESTION_MARK','query',2,'p_query','parser.py',45),
+  ('requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL','requirement',4,'p_requirement','parser.py',51),
+  ('clause -> literal HEAD_AND_BODY_SEPARATOR body','clause',3,'p_clause','parser.py',57),
+  ('clause -> literal','clause',1,'p_clause','parser.py',58),
+  ('body -> literal COMMA body','body',3,'p_body','parser.py',67),
+  ('body -> literal','body',1,'p_body','parser.py',68),
+  ('literal -> predicate LEFT_BRACKET RIGHT_BRACKET','literal',3,'p_literal','parser.py',77),
+  ('literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET','literal',4,'p_literal','parser.py',78),
+  ('literal -> predicate','literal',1,'p_literal','parser.py',79),
+  ('literal -> term EQUAL term','literal',3,'p_literal','parser.py',80),
+  ('literal -> term NOT_EQUAL term','literal',3,'p_literal','parser.py',81),
+  ('literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET','literal',6,'p_literal','parser.py',82),
+  ('predicate -> IDENTIFIER','predicate',1,'p_predicate','parser.py',95),
+  ('predicate -> STRING','predicate',1,'p_predicate','parser.py',96),
+  ('terms -> term COMMA terms','terms',3,'p_terms','parser.py',102),
+  ('terms -> term','terms',1,'p_terms','parser.py',103),
+  ('term -> VARIABLE','term',1,'p_term','parser.py',112),
+  ('term -> constant','term',1,'p_term','parser.py',113),
+  ('term -> IGNORE','term',1,'p_term','parser.py',114),
+  ('constant -> IDENTIFIER','constant',1,'p_constant','parser.py',120),
+  ('constant -> STRING','constant',1,'p_constant','parser.py',121),
+  ('constant -> INTEGER','constant',1,'p_constant','parser.py',122),
+  ('constant -> BOOLEAN','constant',1,'p_constant','parser.py',123),
 ]

@@ -20,3 +20,5 @@ reachable(X, Y)?
 w(X) :- s(X, Y).
 w(X)?
 x(1, x).
+y(X) :- s(X, _), t(X, _).
+y(X)?
