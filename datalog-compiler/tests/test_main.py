@@ -11,15 +11,18 @@ class TestMain(unittest.TestCase):
         s(x, Y)?
         s(X, y)?
         s(X, Y)?
+        x(1, x).
         '''
         expected_translated_queries = [
-            "CREATE TABLE s (z0 TEXT NOT NULL,z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO s VALUES ('x', 'y');",
             "INSERT INTO s VALUES ('y', 'z');",
             "SELECT * FROM s WHERE z0='x' AND z1='y';",
             "SELECT * FROM s WHERE z0='x';",
             "SELECT * FROM s WHERE z1='y';",
-            "SELECT * FROM s;"
+            "SELECT * FROM s;",
+            "CREATE TABLE x (z0 INT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO x VALUES (1, 'x');"
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
@@ -39,7 +42,7 @@ class TestMain(unittest.TestCase):
         w(X)?
         '''
         expected_translated_queries = [
-            "CREATE TABLE s (z0 TEXT NOT NULL,z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO s VALUES ('x', 'y');",
             "INSERT INTO s VALUES ('y', 'z');",
             "CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s);",
@@ -66,7 +69,7 @@ class TestMain(unittest.TestCase):
         reachable(X, Y)?
         '''
         expected_translated_queries = [
-            "CREATE TABLE link (z0 TEXT NOT NULL,z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "CREATE TABLE link (z0 TEXT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO link VALUES ('a', 'b');",
             "INSERT INTO link VALUES ('b', 'c');",
             "INSERT INTO link VALUES ('c', 'c');",

@@ -8,28 +8,31 @@ def get_column_name(idx):
 def get_create_statement(table_name, columns):
     sql_statements = []
     sql_statement = "CREATE TABLE {table_name} (".format(table_name=table_name)
-    for idx in range(len(columns)):
-        sql_statement += get_column_name(idx) + " TEXT NOT NULL,"
-    sql_statement += " PRIMARY KEY ("
-    for idx in range(len(columns)):
-        if idx == len(columns) - 1:
-            postfix = ")"
+    column_type_statement = []
+    for idx, col in enumerate(columns):
+        if isinstance(col, int):
+            column_type_statement.append(get_column_name(idx) + " INT NOT NULL")
         else:
-            postfix = ", "
-        sql_statement += get_column_name(idx) + postfix
-    sql_statement += ");"
+            column_type_statement.append(get_column_name(idx) + " TEXT NOT NULL")
+    sql_statement += ", ".join(column_type_statement)
+    column_name_statement = []
+    for idx in range(len(columns)):
+        column_name_statement.append(get_column_name(idx))
+    sql_statement += ", PRIMARY KEY ({cols_name}));".format(cols_name=", ".join(column_name_statement))
     sql_statements.append(sql_statement)
+    print(sql_statement)
     return sql_statements
 
 def get_insert_statement(table_name, columns):
     sql_statements = []
     sql_statement = "INSERT INTO {table_name} VALUES (".format(table_name=table_name)
-    for idx, column in enumerate(columns):
-        if idx == len(columns) - 1:
-            postfix = ");"
+    col_values = []
+    for column in columns:
+        if isinstance(column, int):
+            col_values.append(str(column))
         else:
-            postfix = ", "
-        sql_statement += "'" + column + "'" + postfix
+            col_values.append("'" + column + "'")
+    sql_statement += "{col_values});".format(col_values=", ".join(col_values))
     sql_statements.append(sql_statement)
     return sql_statements
 
