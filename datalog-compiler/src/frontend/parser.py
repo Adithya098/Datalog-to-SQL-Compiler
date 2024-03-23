@@ -58,7 +58,7 @@ def p_clause(p):
            | literal
     '''
     if len(p) == 4:
-        p[0] = (CLAUSE_NODE, p[1], p[3])
+        p[0] = (CLAUSE_NODE, p[2], p[1], p[3])
     else:
         p[0] = (CLAUSE_NODE, p[1])
 

@@ -4,3 +4,18 @@ s(x, y)?
 s(x, Y)?
 s(X, y)?
 s(X, Y)?
+t(X, Y) :- s(X, Y).
+t(X, Y)?
+u(X, Y) :- s(Y, X).
+u(X, Y)?
+v(X, Y) :- t(X, Z), u(Z, Y).
+v(X, Y)?
+link(a, b).
+link(b, c).
+link(c, c).
+link(c, d).
+reachable(X, Y) :- link(X, Y).
+reachable(X, Y) :- link(X, Z), reachable(Z, Y).
+reachable(X, Y)?
+w(X) :- s(X, Y).
+w(X)?

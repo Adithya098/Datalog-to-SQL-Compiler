@@ -13,13 +13,66 @@ class TestMain(unittest.TestCase):
         s(X, Y)?
         '''
         expected_translated_queries = [
-            get_create_and_insert_statement('s', ['x', 'y'])[0],
-            get_create_and_insert_statement('s', ['x', 'y'])[1],
-            get_insert_statement('s', ['y', 'z'])[0],
-            get_basic_query_statement('s', {0: 'x', 1: 'y'})[0],
-            get_basic_query_statement('s', {0: 'x'})[0],
-            get_basic_query_statement('s', {1: 'y'})[0],
-            get_basic_query_statement('s', {})[0]
+            "CREATE TABLE s (z0 TEXT NOT NULL,z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES ('x', 'y');",
+            "INSERT INTO s VALUES ('y', 'z');",
+            "SELECT * FROM s WHERE z0='x' AND z1='y';",
+            "SELECT * FROM s WHERE z0='x';",
+            "SELECT * FROM s WHERE z1='y';",
+            "SELECT * FROM s;"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+    
+    def test_basic_view(self):
+        datalog_queries = '''
+        s(x, y).
+        s(y, z).
+        t(X, Y) :- s(X, Y).
+        t(X, Y)?
+        u(X, Y) :- s(Y, X).
+        u(X, Y)?
+        v(X, Y) :- t(X, Z), u(Z, Y).
+        v(X, Y)?
+        w(X) :- s(X, Y).
+        w(X)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TEXT NOT NULL,z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES ('x', 'y');",
+            "INSERT INTO s VALUES ('y', 'z');",
+            "CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s);",
+            "SELECT * FROM t;",
+            "CREATE VIEW u AS (SELECT s.z1, s.z0 FROM s);",
+            "SELECT * FROM u;",
+            "CREATE VIEW v AS (SELECT t.z0, u.z1 FROM t, u WHERE t.z1=u.z0);",
+            "SELECT * FROM v;",
+            "CREATE VIEW w AS (SELECT s.z0 FROM s);",
+            "SELECT * FROM w;"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+    
+    def test_recursive_query(self):
+        datalog_queries = '''
+        link(a, b).
+        link(b, c).
+        link(c, c).
+        link(c, d).
+        reachable(X, Y) :- link(X, Y).
+        reachable(X, Y) :- link(X, Z), reachable(Z, Y).
+        reachable(X, Y)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE link (z0 TEXT NOT NULL,z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO link VALUES ('a', 'b');",
+            "INSERT INTO link VALUES ('b', 'c');",
+            "INSERT INTO link VALUES ('c', 'c');",
+            "INSERT INTO link VALUES ('c', 'd');",
+            "CREATE RECURSIVE VIEW reachable (z0, z1) AS (SELECT link.z0, link.z1 FROM link) UNION (SELECT link.z0, reachable.z1 FROM link, reachable WHERE link.z1=reachable.z0);",
+            "SELECT * FROM reachable;"
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):

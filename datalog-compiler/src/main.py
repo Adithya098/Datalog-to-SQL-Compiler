@@ -4,7 +4,9 @@ import traceback
 import os
 import sys
 
-def generate_sql_query_from_datalog_query(datalog_query, interpreter=Interpreter()):
+def generate_sql_query_from_datalog_query(datalog_query, interpreter=None):
+    if not interpreter:
+        interpreter = Interpreter()
     ast = parser.parse(datalog_query)
     sql_statements = interpreter.interpret(ast)
     for sql_statement in sql_statements:
