@@ -119,7 +119,6 @@ class Interpreter:
         if view.is_executed:
             statements.extend(get_drop_view_statement(view_name))
         for body in view.bodies:
-            print(body)
             for dependent_table_or_view_name in body.keys():
                 if dependent_table_or_view_name == view_name:
                     continue

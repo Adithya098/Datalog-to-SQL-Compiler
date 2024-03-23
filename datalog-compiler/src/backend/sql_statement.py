@@ -79,6 +79,7 @@ def create_select_statements_when_creating_view(cols_alignment_dic):
     cols = []
     for col_alignment in cols_alignment_dic.values():
         if col_alignment is None:
+            # Shouldn't reach here
             raise Exception("Column cannot be aligned")
         table_or_view_name, aligned_col = col_alignment
         cols.append("{table_or_view_name}.{col_name}".format(
