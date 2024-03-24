@@ -4,6 +4,7 @@ from backend.views import Views
 from backend.comparison import Comparison
 from backend.body_processed_results import BodyProcessedResults
 from backend.constants import *
+import traceback
 
 # Rule Types
 INTERPRET_RULE_TYPE = "INTERPRET RULE"
@@ -225,15 +226,19 @@ class Interpreter:
         for statement_node, statement in statements:
             assert statement_node == STATEMENT_NODE
             type_of_statement = self.check_value_of_statement(statement)
-            if type_of_statement == CREATE_AND_INSERT_RULE_TYPE:
-                sql_translation_tuples.extend(self.interpret_create_and_insert_table_statement(statement))
-            elif type_of_statement == INTERPRET_RULE_TYPE:
-                interpret_rules_statements_tuple = self.create_view_graph_and_create_view(statement)
-                sql_translation_tuples = self.clean_up_view_statements(interpret_rules_statements_tuple, sql_translation_tuples)
-            elif type_of_statement == QUERY_RULE_TYPE:
-                sql_translation_tuples.extend(self.interpret_query_statement(statement))
-            else:
-                raise Exception("Unsupported statement")
+            if type_of_statement not in {CREATE_AND_INSERT_RULE_TYPE, INTERPRET_RULE_TYPE, QUERY_RULE_TYPE}:
+                raise Exception("Unsupported statement type")
+            try:
+                if type_of_statement == CREATE_AND_INSERT_RULE_TYPE:
+                    sql_translation_tuples.extend(self.interpret_create_and_insert_table_statement(statement))
+                elif type_of_statement == INTERPRET_RULE_TYPE:
+                    interpret_rules_statements_tuple = self.create_view_graph_and_create_view(statement)
+                    sql_translation_tuples = self.clean_up_view_statements(interpret_rules_statements_tuple, sql_translation_tuples)
+                else:
+                    sql_translation_tuples.extend(self.interpret_query_statement(statement))
+            except Exception:
+                traceback.print_exc()
+                sql_translation_tuples.append((None, None, '---- Invalid statement'))
         sql_translations = [sql_translation_tuple[2] for sql_translation_tuple in sql_translation_tuples]
         return sql_translations
 
