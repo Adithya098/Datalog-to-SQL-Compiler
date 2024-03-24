@@ -3,6 +3,11 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     COMMENT
+    LESS_THAN
+    LESS_THAN_OR_EQUAL_TO
+    MORE_THAN
+    MORE_THAN_OR_EQUAL_TO
+    NOT_EQUAL_ALT
 
 Grammar
 
@@ -53,7 +58,12 @@ IDENTIFIER           : 12 22 23 30
 IGNORE               : 29
 INTEGER              : 32
 LEFT_BRACKET         : 12 17 18 22
+LESS_THAN            : 
+LESS_THAN_OR_EQUAL_TO : 
+MORE_THAN            : 
+MORE_THAN_OR_EQUAL_TO : 
 NOT_EQUAL            : 21
+NOT_EQUAL_ALT        : 
 QUESTION_MARK        : 11
 RIGHT_BRACKET        : 12 17 18 22
 STRING               : 24 31

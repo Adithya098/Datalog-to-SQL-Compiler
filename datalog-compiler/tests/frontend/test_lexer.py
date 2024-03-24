@@ -20,7 +20,12 @@ class TestLexer(unittest.TestCase):
         ["N1", "VARIABLE", "N1"],
         ["false", "BOOLEAN", False],
         ["123", "INTEGER", 123],
-        ["abcd", "IDENTIFIER", "abcd"]
+        ["abcd", "IDENTIFIER", "abcd"],
+        ["<", "LESS_THAN", "<"],
+        [">", "MORE_THAN", ">"],
+        ["<=", "LESS_THAN_OR_EQUAL_TO", "<="],
+        [">=", "MORE_THAN_OR_EQUAL_TO", ">="],
+        ["<>", "NOT_EQUAL_ALT", "<>"]
     ])
     def test_individual_characters(self, arg, expected_token_type, expected_value):
         tokens = get_tokens(arg)

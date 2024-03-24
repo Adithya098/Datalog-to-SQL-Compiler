@@ -16,7 +16,12 @@ tokens = (
     'NOT_EQUAL',
     'EQUAL',
     'COMMENT',
-    'IGNORE'
+    'IGNORE',
+    'LESS_THAN',
+    'MORE_THAN',
+    'LESS_THAN_OR_EQUAL_TO',
+    'MORE_THAN_OR_EQUAL_TO',
+    'NOT_EQUAL_ALT'
 )
 
 def t_BOOLEAN(t):
@@ -43,6 +48,11 @@ t_RIGHT_BRACKET = r'\)'
 t_HEAD_AND_BODY_SEPARATOR = r'\:-'
 t_NOT_EQUAL = r'\!='
 t_EQUAL = r'\='
+t_LESS_THAN = r'\<'
+t_MORE_THAN = r'\>'
+t_LESS_THAN_OR_EQUAL_TO = r'\<='
+t_MORE_THAN_OR_EQUAL_TO = r'\>='
+t_NOT_EQUAL_ALT = r'\<>'
 t_VARIABLE = r'[A-Z]\w*'
 t_IDENTIFIER=r'[a-z][a-zA-Z0-9_-]*'
 t_IGNORE = r'\_'
