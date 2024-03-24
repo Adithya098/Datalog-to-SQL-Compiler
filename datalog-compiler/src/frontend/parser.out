@@ -3,11 +3,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     COMMENT
-    LESS_THAN
-    LESS_THAN_OR_EQUAL_TO
-    MORE_THAN
-    MORE_THAN_OR_EQUAL_TO
-    NOT_EQUAL_ALT
 
 Grammar
 
@@ -33,42 +28,47 @@ Rule 18    literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET
 Rule 19    literal -> predicate
 Rule 20    literal -> term EQUAL term
 Rule 21    literal -> term NOT_EQUAL term
-Rule 22    literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
-Rule 23    predicate -> IDENTIFIER
-Rule 24    predicate -> STRING
-Rule 25    terms -> term COMMA terms
-Rule 26    terms -> term
-Rule 27    term -> VARIABLE
-Rule 28    term -> constant
-Rule 29    term -> IGNORE
-Rule 30    constant -> IDENTIFIER
-Rule 31    constant -> STRING
-Rule 32    constant -> INTEGER
-Rule 33    constant -> BOOLEAN
+Rule 22    literal -> term LESS_THAN term
+Rule 23    literal -> term MORE_THAN term
+Rule 24    literal -> term LESS_THAN_OR_EQUAL_TO term
+Rule 25    literal -> term MORE_THAN_OR_EQUAL_TO term
+Rule 26    literal -> term NOT_EQUAL_ALT term
+Rule 27    literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
+Rule 28    predicate -> IDENTIFIER
+Rule 29    predicate -> STRING
+Rule 30    terms -> term COMMA terms
+Rule 31    terms -> term
+Rule 32    term -> VARIABLE
+Rule 33    term -> constant
+Rule 34    term -> IGNORE
+Rule 35    constant -> IDENTIFIER
+Rule 36    constant -> STRING
+Rule 37    constant -> INTEGER
+Rule 38    constant -> BOOLEAN
 
 Terminals, with rules where they appear
 
-BOOLEAN              : 33
-COMMA                : 15 25
+BOOLEAN              : 38
+COMMA                : 15 30
 COMMENT              : 
 DECIMAL              : 9 12
 EQUAL                : 20
-HEAD_AND_BODY_SEPARATOR : 13 22
-IDENTIFIER           : 12 22 23 30
-IGNORE               : 29
-INTEGER              : 32
-LEFT_BRACKET         : 12 17 18 22
-LESS_THAN            : 
-LESS_THAN_OR_EQUAL_TO : 
-MORE_THAN            : 
-MORE_THAN_OR_EQUAL_TO : 
+HEAD_AND_BODY_SEPARATOR : 13 27
+IDENTIFIER           : 12 27 28 35
+IGNORE               : 34
+INTEGER              : 37
+LEFT_BRACKET         : 12 17 18 27
+LESS_THAN            : 22
+LESS_THAN_OR_EQUAL_TO : 24
+MORE_THAN            : 23
+MORE_THAN_OR_EQUAL_TO : 25
 NOT_EQUAL            : 21
-NOT_EQUAL_ALT        : 
+NOT_EQUAL_ALT        : 26
 QUESTION_MARK        : 11
-RIGHT_BRACKET        : 12 17 18 22
-STRING               : 24 31
+RIGHT_BRACKET        : 12 17 18 27
+STRING               : 29 36
 TILDE                : 10
-VARIABLE             : 22 27
+VARIABLE             : 27 32
 error                : 
 
 Nonterminals, with rules where they appear
@@ -76,7 +76,7 @@ Nonterminals, with rules where they appear
 assertion            : 5
 body                 : 13 15
 clause               : 9 10
-constant             : 28
+constant             : 33
 empty                : 3
 literal              : 11 13 14 15 16
 predicate            : 17 18 19
@@ -85,8 +85,8 @@ query                : 7
 requirement          : 8
 retraction           : 6
 statement            : 1 2
-term                 : 20 20 21 21 25 26
-terms                : 18 22 25
+term                 : 20 20 21 21 22 22 23 23 24 24 25 25 26 26 30 31
+terms                : 18 27 30
 
 Parsing method: LALR
 
@@ -112,16 +112,21 @@ state 0
     (19) literal -> . predicate
     (20) literal -> . term EQUAL term
     (21) literal -> . term NOT_EQUAL term
-    (22) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
-    (23) predicate -> . IDENTIFIER
-    (24) predicate -> . STRING
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (22) literal -> . term LESS_THAN term
+    (23) literal -> . term MORE_THAN term
+    (24) literal -> . term LESS_THAN_OR_EQUAL_TO term
+    (25) literal -> . term MORE_THAN_OR_EQUAL_TO term
+    (26) literal -> . term NOT_EQUAL_ALT term
+    (27) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
+    (28) predicate -> . IDENTIFIER
+    (29) predicate -> . STRING
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
     $end            reduce using rule 4 (empty -> .)
     LEFT_BRACKET    shift and go to state 10
@@ -174,16 +179,21 @@ state 2
     (19) literal -> . predicate
     (20) literal -> . term EQUAL term
     (21) literal -> . term NOT_EQUAL term
-    (22) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
-    (23) predicate -> . IDENTIFIER
-    (24) predicate -> . STRING
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (22) literal -> . term LESS_THAN term
+    (23) literal -> . term MORE_THAN term
+    (24) literal -> . term LESS_THAN_OR_EQUAL_TO term
+    (25) literal -> . term MORE_THAN_OR_EQUAL_TO term
+    (26) literal -> . term NOT_EQUAL_ALT term
+    (27) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
+    (28) predicate -> . IDENTIFIER
+    (29) predicate -> . STRING
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
   ! reduce/reduce conflict for $end resolved using rule 2 (program -> statement .)
     $end            reduce using rule 2 (program -> statement .)
@@ -303,17 +313,22 @@ state 10
 
 state 11
 
-    (23) predicate -> IDENTIFIER .
-    (30) constant -> IDENTIFIER .
+    (28) predicate -> IDENTIFIER .
+    (35) constant -> IDENTIFIER .
 
-    LEFT_BRACKET    reduce using rule 23 (predicate -> IDENTIFIER .)
-    QUESTION_MARK   reduce using rule 23 (predicate -> IDENTIFIER .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 23 (predicate -> IDENTIFIER .)
-    DECIMAL         reduce using rule 23 (predicate -> IDENTIFIER .)
-    TILDE           reduce using rule 23 (predicate -> IDENTIFIER .)
-    COMMA           reduce using rule 23 (predicate -> IDENTIFIER .)
-    EQUAL           reduce using rule 30 (constant -> IDENTIFIER .)
-    NOT_EQUAL       reduce using rule 30 (constant -> IDENTIFIER .)
+    LEFT_BRACKET    reduce using rule 28 (predicate -> IDENTIFIER .)
+    QUESTION_MARK   reduce using rule 28 (predicate -> IDENTIFIER .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 28 (predicate -> IDENTIFIER .)
+    DECIMAL         reduce using rule 28 (predicate -> IDENTIFIER .)
+    TILDE           reduce using rule 28 (predicate -> IDENTIFIER .)
+    COMMA           reduce using rule 28 (predicate -> IDENTIFIER .)
+    EQUAL           reduce using rule 35 (constant -> IDENTIFIER .)
+    NOT_EQUAL       reduce using rule 35 (constant -> IDENTIFIER .)
+    LESS_THAN       reduce using rule 35 (constant -> IDENTIFIER .)
+    MORE_THAN       reduce using rule 35 (constant -> IDENTIFIER .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 35 (constant -> IDENTIFIER .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 35 (constant -> IDENTIFIER .)
+    NOT_EQUAL_ALT   reduce using rule 35 (constant -> IDENTIFIER .)
 
 
 state 12
@@ -334,90 +349,130 @@ state 13
 
     (20) literal -> term . EQUAL term
     (21) literal -> term . NOT_EQUAL term
+    (22) literal -> term . LESS_THAN term
+    (23) literal -> term . MORE_THAN term
+    (24) literal -> term . LESS_THAN_OR_EQUAL_TO term
+    (25) literal -> term . MORE_THAN_OR_EQUAL_TO term
+    (26) literal -> term . NOT_EQUAL_ALT term
 
     EQUAL           shift and go to state 27
     NOT_EQUAL       shift and go to state 28
+    LESS_THAN       shift and go to state 29
+    MORE_THAN       shift and go to state 30
+    LESS_THAN_OR_EQUAL_TO shift and go to state 31
+    MORE_THAN_OR_EQUAL_TO shift and go to state 32
+    NOT_EQUAL_ALT   shift and go to state 33
 
 
 state 14
 
-    (22) literal -> VARIABLE . HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
-    (27) term -> VARIABLE .
+    (27) literal -> VARIABLE . HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
+    (32) term -> VARIABLE .
 
-    HEAD_AND_BODY_SEPARATOR shift and go to state 29
-    EQUAL           reduce using rule 27 (term -> VARIABLE .)
-    NOT_EQUAL       reduce using rule 27 (term -> VARIABLE .)
+    HEAD_AND_BODY_SEPARATOR shift and go to state 34
+    EQUAL           reduce using rule 32 (term -> VARIABLE .)
+    NOT_EQUAL       reduce using rule 32 (term -> VARIABLE .)
+    LESS_THAN       reduce using rule 32 (term -> VARIABLE .)
+    MORE_THAN       reduce using rule 32 (term -> VARIABLE .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 32 (term -> VARIABLE .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 32 (term -> VARIABLE .)
+    NOT_EQUAL_ALT   reduce using rule 32 (term -> VARIABLE .)
 
 
 state 15
 
-    (24) predicate -> STRING .
-    (31) constant -> STRING .
+    (29) predicate -> STRING .
+    (36) constant -> STRING .
 
-    LEFT_BRACKET    reduce using rule 24 (predicate -> STRING .)
-    QUESTION_MARK   reduce using rule 24 (predicate -> STRING .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 24 (predicate -> STRING .)
-    DECIMAL         reduce using rule 24 (predicate -> STRING .)
-    TILDE           reduce using rule 24 (predicate -> STRING .)
-    COMMA           reduce using rule 24 (predicate -> STRING .)
-    EQUAL           reduce using rule 31 (constant -> STRING .)
-    NOT_EQUAL       reduce using rule 31 (constant -> STRING .)
+    LEFT_BRACKET    reduce using rule 29 (predicate -> STRING .)
+    QUESTION_MARK   reduce using rule 29 (predicate -> STRING .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 29 (predicate -> STRING .)
+    DECIMAL         reduce using rule 29 (predicate -> STRING .)
+    TILDE           reduce using rule 29 (predicate -> STRING .)
+    COMMA           reduce using rule 29 (predicate -> STRING .)
+    EQUAL           reduce using rule 36 (constant -> STRING .)
+    NOT_EQUAL       reduce using rule 36 (constant -> STRING .)
+    LESS_THAN       reduce using rule 36 (constant -> STRING .)
+    MORE_THAN       reduce using rule 36 (constant -> STRING .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 36 (constant -> STRING .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 36 (constant -> STRING .)
+    NOT_EQUAL_ALT   reduce using rule 36 (constant -> STRING .)
 
 
 state 16
 
-    (28) term -> constant .
+    (33) term -> constant .
 
-    EQUAL           reduce using rule 28 (term -> constant .)
-    NOT_EQUAL       reduce using rule 28 (term -> constant .)
-    COMMA           reduce using rule 28 (term -> constant .)
-    RIGHT_BRACKET   reduce using rule 28 (term -> constant .)
-    QUESTION_MARK   reduce using rule 28 (term -> constant .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 28 (term -> constant .)
-    DECIMAL         reduce using rule 28 (term -> constant .)
-    TILDE           reduce using rule 28 (term -> constant .)
+    EQUAL           reduce using rule 33 (term -> constant .)
+    NOT_EQUAL       reduce using rule 33 (term -> constant .)
+    LESS_THAN       reduce using rule 33 (term -> constant .)
+    MORE_THAN       reduce using rule 33 (term -> constant .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 33 (term -> constant .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 33 (term -> constant .)
+    NOT_EQUAL_ALT   reduce using rule 33 (term -> constant .)
+    COMMA           reduce using rule 33 (term -> constant .)
+    RIGHT_BRACKET   reduce using rule 33 (term -> constant .)
+    QUESTION_MARK   reduce using rule 33 (term -> constant .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 33 (term -> constant .)
+    DECIMAL         reduce using rule 33 (term -> constant .)
+    TILDE           reduce using rule 33 (term -> constant .)
 
 
 state 17
 
-    (29) term -> IGNORE .
+    (34) term -> IGNORE .
 
-    EQUAL           reduce using rule 29 (term -> IGNORE .)
-    NOT_EQUAL       reduce using rule 29 (term -> IGNORE .)
-    COMMA           reduce using rule 29 (term -> IGNORE .)
-    RIGHT_BRACKET   reduce using rule 29 (term -> IGNORE .)
-    QUESTION_MARK   reduce using rule 29 (term -> IGNORE .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 29 (term -> IGNORE .)
-    DECIMAL         reduce using rule 29 (term -> IGNORE .)
-    TILDE           reduce using rule 29 (term -> IGNORE .)
+    EQUAL           reduce using rule 34 (term -> IGNORE .)
+    NOT_EQUAL       reduce using rule 34 (term -> IGNORE .)
+    LESS_THAN       reduce using rule 34 (term -> IGNORE .)
+    MORE_THAN       reduce using rule 34 (term -> IGNORE .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 34 (term -> IGNORE .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 34 (term -> IGNORE .)
+    NOT_EQUAL_ALT   reduce using rule 34 (term -> IGNORE .)
+    COMMA           reduce using rule 34 (term -> IGNORE .)
+    RIGHT_BRACKET   reduce using rule 34 (term -> IGNORE .)
+    QUESTION_MARK   reduce using rule 34 (term -> IGNORE .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 34 (term -> IGNORE .)
+    DECIMAL         reduce using rule 34 (term -> IGNORE .)
+    TILDE           reduce using rule 34 (term -> IGNORE .)
 
 
 state 18
 
-    (32) constant -> INTEGER .
+    (37) constant -> INTEGER .
 
-    EQUAL           reduce using rule 32 (constant -> INTEGER .)
-    NOT_EQUAL       reduce using rule 32 (constant -> INTEGER .)
-    COMMA           reduce using rule 32 (constant -> INTEGER .)
-    RIGHT_BRACKET   reduce using rule 32 (constant -> INTEGER .)
-    QUESTION_MARK   reduce using rule 32 (constant -> INTEGER .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 32 (constant -> INTEGER .)
-    DECIMAL         reduce using rule 32 (constant -> INTEGER .)
-    TILDE           reduce using rule 32 (constant -> INTEGER .)
+    EQUAL           reduce using rule 37 (constant -> INTEGER .)
+    NOT_EQUAL       reduce using rule 37 (constant -> INTEGER .)
+    LESS_THAN       reduce using rule 37 (constant -> INTEGER .)
+    MORE_THAN       reduce using rule 37 (constant -> INTEGER .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 37 (constant -> INTEGER .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 37 (constant -> INTEGER .)
+    NOT_EQUAL_ALT   reduce using rule 37 (constant -> INTEGER .)
+    COMMA           reduce using rule 37 (constant -> INTEGER .)
+    RIGHT_BRACKET   reduce using rule 37 (constant -> INTEGER .)
+    QUESTION_MARK   reduce using rule 37 (constant -> INTEGER .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 37 (constant -> INTEGER .)
+    DECIMAL         reduce using rule 37 (constant -> INTEGER .)
+    TILDE           reduce using rule 37 (constant -> INTEGER .)
 
 
 state 19
 
-    (33) constant -> BOOLEAN .
+    (38) constant -> BOOLEAN .
 
-    EQUAL           reduce using rule 33 (constant -> BOOLEAN .)
-    NOT_EQUAL       reduce using rule 33 (constant -> BOOLEAN .)
-    COMMA           reduce using rule 33 (constant -> BOOLEAN .)
-    RIGHT_BRACKET   reduce using rule 33 (constant -> BOOLEAN .)
-    QUESTION_MARK   reduce using rule 33 (constant -> BOOLEAN .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 33 (constant -> BOOLEAN .)
-    DECIMAL         reduce using rule 33 (constant -> BOOLEAN .)
-    TILDE           reduce using rule 33 (constant -> BOOLEAN .)
+    EQUAL           reduce using rule 38 (constant -> BOOLEAN .)
+    NOT_EQUAL       reduce using rule 38 (constant -> BOOLEAN .)
+    LESS_THAN       reduce using rule 38 (constant -> BOOLEAN .)
+    MORE_THAN       reduce using rule 38 (constant -> BOOLEAN .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 38 (constant -> BOOLEAN .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 38 (constant -> BOOLEAN .)
+    NOT_EQUAL_ALT   reduce using rule 38 (constant -> BOOLEAN .)
+    COMMA           reduce using rule 38 (constant -> BOOLEAN .)
+    RIGHT_BRACKET   reduce using rule 38 (constant -> BOOLEAN .)
+    QUESTION_MARK   reduce using rule 38 (constant -> BOOLEAN .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 38 (constant -> BOOLEAN .)
+    DECIMAL         reduce using rule 38 (constant -> BOOLEAN .)
+    TILDE           reduce using rule 38 (constant -> BOOLEAN .)
 
 
 state 20
@@ -479,16 +534,21 @@ state 24
     (19) literal -> . predicate
     (20) literal -> . term EQUAL term
     (21) literal -> . term NOT_EQUAL term
-    (22) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
-    (23) predicate -> . IDENTIFIER
-    (24) predicate -> . STRING
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (22) literal -> . term LESS_THAN term
+    (23) literal -> . term MORE_THAN term
+    (24) literal -> . term LESS_THAN_OR_EQUAL_TO term
+    (25) literal -> . term MORE_THAN_OR_EQUAL_TO term
+    (26) literal -> . term NOT_EQUAL_ALT term
+    (27) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
+    (28) predicate -> . IDENTIFIER
+    (29) predicate -> . STRING
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
     VARIABLE        shift and go to state 14
     IDENTIFIER      shift and go to state 11
@@ -497,8 +557,8 @@ state 24
     INTEGER         shift and go to state 18
     BOOLEAN         shift and go to state 19
 
-    literal                        shift and go to state 30
-    body                           shift and go to state 31
+    literal                        shift and go to state 35
+    body                           shift and go to state 36
     predicate                      shift and go to state 12
     term                           shift and go to state 13
     constant                       shift and go to state 16
@@ -507,95 +567,200 @@ state 25
 
     (12) requirement -> LEFT_BRACKET IDENTIFIER . RIGHT_BRACKET DECIMAL
 
-    RIGHT_BRACKET   shift and go to state 32
+    RIGHT_BRACKET   shift and go to state 37
 
 
 state 26
 
     (17) literal -> predicate LEFT_BRACKET . RIGHT_BRACKET
     (18) literal -> predicate LEFT_BRACKET . terms RIGHT_BRACKET
-    (25) terms -> . term COMMA terms
-    (26) terms -> . term
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (30) terms -> . term COMMA terms
+    (31) terms -> . term
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
-    RIGHT_BRACKET   shift and go to state 33
-    VARIABLE        shift and go to state 36
+    RIGHT_BRACKET   shift and go to state 38
+    VARIABLE        shift and go to state 41
     IGNORE          shift and go to state 17
-    IDENTIFIER      shift and go to state 37
-    STRING          shift and go to state 38
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
     INTEGER         shift and go to state 18
     BOOLEAN         shift and go to state 19
 
-    terms                          shift and go to state 34
-    term                           shift and go to state 35
+    terms                          shift and go to state 39
+    term                           shift and go to state 40
     constant                       shift and go to state 16
 
 state 27
 
     (20) literal -> term EQUAL . term
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 36
+    VARIABLE        shift and go to state 41
     IGNORE          shift and go to state 17
-    IDENTIFIER      shift and go to state 37
-    STRING          shift and go to state 38
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
     INTEGER         shift and go to state 18
     BOOLEAN         shift and go to state 19
 
-    term                           shift and go to state 39
+    term                           shift and go to state 44
     constant                       shift and go to state 16
 
 state 28
 
     (21) literal -> term NOT_EQUAL . term
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 36
+    VARIABLE        shift and go to state 41
     IGNORE          shift and go to state 17
-    IDENTIFIER      shift and go to state 37
-    STRING          shift and go to state 38
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
     INTEGER         shift and go to state 18
     BOOLEAN         shift and go to state 19
 
-    term                           shift and go to state 40
+    term                           shift and go to state 45
     constant                       shift and go to state 16
 
 state 29
 
-    (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR . IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
+    (22) literal -> term LESS_THAN . term
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
-    IDENTIFIER      shift and go to state 41
+    VARIABLE        shift and go to state 41
+    IGNORE          shift and go to state 17
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
+    INTEGER         shift and go to state 18
+    BOOLEAN         shift and go to state 19
 
+    term                           shift and go to state 46
+    constant                       shift and go to state 16
 
 state 30
+
+    (23) literal -> term MORE_THAN . term
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
+
+    VARIABLE        shift and go to state 41
+    IGNORE          shift and go to state 17
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
+    INTEGER         shift and go to state 18
+    BOOLEAN         shift and go to state 19
+
+    term                           shift and go to state 47
+    constant                       shift and go to state 16
+
+state 31
+
+    (24) literal -> term LESS_THAN_OR_EQUAL_TO . term
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
+
+    VARIABLE        shift and go to state 41
+    IGNORE          shift and go to state 17
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
+    INTEGER         shift and go to state 18
+    BOOLEAN         shift and go to state 19
+
+    term                           shift and go to state 48
+    constant                       shift and go to state 16
+
+state 32
+
+    (25) literal -> term MORE_THAN_OR_EQUAL_TO . term
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
+
+    VARIABLE        shift and go to state 41
+    IGNORE          shift and go to state 17
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
+    INTEGER         shift and go to state 18
+    BOOLEAN         shift and go to state 19
+
+    term                           shift and go to state 49
+    constant                       shift and go to state 16
+
+state 33
+
+    (26) literal -> term NOT_EQUAL_ALT . term
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
+
+    VARIABLE        shift and go to state 41
+    IGNORE          shift and go to state 17
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
+    INTEGER         shift and go to state 18
+    BOOLEAN         shift and go to state 19
+
+    term                           shift and go to state 50
+    constant                       shift and go to state 16
+
+state 34
+
+    (27) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR . IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
+
+    IDENTIFIER      shift and go to state 51
+
+
+state 35
 
     (15) body -> literal . COMMA body
     (16) body -> literal .
 
-    COMMA           shift and go to state 42
+    COMMA           shift and go to state 52
     DECIMAL         reduce using rule 16 (body -> literal .)
     TILDE           reduce using rule 16 (body -> literal .)
 
 
-state 31
+state 36
 
     (13) clause -> literal HEAD_AND_BODY_SEPARATOR body .
 
@@ -603,14 +768,14 @@ state 31
     TILDE           reduce using rule 13 (clause -> literal HEAD_AND_BODY_SEPARATOR body .)
 
 
-state 32
+state 37
 
     (12) requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET . DECIMAL
 
-    DECIMAL         shift and go to state 43
+    DECIMAL         shift and go to state 53
 
 
-state 33
+state 38
 
     (17) literal -> predicate LEFT_BRACKET RIGHT_BRACKET .
 
@@ -621,59 +786,59 @@ state 33
     COMMA           reduce using rule 17 (literal -> predicate LEFT_BRACKET RIGHT_BRACKET .)
 
 
-state 34
+state 39
 
     (18) literal -> predicate LEFT_BRACKET terms . RIGHT_BRACKET
 
-    RIGHT_BRACKET   shift and go to state 44
+    RIGHT_BRACKET   shift and go to state 54
 
 
-state 35
+state 40
 
-    (25) terms -> term . COMMA terms
-    (26) terms -> term .
+    (30) terms -> term . COMMA terms
+    (31) terms -> term .
 
-    COMMA           shift and go to state 45
-    RIGHT_BRACKET   reduce using rule 26 (terms -> term .)
-
-
-state 36
-
-    (27) term -> VARIABLE .
-
-    COMMA           reduce using rule 27 (term -> VARIABLE .)
-    RIGHT_BRACKET   reduce using rule 27 (term -> VARIABLE .)
-    QUESTION_MARK   reduce using rule 27 (term -> VARIABLE .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 27 (term -> VARIABLE .)
-    DECIMAL         reduce using rule 27 (term -> VARIABLE .)
-    TILDE           reduce using rule 27 (term -> VARIABLE .)
+    COMMA           shift and go to state 55
+    RIGHT_BRACKET   reduce using rule 31 (terms -> term .)
 
 
-state 37
+state 41
 
-    (30) constant -> IDENTIFIER .
+    (32) term -> VARIABLE .
 
-    COMMA           reduce using rule 30 (constant -> IDENTIFIER .)
-    RIGHT_BRACKET   reduce using rule 30 (constant -> IDENTIFIER .)
-    QUESTION_MARK   reduce using rule 30 (constant -> IDENTIFIER .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 30 (constant -> IDENTIFIER .)
-    DECIMAL         reduce using rule 30 (constant -> IDENTIFIER .)
-    TILDE           reduce using rule 30 (constant -> IDENTIFIER .)
-
-
-state 38
-
-    (31) constant -> STRING .
-
-    COMMA           reduce using rule 31 (constant -> STRING .)
-    RIGHT_BRACKET   reduce using rule 31 (constant -> STRING .)
-    QUESTION_MARK   reduce using rule 31 (constant -> STRING .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 31 (constant -> STRING .)
-    DECIMAL         reduce using rule 31 (constant -> STRING .)
-    TILDE           reduce using rule 31 (constant -> STRING .)
+    COMMA           reduce using rule 32 (term -> VARIABLE .)
+    RIGHT_BRACKET   reduce using rule 32 (term -> VARIABLE .)
+    QUESTION_MARK   reduce using rule 32 (term -> VARIABLE .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 32 (term -> VARIABLE .)
+    DECIMAL         reduce using rule 32 (term -> VARIABLE .)
+    TILDE           reduce using rule 32 (term -> VARIABLE .)
 
 
-state 39
+state 42
+
+    (35) constant -> IDENTIFIER .
+
+    COMMA           reduce using rule 35 (constant -> IDENTIFIER .)
+    RIGHT_BRACKET   reduce using rule 35 (constant -> IDENTIFIER .)
+    QUESTION_MARK   reduce using rule 35 (constant -> IDENTIFIER .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 35 (constant -> IDENTIFIER .)
+    DECIMAL         reduce using rule 35 (constant -> IDENTIFIER .)
+    TILDE           reduce using rule 35 (constant -> IDENTIFIER .)
+
+
+state 43
+
+    (36) constant -> STRING .
+
+    COMMA           reduce using rule 36 (constant -> STRING .)
+    RIGHT_BRACKET   reduce using rule 36 (constant -> STRING .)
+    QUESTION_MARK   reduce using rule 36 (constant -> STRING .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 36 (constant -> STRING .)
+    DECIMAL         reduce using rule 36 (constant -> STRING .)
+    TILDE           reduce using rule 36 (constant -> STRING .)
+
+
+state 44
 
     (20) literal -> term EQUAL term .
 
@@ -684,7 +849,7 @@ state 39
     COMMA           reduce using rule 20 (literal -> term EQUAL term .)
 
 
-state 40
+state 45
 
     (21) literal -> term NOT_EQUAL term .
 
@@ -695,14 +860,69 @@ state 40
     COMMA           reduce using rule 21 (literal -> term NOT_EQUAL term .)
 
 
-state 41
+state 46
 
-    (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER . LEFT_BRACKET terms RIGHT_BRACKET
+    (22) literal -> term LESS_THAN term .
 
-    LEFT_BRACKET    shift and go to state 46
+    QUESTION_MARK   reduce using rule 22 (literal -> term LESS_THAN term .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 22 (literal -> term LESS_THAN term .)
+    DECIMAL         reduce using rule 22 (literal -> term LESS_THAN term .)
+    TILDE           reduce using rule 22 (literal -> term LESS_THAN term .)
+    COMMA           reduce using rule 22 (literal -> term LESS_THAN term .)
 
 
-state 42
+state 47
+
+    (23) literal -> term MORE_THAN term .
+
+    QUESTION_MARK   reduce using rule 23 (literal -> term MORE_THAN term .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 23 (literal -> term MORE_THAN term .)
+    DECIMAL         reduce using rule 23 (literal -> term MORE_THAN term .)
+    TILDE           reduce using rule 23 (literal -> term MORE_THAN term .)
+    COMMA           reduce using rule 23 (literal -> term MORE_THAN term .)
+
+
+state 48
+
+    (24) literal -> term LESS_THAN_OR_EQUAL_TO term .
+
+    QUESTION_MARK   reduce using rule 24 (literal -> term LESS_THAN_OR_EQUAL_TO term .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 24 (literal -> term LESS_THAN_OR_EQUAL_TO term .)
+    DECIMAL         reduce using rule 24 (literal -> term LESS_THAN_OR_EQUAL_TO term .)
+    TILDE           reduce using rule 24 (literal -> term LESS_THAN_OR_EQUAL_TO term .)
+    COMMA           reduce using rule 24 (literal -> term LESS_THAN_OR_EQUAL_TO term .)
+
+
+state 49
+
+    (25) literal -> term MORE_THAN_OR_EQUAL_TO term .
+
+    QUESTION_MARK   reduce using rule 25 (literal -> term MORE_THAN_OR_EQUAL_TO term .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 25 (literal -> term MORE_THAN_OR_EQUAL_TO term .)
+    DECIMAL         reduce using rule 25 (literal -> term MORE_THAN_OR_EQUAL_TO term .)
+    TILDE           reduce using rule 25 (literal -> term MORE_THAN_OR_EQUAL_TO term .)
+    COMMA           reduce using rule 25 (literal -> term MORE_THAN_OR_EQUAL_TO term .)
+
+
+state 50
+
+    (26) literal -> term NOT_EQUAL_ALT term .
+
+    QUESTION_MARK   reduce using rule 26 (literal -> term NOT_EQUAL_ALT term .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 26 (literal -> term NOT_EQUAL_ALT term .)
+    DECIMAL         reduce using rule 26 (literal -> term NOT_EQUAL_ALT term .)
+    TILDE           reduce using rule 26 (literal -> term NOT_EQUAL_ALT term .)
+    COMMA           reduce using rule 26 (literal -> term NOT_EQUAL_ALT term .)
+
+
+state 51
+
+    (27) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER . LEFT_BRACKET terms RIGHT_BRACKET
+
+    LEFT_BRACKET    shift and go to state 56
+
+
+state 52
 
     (15) body -> literal COMMA . body
     (15) body -> . literal COMMA body
@@ -712,16 +932,21 @@ state 42
     (19) literal -> . predicate
     (20) literal -> . term EQUAL term
     (21) literal -> . term NOT_EQUAL term
-    (22) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
-    (23) predicate -> . IDENTIFIER
-    (24) predicate -> . STRING
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (22) literal -> . term LESS_THAN term
+    (23) literal -> . term MORE_THAN term
+    (24) literal -> . term LESS_THAN_OR_EQUAL_TO term
+    (25) literal -> . term MORE_THAN_OR_EQUAL_TO term
+    (26) literal -> . term NOT_EQUAL_ALT term
+    (27) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
+    (28) predicate -> . IDENTIFIER
+    (29) predicate -> . STRING
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
     VARIABLE        shift and go to state 14
     IDENTIFIER      shift and go to state 11
@@ -730,13 +955,13 @@ state 42
     INTEGER         shift and go to state 18
     BOOLEAN         shift and go to state 19
 
-    literal                        shift and go to state 30
-    body                           shift and go to state 47
+    literal                        shift and go to state 35
+    body                           shift and go to state 57
     predicate                      shift and go to state 12
     term                           shift and go to state 13
     constant                       shift and go to state 16
 
-state 43
+state 53
 
     (12) requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .
 
@@ -750,7 +975,7 @@ state 43
     $end            reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
 
 
-state 44
+state 54
 
     (18) literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET .
 
@@ -761,55 +986,55 @@ state 44
     COMMA           reduce using rule 18 (literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET .)
 
 
-state 45
+state 55
 
-    (25) terms -> term COMMA . terms
-    (25) terms -> . term COMMA terms
-    (26) terms -> . term
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (30) terms -> term COMMA . terms
+    (30) terms -> . term COMMA terms
+    (31) terms -> . term
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 36
+    VARIABLE        shift and go to state 41
     IGNORE          shift and go to state 17
-    IDENTIFIER      shift and go to state 37
-    STRING          shift and go to state 38
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
     INTEGER         shift and go to state 18
     BOOLEAN         shift and go to state 19
 
-    term                           shift and go to state 35
-    terms                          shift and go to state 48
+    term                           shift and go to state 40
+    terms                          shift and go to state 58
     constant                       shift and go to state 16
 
-state 46
+state 56
 
-    (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET . terms RIGHT_BRACKET
-    (25) terms -> . term COMMA terms
-    (26) terms -> . term
-    (27) term -> . VARIABLE
-    (28) term -> . constant
-    (29) term -> . IGNORE
-    (30) constant -> . IDENTIFIER
-    (31) constant -> . STRING
-    (32) constant -> . INTEGER
-    (33) constant -> . BOOLEAN
+    (27) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET . terms RIGHT_BRACKET
+    (30) terms -> . term COMMA terms
+    (31) terms -> . term
+    (32) term -> . VARIABLE
+    (33) term -> . constant
+    (34) term -> . IGNORE
+    (35) constant -> . IDENTIFIER
+    (36) constant -> . STRING
+    (37) constant -> . INTEGER
+    (38) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 36
+    VARIABLE        shift and go to state 41
     IGNORE          shift and go to state 17
-    IDENTIFIER      shift and go to state 37
-    STRING          shift and go to state 38
+    IDENTIFIER      shift and go to state 42
+    STRING          shift and go to state 43
     INTEGER         shift and go to state 18
     BOOLEAN         shift and go to state 19
 
-    terms                          shift and go to state 49
-    term                           shift and go to state 35
+    terms                          shift and go to state 59
+    term                           shift and go to state 40
     constant                       shift and go to state 16
 
-state 47
+state 57
 
     (15) body -> literal COMMA body .
 
@@ -817,29 +1042,29 @@ state 47
     TILDE           reduce using rule 15 (body -> literal COMMA body .)
 
 
-state 48
+state 58
 
-    (25) terms -> term COMMA terms .
+    (30) terms -> term COMMA terms .
 
-    RIGHT_BRACKET   reduce using rule 25 (terms -> term COMMA terms .)
-
-
-state 49
-
-    (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms . RIGHT_BRACKET
-
-    RIGHT_BRACKET   shift and go to state 50
+    RIGHT_BRACKET   reduce using rule 30 (terms -> term COMMA terms .)
 
 
-state 50
+state 59
 
-    (22) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .
+    (27) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms . RIGHT_BRACKET
 
-    QUESTION_MARK   reduce using rule 22 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 22 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
-    DECIMAL         reduce using rule 22 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
-    TILDE           reduce using rule 22 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
-    COMMA           reduce using rule 22 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
+    RIGHT_BRACKET   shift and go to state 60
+
+
+state 60
+
+    (27) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .
+
+    QUESTION_MARK   reduce using rule 27 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 27 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
+    DECIMAL         reduce using rule 27 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
+    TILDE           reduce using rule 27 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
+    COMMA           reduce using rule 27 (literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .)
 
 WARNING: 
 WARNING: Conflicts:

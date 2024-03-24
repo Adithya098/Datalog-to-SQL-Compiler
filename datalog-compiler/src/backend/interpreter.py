@@ -1,6 +1,8 @@
-from backend.sql_statement import *
+from backend.sql_statement_generator import *
 from common.node_names import *
 from backend.views import Views
+from backend.comparison import Comparison
+from backend.body_processed_results import BodyProcessedResults
 
 # Rule Types
 INTERPRET_RULE_TYPE = "INTERPRET RULE"
@@ -14,6 +16,10 @@ INSERT_TABLE_STATEMENT_TYPE = "INSERT TABLE"
 CREATE_VEW_STATEMENT_TYPE = "CREATE VIEW"
 DROP_VIEW_STATEMENT_TYPE = "DROP VIEW"
 QUERY_STATEMENT_TYPE = "QUERY"
+
+CONSTRAINTS_KEY = "CONSTRAINTS"
+
+COMPARISON_OPERATORS = {'>', '<', '=', '!=', '<>', '>=', '<='}
 
 class Interpreter:
     def __init__(self):
@@ -111,17 +117,34 @@ class Interpreter:
         ]
         return view_name, columns_of_head
     
+    def process_comparison_term(self, comparison_term):
+        term = self.get_value(TERM_NODE, comparison_term)
+        if not isinstance(term, tuple):
+            return [term]
+        if term[0] == CONSTANT_NODE:
+            return [self.get_value(CONSTANT_NODE, term)]
+        raise "COMPARISON TERM IS NOT SUPPORTED YET"
+    
+    def process_constraints(self, literal):
+        left_side = self.get_value(LITERAL_NODE, literal, 1)
+        operator =  self.get_value(LITERAL_NODE, literal, 2)
+        right_side = self.get_value(LITERAL_NODE, literal, 3)
+        return Comparison(self.process_comparison_term(left_side), operator, self.process_comparison_term(right_side))
+    
     def process_body_when_creating_view(self, body):
-        body_dic = {}
+        results = BodyProcessedResults()
         literals = self.get_value(BODY_NODE, body)
         for literal in literals:
+            if len(literal) == 4 and literal[2] in COMPARISON_OPERATORS:
+                results.constraints.append(self.process_constraints(literal))
+                continue
             table_or_view_name = self.get_name_of_view_or_table(literal)
             terms = self.get_terms_of_view_or_table(literal)
-            columns_of_head = [
+            columns_of_body = [
                 self.get_value(TERM_NODE, term) for term in terms
             ]
-            body_dic[table_or_view_name] = columns_of_head
-        return body_dic
+            results.table_or_view_name_to_columns_dic[table_or_view_name] = columns_of_body
+        return results
     
     def validate_view_graph(self, columns_of_view, body_dic):
         unreferenced_column = set(columns_of_view)
@@ -138,14 +161,14 @@ class Interpreter:
         head = self.get_value(ASSERTION_NODE, statement)[2]
         body = self.get_value(ASSERTION_NODE, statement)[3]
         view_name, columns_of_view = self.process_head_when_creating_view(head)
-        body_dic = self.process_body_when_creating_view(body)
-        self.validate_view_graph(columns_of_view, body_dic)
+        body_processed_result = self.process_body_when_creating_view(body)
+        self.validate_view_graph(columns_of_view, body_processed_result.table_or_view_name_to_columns_dic)
         if view_name in self.views_dic:
             view = self.views_dic[view_name]
             assert view.cols == columns_of_view
-            view.bodies.append(body_dic)
+            view.body_processed_results.append(body_processed_result)
         else:
-            self.views_dic[view_name] = Views(view_name, columns_of_view, False, [body_dic])
+            self.views_dic[view_name] = Views(view_name, columns_of_view, False, [body_processed_result])
         return self.interpret_creation_of_view(view_name)
 
     def interpret_creation_of_view(self, view_name):
@@ -153,8 +176,8 @@ class Interpreter:
         view = self.views_dic[view_name]
         if view.is_executed:
             statements.append((DROP_VIEW_STATEMENT_TYPE, view_name, get_drop_view_statement(view_name)))
-        for body in view.bodies:
-            for dependent_table_or_view_name in body.keys():
+        for body in view.body_processed_results:
+            for dependent_table_or_view_name in body.table_or_view_name_to_columns_dic.keys():
                 if dependent_table_or_view_name == view_name:
                     continue
                 if dependent_table_or_view_name in self.tables_dic:

@@ -79,6 +79,11 @@ def p_literal(p):
             | predicate
             | term EQUAL term
             | term NOT_EQUAL term
+            | term LESS_THAN term
+            | term MORE_THAN term
+            | term LESS_THAN_OR_EQUAL_TO term
+            | term MORE_THAN_OR_EQUAL_TO term
+            | term NOT_EQUAL_ALT term
             | VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     '''
     if len(p) == 6:

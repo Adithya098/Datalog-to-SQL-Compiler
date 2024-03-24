@@ -51,7 +51,7 @@ def create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recu
     for col in view.cols:
         cols_alignment_dic[col] = None
     joins_dic = {}
-    for name, cols in body.items():
+    for name, cols in body.table_or_view_name_to_columns_dic.items():
         if view.name == name:
             is_recursive = True
         for idx, col in enumerate(cols):
@@ -97,7 +97,7 @@ def create_where_statement_when_creating_view(joins_dic):
 def process_body_when_creating_view(view, body, is_recursive):
     cols_alignment_dic, joins_dic, is_recursive = create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recursive)
     select_statement = create_select_statements_when_creating_view(cols_alignment_dic)
-    joined_statement = "FROM {joined_table}".format(joined_table=", ".join(body.keys()))
+    joined_statement = "FROM {joined_table}".format(joined_table=", ".join(body.table_or_view_name_to_columns_dic.keys()))
     where_statement = create_where_statement_when_creating_view(joins_dic)
     if where_statement:
         body_converted = "({select_statement} {joined_statement} {where_statement})".format(
@@ -116,7 +116,7 @@ def process_body_when_creating_view(view, body, is_recursive):
 def create_view_statement(view):
     is_recursive = False
     bodies_converted = []
-    for body in view.bodies:
+    for body in view.body_processed_results:
         body_converted, is_recursive = process_body_when_creating_view(view, body, is_recursive)
         bodies_converted.append(body_converted)
     if is_recursive:

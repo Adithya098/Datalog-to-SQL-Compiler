@@ -1,6 +1,6 @@
 import unittest
 from src.main import generate_sql_query_from_datalog_query
-from src.backend.sql_statement import *
+from src.backend.sql_statement_generator import *
 
 class TestMain(unittest.TestCase):
     def test_basic_queries(self):
@@ -98,6 +98,28 @@ class TestMain(unittest.TestCase):
             "SELECT * FROM t;",
             "CREATE VIEW y AS (SELECT s.z1 FROM s, t WHERE s.z1=t.z0);",
             "SELECT * FROM y;"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
+    def test_basic_comparison_query(self):
+        datalog_queries = '''
+        s(x, 1).
+        s(y, 2).
+        t(Y) :- s(_, Y), Y > 1.
+        t(Y)?
+        u(Y) :- s(X, Y), X = 'y', Y = 2.
+        u(Y)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES ('x', 1);",
+            "INSERT INTO s VALUES ('y', 2);",
+            "CREATE VIEW t AS (SELECT s.z1 FROM s) WHERE s.z1 > 1;",
+            "SELECT * FROM t;",
+            "CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s) WHERE s.z0 = \"y\" AND Y = 2;",
+            "SELECT * FROM u;",
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
