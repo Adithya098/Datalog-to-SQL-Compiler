@@ -87,6 +87,7 @@ class Interpreter:
         return sql_statements
     
     def clean_up_view_statements(self, newly_created_view_statements_tuple, existing_sql_translations):
+        # Used to remove CREATE VIEW statements that still haven't been executed in postgres to avoid redundant CREATE VIEW and DROP VIEW
         view_statements_tuple_to_extend_with = []
         indexes_in_existing_sql_translations_to_delete = []
         for newly_created_view_statement_tuple in newly_created_view_statements_tuple:
