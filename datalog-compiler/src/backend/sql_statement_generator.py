@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from backend.constants import *
 
 COLUMN_PREFIX = "z"
 
@@ -24,10 +25,7 @@ def get_insert_statement(table_name, columns):
     sql_statement = "INSERT INTO {table_name} VALUES (".format(table_name=table_name)
     col_values = []
     for column in columns:
-        if isinstance(column, int):
-            col_values.append(str(column))
-        else:
-            col_values.append("'" + column + "'")
+        col_values.append(stringify_constants(column))
     sql_statement += "{col_values});".format(col_values=", ".join(col_values))
     return sql_statement
 
@@ -37,7 +35,7 @@ def get_basic_query_statement(table_name, constraints):
         sql_statement += " WHERE "
         constraints_converted = []
         for idx, val in constraints.items():
-            constraints_converted.append(get_column_name(idx) + "=" + "'" + str(val) + "'")
+            constraints_converted.append(get_column_name(idx) + "=" + stringify_constants(val))
         sql_statement += " AND ".join(constraints_converted)
     sql_statement += ";"
     return sql_statement
@@ -51,6 +49,7 @@ def create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recu
     for col in view.cols:
         cols_alignment_dic[col] = None
     joins_dic = {}
+    constraints_alignment_dic = {}
     for name, cols in body.table_or_view_name_to_columns_dic.items():
         if view.name == name:
             is_recursive = True
@@ -62,8 +61,10 @@ def create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recu
             else:
                 joins_dic[col] = [(name, idx)]
             if col in cols_alignment_dic and cols_alignment_dic[col] == None:
-                cols_alignment_dic[col] = ((name, idx))
-    return cols_alignment_dic, joins_dic, is_recursive
+                cols_alignment_dic[col] = (name, idx)
+            if col not in constraints_alignment_dic:
+                constraints_alignment_dic[col] = (name, idx)
+    return cols_alignment_dic, joins_dic, constraints_alignment_dic, is_recursive
 
 def create_select_statements_when_creating_view(cols_alignment_dic):
     cols = []
@@ -78,27 +79,44 @@ def create_select_statements_when_creating_view(cols_alignment_dic):
         ))
     return "SELECT {cols}".format(cols = ", ".join(cols))
 
-def create_where_statement_when_creating_view(joins_dic):
-    join_conditions = []
+def stringify_constants(constant):
+    if isinstance(constant, str):
+        return "'" + constant + "'"
+    return str(constant)
+
+def process_left_or_right_term(constraints_alignment_dic, left_or_right_term):
+    left_or_right_term_key, left_or_right_term_value = left_or_right_term
+    if left_or_right_term_key == VAR_KEY:
+        table_to_join_to, idx_to_join_to = constraints_alignment_dic[left_or_right_term_value]
+        return "{table_to_join_to}.{col_to_join_to}".format(table_to_join_to=table_to_join_to, col_to_join_to=get_column_name(idx_to_join_to))
+    elif left_or_right_term_key == CONSTANT_KEY:
+        return stringify_constants(left_or_right_term_value)
+    raise Exception("Unsupported Term")
+
+def create_where_statement_when_creating_view(joins_dic, constraints_alignment_dic, constraints):
+    where_conditions = []
     for join in joins_dic.values():
         table_to_join_to, idx_to_join_to = join[0]
         for idx in range(1, len(join)):
             joining_table, joining_idx = join[idx]
-            join_conditions.append("{table_to_join_to}.{col_to_join_to}={joining_table}.{joining_col}".format(
+            where_conditions.append("{table_to_join_to}.{col_to_join_to}={joining_table}.{joining_col}".format(
                 table_to_join_to=table_to_join_to,
-                col_to_join_to = get_column_name(idx_to_join_to),
+                col_to_join_to=get_column_name(idx_to_join_to),
                 joining_table=joining_table,
-                joining_col = get_column_name(joining_idx)
+                joining_col=get_column_name(joining_idx)
             ))
-    if join_conditions:
-        return "WHERE {joins}".format(joins=", " .join(join_conditions))
+    for constraint in constraints:
+        constraint_statement = " ".join([process_left_or_right_term(constraints_alignment_dic, l) for l in constraint.left] + [constraint.operator] + [process_left_or_right_term(constraints_alignment_dic, r) for r in constraint.right])
+        where_conditions.append(constraint_statement)
+    if where_conditions:
+        return "WHERE {joins}".format(joins=" AND " .join(where_conditions))
     return ""
 
 def process_body_when_creating_view(view, body, is_recursive):
-    cols_alignment_dic, joins_dic, is_recursive = create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recursive)
+    cols_alignment_dic, joins_dic, constraints_alignment_dic, is_recursive = create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recursive)
     select_statement = create_select_statements_when_creating_view(cols_alignment_dic)
     joined_statement = "FROM {joined_table}".format(joined_table=", ".join(body.table_or_view_name_to_columns_dic.keys()))
-    where_statement = create_where_statement_when_creating_view(joins_dic)
+    where_statement = create_where_statement_when_creating_view(joins_dic, constraints_alignment_dic, body.constraints)
     if where_statement:
         body_converted = "({select_statement} {joined_statement} {where_statement})".format(
             select_statement=select_statement,

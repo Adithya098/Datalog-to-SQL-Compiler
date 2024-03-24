@@ -3,6 +3,7 @@ from common.node_names import *
 from backend.views import Views
 from backend.comparison import Comparison
 from backend.body_processed_results import BodyProcessedResults
+from backend.constants import *
 
 # Rule Types
 INTERPRET_RULE_TYPE = "INTERPRET RULE"
@@ -16,8 +17,6 @@ INSERT_TABLE_STATEMENT_TYPE = "INSERT TABLE"
 CREATE_VEW_STATEMENT_TYPE = "CREATE VIEW"
 DROP_VIEW_STATEMENT_TYPE = "DROP VIEW"
 QUERY_STATEMENT_TYPE = "QUERY"
-
-CONSTRAINTS_KEY = "CONSTRAINTS"
 
 COMPARISON_OPERATORS = {'>', '<', '=', '!=', '<>', '>=', '<='}
 
@@ -117,26 +116,29 @@ class Interpreter:
         ]
         return view_name, columns_of_head
     
-    def process_comparison_term(self, comparison_term):
+    def process_comparison_term(self, comparison_term, columns_seen):
         term = self.get_value(TERM_NODE, comparison_term)
         if not isinstance(term, tuple):
-            return [term]
+            if term not in columns_seen:
+                raise Exception("Assessing a column that is not seen yet")
+            return [(VAR_KEY, term)]
         if term[0] == CONSTANT_NODE:
-            return [self.get_value(CONSTANT_NODE, term)]
-        raise "COMPARISON TERM IS NOT SUPPORTED YET"
+            return [(CONSTANT_KEY, self.get_value(CONSTANT_NODE, term))]
+        raise Exception("Comparison term is not supported yet")
     
-    def process_constraints(self, literal):
+    def process_constraints(self, literal, columns_seen):
         left_side = self.get_value(LITERAL_NODE, literal, 1)
         operator =  self.get_value(LITERAL_NODE, literal, 2)
         right_side = self.get_value(LITERAL_NODE, literal, 3)
-        return Comparison(self.process_comparison_term(left_side), operator, self.process_comparison_term(right_side))
+        return Comparison(self.process_comparison_term(left_side, columns_seen), operator, self.process_comparison_term(right_side, columns_seen))
     
     def process_body_when_creating_view(self, body):
         results = BodyProcessedResults()
         literals = self.get_value(BODY_NODE, body)
+        columns_seen = set()
         for literal in literals:
             if len(literal) == 4 and literal[2] in COMPARISON_OPERATORS:
-                results.constraints.append(self.process_constraints(literal))
+                results.constraints.append(self.process_constraints(literal, columns_seen))
                 continue
             table_or_view_name = self.get_name_of_view_or_table(literal)
             terms = self.get_terms_of_view_or_table(literal)
@@ -144,6 +146,7 @@ class Interpreter:
                 self.get_value(TERM_NODE, term) for term in terms
             ]
             results.table_or_view_name_to_columns_dic[table_or_view_name] = columns_of_body
+            columns_seen.update(columns_of_body)
         return results
     
     def validate_view_graph(self, columns_of_view, body_dic):

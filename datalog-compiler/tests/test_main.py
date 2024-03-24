@@ -109,16 +109,16 @@ class TestMain(unittest.TestCase):
         s(y, 2).
         t(Y) :- s(_, Y), Y > 1.
         t(Y)?
-        u(Y) :- s(X, Y), X = 'y', Y = 2.
-        u(Y)?
+        u(X, Y) :- s(X, Y), X = "y", Y = 2.
+        u(X, Y)?
         '''
         expected_translated_queries = [
-            "CREATE TABLE s (z0 TEXT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 INT NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO s VALUES ('x', 1);",
             "INSERT INTO s VALUES ('y', 2);",
-            "CREATE VIEW t AS (SELECT s.z1 FROM s) WHERE s.z1 > 1;",
+            "CREATE VIEW t AS (SELECT s.z1 FROM s WHERE s.z1 > 1);",
             "SELECT * FROM t;",
-            "CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s) WHERE s.z0 = \"y\" AND Y = 2;",
+            "CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE s.z0 = 'y' AND s.z1 = 2);",
             "SELECT * FROM u;",
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
