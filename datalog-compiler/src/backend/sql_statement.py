@@ -6,7 +6,6 @@ def get_column_name(idx):
     return COLUMN_PREFIX + str(idx)
 
 def get_create_statement(table_name, columns):
-    sql_statements = []
     sql_statement = "CREATE TABLE {table_name} (".format(table_name=table_name)
     column_type_statement = []
     for idx, col in enumerate(columns):
@@ -19,12 +18,9 @@ def get_create_statement(table_name, columns):
     for idx in range(len(columns)):
         column_name_statement.append(get_column_name(idx))
     sql_statement += ", PRIMARY KEY ({cols_name}));".format(cols_name=", ".join(column_name_statement))
-    sql_statements.append(sql_statement)
-    print(sql_statement)
-    return sql_statements
+    return sql_statement
 
 def get_insert_statement(table_name, columns):
-    sql_statements = []
     sql_statement = "INSERT INTO {table_name} VALUES (".format(table_name=table_name)
     col_values = []
     for column in columns:
@@ -33,17 +29,9 @@ def get_insert_statement(table_name, columns):
         else:
             col_values.append("'" + column + "'")
     sql_statement += "{col_values});".format(col_values=", ".join(col_values))
-    sql_statements.append(sql_statement)
-    return sql_statements
-
-def get_create_and_insert_statement(table_name, columns):
-    sql_statements = []
-    sql_statements.extend(get_create_statement(table_name, columns))
-    sql_statements.extend(get_insert_statement(table_name, columns))
-    return sql_statements
+    return sql_statement
 
 def get_basic_query_statement(table_name, constraints):
-    sql_statements = []
     sql_statement = "SELECT * FROM {table_name}".format(table_name=table_name)
     if constraints:
         sql_statement += " WHERE "
@@ -52,14 +40,11 @@ def get_basic_query_statement(table_name, constraints):
             constraints_converted.append(get_column_name(idx) + "=" + "'" + str(val) + "'")
         sql_statement += " AND ".join(constraints_converted)
     sql_statement += ";"
-    sql_statements.append(sql_statement)
-    return sql_statements
+    return sql_statement
 
 def get_drop_view_statement(view_name):
-    sql_statements = []
     sql_statement = "DROP VIEW {view_name}".format(view_name=view_name)
-    sql_statements.append(sql_statement)
-    return sql_statements
+    return sql_statement
 
 def create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recursive):
     cols_alignment_dic = OrderedDict()
@@ -129,7 +114,6 @@ def process_body_when_creating_view(view, body, is_recursive):
     return body_converted, is_recursive
 
 def create_view_statement(view):
-    sql_statements = []
     is_recursive = False
     bodies_converted = []
     for body in view.bodies:
@@ -140,5 +124,4 @@ def create_view_statement(view):
         sql_statement = "CREATE RECURSIVE VIEW {view_name} ({cols}) AS {main_body};".format(view_name=view.name, cols=", ".join(cols), main_body=" UNION ".join(bodies_converted))
     else:
         sql_statement = "CREATE VIEW {view_name} AS {main_body};".format(view_name=view.name, main_body=" UNION ".join(bodies_converted)) 
-    sql_statements.append(sql_statement)
-    return sql_statements
+    return sql_statement
