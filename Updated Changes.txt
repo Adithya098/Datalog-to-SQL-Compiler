@@ -1,0 +1,26 @@
+Create a database called "datalog_compiler"
+
+Install these first:
+pip install psycopg2
+pip install watchdog
+
+Run Main.py
+
+This would 
+1. Delete all instances of tables,views in the database which was created previosuly, before execution.
+2. when we execute the main.py, it the instance of database is fresh. so we should start from the first command," s(x, y). "
+
+Running the Main.py creates "output_queries.sql" everytime it runs.
+this sql file  is updated live on the vscode. it is updated and saved with every execution. it is is automatically refreshed.
+This file should be loaded into the postgres and relaoded everytime the main.py script is run.
+
+Thus, The datalog queries are being turned into sql queries dynamically.
+
+
+I have added a new .py file called SQL Handler and these are the functions I added and their one line summary:
+1. reload_sql_file   :  Reloads the SQL file into the PostgreSQL instance. 
+2. execute_sql_query :  Executes a given SQL query. [cur.execute(sql_query)]
+3. drop_all_objects  :  Drops all tables, views, sequences, and functions associated with the current database.
+
+Now I have added 1 fucntions to main.py
+append_to_sql_file : Appends a SQL query to a specified output file, followed by two newline characters.
