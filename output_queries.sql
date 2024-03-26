@@ -1,0 +1,10 @@
+CREATE TABLE s (z0 TEXT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));
+
+INSERT INTO s VALUES ('x', 'y');
+
+INSERT INTO s VALUES ('y', 'z');
+
+SELECT * FROM s WHERE z0='x' AND z1='y';
+
+SELECT * FROM s WHERE z0='x';
+
