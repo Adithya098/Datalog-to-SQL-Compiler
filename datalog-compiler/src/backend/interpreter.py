@@ -127,10 +127,10 @@ class Interpreter:
             return [(CONSTANT_KEY, self.get_value(CONSTANT_NODE, term))]
         raise Exception("Comparison term is not supported yet")
     
-    def process_constraints(self, literal, columns_seen):
-        left_side = self.get_value(LITERAL_NODE, literal, 1)
-        operator =  self.get_value(LITERAL_NODE, literal, 2)
-        right_side = self.get_value(LITERAL_NODE, literal, 3)
+    def process_constraints(self, comparison, columns_seen):
+        left_side = self.get_value(COMPARISON_NODE, comparison, 1)
+        operator =  self.get_value(COMPARISON_NODE, comparison, 2)
+        right_side = self.get_value(COMPARISON_NODE, comparison, 3)
         return Comparison(self.process_comparison_term(left_side, columns_seen), operator, self.process_comparison_term(right_side, columns_seen))
     
     def process_body_when_creating_view(self, body):
@@ -138,8 +138,9 @@ class Interpreter:
         literals = self.get_value(BODY_NODE, body)
         columns_seen = set()
         for literal in literals:
-            if len(literal) == 4 and literal[2] in COMPARISON_OPERATORS:
-                results.constraints.append(self.process_constraints(literal, columns_seen))
+            literal_child = self.get_value(LITERAL_NODE, literal)
+            if literal_child[0] == COMPARISON_NODE:
+                results.constraints.append(self.process_constraints(literal_child, columns_seen))
                 continue
             table_or_view_name = self.get_name_of_view_or_table(literal)
             terms = self.get_terms_of_view_or_table(literal)

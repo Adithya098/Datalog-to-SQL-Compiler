@@ -77,13 +77,7 @@ def p_literal(p):
     literal : predicate LEFT_BRACKET RIGHT_BRACKET
             | predicate LEFT_BRACKET terms RIGHT_BRACKET
             | predicate
-            | term EQUAL term
-            | term NOT_EQUAL term
-            | term LESS_THAN term
-            | term MORE_THAN term
-            | term LESS_THAN_OR_EQUAL_TO term
-            | term MORE_THAN_OR_EQUAL_TO term
-            | term NOT_EQUAL_ALT term
+            | comparison
             | VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     '''
     if len(p) == 6:
@@ -128,6 +122,18 @@ def p_constant(p):
              | BOOLEAN
     '''
     p[0] = (CONSTANT_NODE, p[1])
+
+def p_comparison(p):
+    '''
+    comparison : term EQUAL term
+               | term NOT_EQUAL term
+               | term LESS_THAN term
+               | term MORE_THAN term
+               | term LESS_THAN_OR_EQUAL_TO term
+               | term MORE_THAN_OR_EQUAL_TO term
+               | term NOT_EQUAL_ALT term
+    '''
+    p[0] = (COMPARISON_NODE, p[1], p[2], p[3])
 
 def p_error(p):
     print("Error when parsing: " + str(p))
