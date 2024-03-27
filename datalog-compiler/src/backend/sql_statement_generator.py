@@ -41,7 +41,7 @@ def get_basic_query_statement(table_name, constraints):
     return sql_statement
 
 def get_drop_view_statement(view_name):
-    sql_statement = "DROP VIEW {view_name}".format(view_name=view_name)
+    sql_statement = "DROP VIEW {view_name};".format(view_name=view_name)
     return sql_statement
 
 def create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recursive):
@@ -139,7 +139,7 @@ def create_view_statement(view):
         bodies_converted.append(body_converted)
     if is_recursive:
         cols = [get_column_name(idx) for idx in range(len(view.cols))]
-        sql_statement = "CREATE RECURSIVE VIEW {view_name} ({cols}) AS {main_body};".format(view_name=view.name, cols=", ".join(cols), main_body=" UNION ".join(bodies_converted))
+        sql_statement = "CREATE VIEW {view_name} AS WITH RECURSIVE {view_name} ({cols}) AS ({main_body}) SELECT * FROM {view_name};".format(view_name=view.name, cols=", ".join(cols), main_body=" UNION DISTINCT ".join(bodies_converted))
     else:
         sql_statement = "CREATE VIEW {view_name} AS {main_body};".format(view_name=view.name, main_body=" UNION ".join(bodies_converted)) 
     return sql_statement
