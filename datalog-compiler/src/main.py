@@ -83,8 +83,9 @@ if __name__ == "__main__":
             else:
                 file_path = input('What file do you want to read it from? Please provide the absolute path. Default: datalog.txt from current directory')
                 if not file_path:
-                    print(os.getcwd())
-                    file_path = "default_file_path.txt"  # Assign a default file path
+                    file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "datalog.txt")
+                datalog_queries = get_datalog_queries_from_file(file_path)
+                generate_sql_query_from_datalog_query(datalog_queries)
         except KeyboardInterrupt:
             print("Quitting")
             sys.exit(1)
