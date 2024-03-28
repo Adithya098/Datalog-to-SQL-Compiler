@@ -1,3 +1,4 @@
+import sys
 from frontend import parser
 from backend.interpreter import Interpreter
 from watchdog.observers import Observer
@@ -19,6 +20,7 @@ class SQLFileHandler(FileSystemEventHandler):
             self.sql_handler.reload_sql_file(self.file_path)
 
 def generate_sql_query_from_datalog_query(datalog_query, interpreter=None):
+    print (sys.path)
     if not interpreter:
         interpreter = Interpreter()
     ast = parser.parse(datalog_query)
