@@ -10,10 +10,6 @@ build/
 # Ignore environment files
 .env
 
-# Ignore any compiled CSS or JS files
-*.css
-*.js
-
 # Ignore editor-specific files
 .vscode/
 .idea/
