@@ -118,6 +118,7 @@ def p_constant(p):
     '''
     constant : IDENTIFIER
              | STRING
+             | DATETIME
              | INTEGER
              | BOOLEAN
     '''

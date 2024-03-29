@@ -155,5 +155,27 @@ class TestMain(unittest.TestCase):
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
             self.assertEqual(actual_translated_query, expected_translated_query)
 
+    def test_timestamp_insertion(self):
+        datalog_queries = '''
+        s3(2019-05-19).
+        s3(2019-05-19 18:38:00).
+        s3(2019-05-19T18:39:00).
+        s3(2019-05-19T18:39:22Z).
+        s3(2019-05-19T18:40:22+08:00).
+        s3(X)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s3 (z0 TIMESTAMP NOT NULL, PRIMARY KEY (z0));",
+            "INSERT INTO s3 VALUES ('2019-05-19 00:00:00');",
+            "INSERT INTO s3 VALUES ('2019-05-19 18:38:00');",
+            "INSERT INTO s3 VALUES ('2019-05-19 18:39:00');",
+            "INSERT INTO s3 VALUES ('2019-05-19 18:39:22+00:00');",
+            "INSERT INTO s3 VALUES ('2019-05-19 18:40:22+08:00');"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
+
 if __name__ == '__main__':
     unittest.main()

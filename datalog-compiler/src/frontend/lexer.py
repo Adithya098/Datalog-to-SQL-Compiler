@@ -41,7 +41,7 @@ def t_STRING(t):
     return t
 
 def t_DATETIME(t):
-    r'^\d{4}(-\d\d(-\d\d((T|\s)\d\d:\d\d(:\d\d)?(\.\d+)?(([+-]\d\d:\d\d)|Z)?)?)?)?$'
+    r'\d{4}(-\d\d(-\d\d((T|\s)\d\d:\d\d(:\d\d)?(\.\d+)?(([+-]\d\d:\d\d)|Z)?)?)?)?'
     t.value = datetime.fromisoformat(t.value)
     return t
 

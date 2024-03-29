@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from backend.constants import *
+from datetime import datetime
 
 COLUMN_PREFIX = "z"
 
@@ -12,6 +13,8 @@ def get_create_statement(table_name, columns):
     for idx, col in enumerate(columns):
         if isinstance(col, int):
             column_type_statement.append(get_column_name(idx) + " INT NOT NULL")
+        elif isinstance(col, datetime):
+            column_type_statement.append(get_column_name(idx) + " TIMESTAMP NOT NULL")
         else:
             column_type_statement.append(get_column_name(idx) + " TEXT NOT NULL")
     sql_statement += ", ".join(column_type_statement)
@@ -80,8 +83,8 @@ def create_select_statements_when_creating_view(cols_alignment_dic):
     return "SELECT {cols}".format(cols = ", ".join(cols))
 
 def stringify_constants(constant, add_quotes=True):
-    if isinstance(constant, str) and add_quotes:
-        return "'" + constant + "'"
+    if (isinstance(constant, str) or isinstance(constant, datetime)) and add_quotes:
+        return "'" + str(constant) + "'"
     return str(constant)
 
 def process_left_or_right_term(constraints_alignment_dic, left_or_right_term):

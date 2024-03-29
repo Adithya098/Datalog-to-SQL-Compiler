@@ -34,7 +34,8 @@ class TestLexer(unittest.TestCase):
         ["2019-05-19", "DATETIME", datetime.fromisoformat("2019-05-19")],
         ["2019-05-19 18:39:22", "DATETIME", datetime.fromisoformat("2019-05-19 18:39:22")],
         ["2019-05-19T23:39:22", "DATETIME", datetime.fromisoformat("2019-05-19T23:39:22")],
-        ["2019-05-19T00:39:22Z", "DATETIME", datetime.fromisoformat("2019-05-19T00:39:22Z")]
+        ["2019-05-19T00:39:22Z", "DATETIME", datetime.fromisoformat("2019-05-19T00:39:22Z")],
+        ["2017-01-01 23:12:23+08:00", "DATETIME", datetime.fromisoformat("2017-01-01 23:12:23+08:00")]
     ])
     def test_individual_characters(self, arg, expected_token_type, expected_value):
         tokens = get_tokens(arg)

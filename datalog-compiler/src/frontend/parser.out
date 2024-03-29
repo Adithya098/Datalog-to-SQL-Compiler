@@ -3,7 +3,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     COMMENT
-    DATETIME
 
 Grammar
 
@@ -38,45 +37,46 @@ Rule 27    term -> constant
 Rule 28    term -> IGNORE
 Rule 29    constant -> IDENTIFIER
 Rule 30    constant -> STRING
-Rule 31    constant -> INTEGER
-Rule 32    constant -> BOOLEAN
-Rule 33    comparison -> comparisonterms EQUAL comparisonterms
-Rule 34    comparison -> comparisonterms NOT_EQUAL comparisonterms
-Rule 35    comparison -> comparisonterms LESS_THAN comparisonterms
-Rule 36    comparison -> comparisonterms MORE_THAN comparisonterms
-Rule 37    comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
-Rule 38    comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
-Rule 39    comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms
-Rule 40    comparisonterms -> comparisonterm
-Rule 41    comparisonterms -> comparisonterm PLUS comparisonterms
-Rule 42    comparisonterms -> comparisonterm MINUS comparisonterms
-Rule 43    comparisonterms -> comparisonterm DIVISION comparisonterms
-Rule 44    comparisonterms -> comparisonterm MULTIPLY comparisonterms
-Rule 45    comparisonterm -> term
+Rule 31    constant -> DATETIME
+Rule 32    constant -> INTEGER
+Rule 33    constant -> BOOLEAN
+Rule 34    comparison -> comparisonterms EQUAL comparisonterms
+Rule 35    comparison -> comparisonterms NOT_EQUAL comparisonterms
+Rule 36    comparison -> comparisonterms LESS_THAN comparisonterms
+Rule 37    comparison -> comparisonterms MORE_THAN comparisonterms
+Rule 38    comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
+Rule 39    comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
+Rule 40    comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms
+Rule 41    comparisonterms -> comparisonterm
+Rule 42    comparisonterms -> comparisonterm PLUS comparisonterms
+Rule 43    comparisonterms -> comparisonterm MINUS comparisonterms
+Rule 44    comparisonterms -> comparisonterm DIVISION comparisonterms
+Rule 45    comparisonterms -> comparisonterm MULTIPLY comparisonterms
+Rule 46    comparisonterm -> term
 
 Terminals, with rules where they appear
 
-BOOLEAN              : 32
+BOOLEAN              : 33
 COMMA                : 15 24
 COMMENT              : 
-DATETIME             : 
+DATETIME             : 31
 DECIMAL              : 9 12
-DIVISION             : 43
-EQUAL                : 33
+DIVISION             : 44
+EQUAL                : 34
 HEAD_AND_BODY_SEPARATOR : 13 21
 IDENTIFIER           : 12 21 22 29
 IGNORE               : 28
-INTEGER              : 31
+INTEGER              : 32
 LEFT_BRACKET         : 12 17 18 21
-LESS_THAN            : 35
-LESS_THAN_OR_EQUAL_TO : 37
-MINUS                : 42
-MORE_THAN            : 36
-MORE_THAN_OR_EQUAL_TO : 38
-MULTIPLY             : 44
-NOT_EQUAL            : 34
-NOT_EQUAL_ALT        : 39
-PLUS                 : 41
+LESS_THAN            : 36
+LESS_THAN_OR_EQUAL_TO : 38
+MINUS                : 43
+MORE_THAN            : 37
+MORE_THAN_OR_EQUAL_TO : 39
+MULTIPLY             : 45
+NOT_EQUAL            : 35
+NOT_EQUAL_ALT        : 40
+PLUS                 : 42
 QUESTION_MARK        : 11
 RIGHT_BRACKET        : 12 17 18 21
 STRING               : 23 30
@@ -90,8 +90,8 @@ assertion            : 5
 body                 : 13 15
 clause               : 9 10
 comparison           : 20
-comparisonterm       : 40 41 42 43 44
-comparisonterms      : 33 33 34 34 35 35 36 36 37 37 38 38 39 39 41 42 43 44
+comparisonterm       : 41 42 43 44 45
+comparisonterms      : 34 34 35 35 36 36 37 37 38 38 39 39 40 40 42 43 44 45
 constant             : 27
 empty                : 3
 literal              : 11 13 14 15 16
@@ -101,7 +101,7 @@ query                : 7
 requirement          : 8
 retraction           : 6
 statement            : 1 2
-term                 : 24 25 45
+term                 : 24 25 46
 terms                : 18 21 24
 
 Parsing method: LALR
@@ -130,26 +130,27 @@ state 0
     (21) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     (22) predicate -> . IDENTIFIER
     (23) predicate -> . STRING
-    (33) comparison -> . comparisonterms EQUAL comparisonterms
-    (34) comparison -> . comparisonterms NOT_EQUAL comparisonterms
-    (35) comparison -> . comparisonterms LESS_THAN comparisonterms
-    (36) comparison -> . comparisonterms MORE_THAN comparisonterms
-    (37) comparison -> . comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
-    (38) comparison -> . comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
-    (39) comparison -> . comparisonterms NOT_EQUAL_ALT comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (34) comparison -> . comparisonterms EQUAL comparisonterms
+    (35) comparison -> . comparisonterms NOT_EQUAL comparisonterms
+    (36) comparison -> . comparisonterms LESS_THAN comparisonterms
+    (37) comparison -> . comparisonterms MORE_THAN comparisonterms
+    (38) comparison -> . comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
+    (39) comparison -> . comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
+    (40) comparison -> . comparisonterms NOT_EQUAL_ALT comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
     $end            reduce using rule 4 (empty -> .)
     LEFT_BRACKET    shift and go to state 10
@@ -157,8 +158,9 @@ state 0
     IDENTIFIER      shift and go to state 11
     STRING          shift and go to state 15
     IGNORE          shift and go to state 20
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     program                        shift and go to state 1
     statement                      shift and go to state 2
@@ -207,26 +209,27 @@ state 2
     (21) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     (22) predicate -> . IDENTIFIER
     (23) predicate -> . STRING
-    (33) comparison -> . comparisonterms EQUAL comparisonterms
-    (34) comparison -> . comparisonterms NOT_EQUAL comparisonterms
-    (35) comparison -> . comparisonterms LESS_THAN comparisonterms
-    (36) comparison -> . comparisonterms MORE_THAN comparisonterms
-    (37) comparison -> . comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
-    (38) comparison -> . comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
-    (39) comparison -> . comparisonterms NOT_EQUAL_ALT comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (34) comparison -> . comparisonterms EQUAL comparisonterms
+    (35) comparison -> . comparisonterms NOT_EQUAL comparisonterms
+    (36) comparison -> . comparisonterms LESS_THAN comparisonterms
+    (37) comparison -> . comparisonterms MORE_THAN comparisonterms
+    (38) comparison -> . comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
+    (39) comparison -> . comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
+    (40) comparison -> . comparisonterms NOT_EQUAL_ALT comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
   ! reduce/reduce conflict for $end resolved using rule 2 (program -> statement .)
     $end            reduce using rule 2 (program -> statement .)
@@ -235,13 +238,14 @@ state 2
     IDENTIFIER      shift and go to state 11
     STRING          shift and go to state 15
     IGNORE          shift and go to state 20
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
   ! $end            [ reduce using rule 4 (empty -> .) ]
 
     statement                      shift and go to state 2
-    program                        shift and go to state 23
+    program                        shift and go to state 24
     empty                          shift and go to state 3
     assertion                      shift and go to state 4
     retraction                     shift and go to state 5
@@ -272,6 +276,7 @@ state 4
     IDENTIFIER      reduce using rule 5 (statement -> assertion .)
     STRING          reduce using rule 5 (statement -> assertion .)
     IGNORE          reduce using rule 5 (statement -> assertion .)
+    DATETIME        reduce using rule 5 (statement -> assertion .)
     INTEGER         reduce using rule 5 (statement -> assertion .)
     BOOLEAN         reduce using rule 5 (statement -> assertion .)
     $end            reduce using rule 5 (statement -> assertion .)
@@ -286,6 +291,7 @@ state 5
     IDENTIFIER      reduce using rule 6 (statement -> retraction .)
     STRING          reduce using rule 6 (statement -> retraction .)
     IGNORE          reduce using rule 6 (statement -> retraction .)
+    DATETIME        reduce using rule 6 (statement -> retraction .)
     INTEGER         reduce using rule 6 (statement -> retraction .)
     BOOLEAN         reduce using rule 6 (statement -> retraction .)
     $end            reduce using rule 6 (statement -> retraction .)
@@ -300,6 +306,7 @@ state 6
     IDENTIFIER      reduce using rule 7 (statement -> query .)
     STRING          reduce using rule 7 (statement -> query .)
     IGNORE          reduce using rule 7 (statement -> query .)
+    DATETIME        reduce using rule 7 (statement -> query .)
     INTEGER         reduce using rule 7 (statement -> query .)
     BOOLEAN         reduce using rule 7 (statement -> query .)
     $end            reduce using rule 7 (statement -> query .)
@@ -314,6 +321,7 @@ state 7
     IDENTIFIER      reduce using rule 8 (statement -> requirement .)
     STRING          reduce using rule 8 (statement -> requirement .)
     IGNORE          reduce using rule 8 (statement -> requirement .)
+    DATETIME        reduce using rule 8 (statement -> requirement .)
     INTEGER         reduce using rule 8 (statement -> requirement .)
     BOOLEAN         reduce using rule 8 (statement -> requirement .)
     $end            reduce using rule 8 (statement -> requirement .)
@@ -324,8 +332,8 @@ state 8
     (9) assertion -> clause . DECIMAL
     (10) retraction -> clause . TILDE
 
-    DECIMAL         shift and go to state 24
-    TILDE           shift and go to state 25
+    DECIMAL         shift and go to state 25
+    TILDE           shift and go to state 26
 
 
 state 9
@@ -334,8 +342,8 @@ state 9
     (13) clause -> literal . HEAD_AND_BODY_SEPARATOR body
     (14) clause -> literal .
 
-    QUESTION_MARK   shift and go to state 26
-    HEAD_AND_BODY_SEPARATOR shift and go to state 27
+    QUESTION_MARK   shift and go to state 27
+    HEAD_AND_BODY_SEPARATOR shift and go to state 28
     DECIMAL         reduce using rule 14 (clause -> literal .)
     TILDE           reduce using rule 14 (clause -> literal .)
 
@@ -344,7 +352,7 @@ state 10
 
     (12) requirement -> LEFT_BRACKET . IDENTIFIER RIGHT_BRACKET DECIMAL
 
-    IDENTIFIER      shift and go to state 28
+    IDENTIFIER      shift and go to state 29
 
 
 state 11
@@ -377,7 +385,7 @@ state 12
     (18) literal -> predicate . LEFT_BRACKET terms RIGHT_BRACKET
     (19) literal -> predicate .
 
-    LEFT_BRACKET    shift and go to state 29
+    LEFT_BRACKET    shift and go to state 30
     QUESTION_MARK   reduce using rule 19 (literal -> predicate .)
     HEAD_AND_BODY_SEPARATOR reduce using rule 19 (literal -> predicate .)
     DECIMAL         reduce using rule 19 (literal -> predicate .)
@@ -401,7 +409,7 @@ state 14
     (21) literal -> VARIABLE . HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     (26) term -> VARIABLE .
 
-    HEAD_AND_BODY_SEPARATOR shift and go to state 30
+    HEAD_AND_BODY_SEPARATOR shift and go to state 31
     PLUS            reduce using rule 26 (term -> VARIABLE .)
     MINUS           reduce using rule 26 (term -> VARIABLE .)
     DIVISION        reduce using rule 26 (term -> VARIABLE .)
@@ -441,69 +449,69 @@ state 15
 
 state 16
 
-    (33) comparison -> comparisonterms . EQUAL comparisonterms
-    (34) comparison -> comparisonterms . NOT_EQUAL comparisonterms
-    (35) comparison -> comparisonterms . LESS_THAN comparisonterms
-    (36) comparison -> comparisonterms . MORE_THAN comparisonterms
-    (37) comparison -> comparisonterms . LESS_THAN_OR_EQUAL_TO comparisonterms
-    (38) comparison -> comparisonterms . MORE_THAN_OR_EQUAL_TO comparisonterms
-    (39) comparison -> comparisonterms . NOT_EQUAL_ALT comparisonterms
+    (34) comparison -> comparisonterms . EQUAL comparisonterms
+    (35) comparison -> comparisonterms . NOT_EQUAL comparisonterms
+    (36) comparison -> comparisonterms . LESS_THAN comparisonterms
+    (37) comparison -> comparisonterms . MORE_THAN comparisonterms
+    (38) comparison -> comparisonterms . LESS_THAN_OR_EQUAL_TO comparisonterms
+    (39) comparison -> comparisonterms . MORE_THAN_OR_EQUAL_TO comparisonterms
+    (40) comparison -> comparisonterms . NOT_EQUAL_ALT comparisonterms
 
-    EQUAL           shift and go to state 31
-    NOT_EQUAL       shift and go to state 32
-    LESS_THAN       shift and go to state 33
-    MORE_THAN       shift and go to state 34
-    LESS_THAN_OR_EQUAL_TO shift and go to state 35
-    MORE_THAN_OR_EQUAL_TO shift and go to state 36
-    NOT_EQUAL_ALT   shift and go to state 37
+    EQUAL           shift and go to state 32
+    NOT_EQUAL       shift and go to state 33
+    LESS_THAN       shift and go to state 34
+    MORE_THAN       shift and go to state 35
+    LESS_THAN_OR_EQUAL_TO shift and go to state 36
+    MORE_THAN_OR_EQUAL_TO shift and go to state 37
+    NOT_EQUAL_ALT   shift and go to state 38
 
 
 state 17
 
-    (40) comparisonterms -> comparisonterm .
-    (41) comparisonterms -> comparisonterm . PLUS comparisonterms
-    (42) comparisonterms -> comparisonterm . MINUS comparisonterms
-    (43) comparisonterms -> comparisonterm . DIVISION comparisonterms
-    (44) comparisonterms -> comparisonterm . MULTIPLY comparisonterms
+    (41) comparisonterms -> comparisonterm .
+    (42) comparisonterms -> comparisonterm . PLUS comparisonterms
+    (43) comparisonterms -> comparisonterm . MINUS comparisonterms
+    (44) comparisonterms -> comparisonterm . DIVISION comparisonterms
+    (45) comparisonterms -> comparisonterm . MULTIPLY comparisonterms
 
-    EQUAL           reduce using rule 40 (comparisonterms -> comparisonterm .)
-    NOT_EQUAL       reduce using rule 40 (comparisonterms -> comparisonterm .)
-    LESS_THAN       reduce using rule 40 (comparisonterms -> comparisonterm .)
-    MORE_THAN       reduce using rule 40 (comparisonterms -> comparisonterm .)
-    LESS_THAN_OR_EQUAL_TO reduce using rule 40 (comparisonterms -> comparisonterm .)
-    MORE_THAN_OR_EQUAL_TO reduce using rule 40 (comparisonterms -> comparisonterm .)
-    NOT_EQUAL_ALT   reduce using rule 40 (comparisonterms -> comparisonterm .)
-    QUESTION_MARK   reduce using rule 40 (comparisonterms -> comparisonterm .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 40 (comparisonterms -> comparisonterm .)
-    DECIMAL         reduce using rule 40 (comparisonterms -> comparisonterm .)
-    TILDE           reduce using rule 40 (comparisonterms -> comparisonterm .)
-    COMMA           reduce using rule 40 (comparisonterms -> comparisonterm .)
-    PLUS            shift and go to state 38
-    MINUS           shift and go to state 39
-    DIVISION        shift and go to state 40
-    MULTIPLY        shift and go to state 41
+    EQUAL           reduce using rule 41 (comparisonterms -> comparisonterm .)
+    NOT_EQUAL       reduce using rule 41 (comparisonterms -> comparisonterm .)
+    LESS_THAN       reduce using rule 41 (comparisonterms -> comparisonterm .)
+    MORE_THAN       reduce using rule 41 (comparisonterms -> comparisonterm .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 41 (comparisonterms -> comparisonterm .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 41 (comparisonterms -> comparisonterm .)
+    NOT_EQUAL_ALT   reduce using rule 41 (comparisonterms -> comparisonterm .)
+    QUESTION_MARK   reduce using rule 41 (comparisonterms -> comparisonterm .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 41 (comparisonterms -> comparisonterm .)
+    DECIMAL         reduce using rule 41 (comparisonterms -> comparisonterm .)
+    TILDE           reduce using rule 41 (comparisonterms -> comparisonterm .)
+    COMMA           reduce using rule 41 (comparisonterms -> comparisonterm .)
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 40
+    DIVISION        shift and go to state 41
+    MULTIPLY        shift and go to state 42
 
 
 state 18
 
-    (45) comparisonterm -> term .
+    (46) comparisonterm -> term .
 
-    PLUS            reduce using rule 45 (comparisonterm -> term .)
-    MINUS           reduce using rule 45 (comparisonterm -> term .)
-    DIVISION        reduce using rule 45 (comparisonterm -> term .)
-    MULTIPLY        reduce using rule 45 (comparisonterm -> term .)
-    EQUAL           reduce using rule 45 (comparisonterm -> term .)
-    NOT_EQUAL       reduce using rule 45 (comparisonterm -> term .)
-    LESS_THAN       reduce using rule 45 (comparisonterm -> term .)
-    MORE_THAN       reduce using rule 45 (comparisonterm -> term .)
-    LESS_THAN_OR_EQUAL_TO reduce using rule 45 (comparisonterm -> term .)
-    MORE_THAN_OR_EQUAL_TO reduce using rule 45 (comparisonterm -> term .)
-    NOT_EQUAL_ALT   reduce using rule 45 (comparisonterm -> term .)
-    QUESTION_MARK   reduce using rule 45 (comparisonterm -> term .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 45 (comparisonterm -> term .)
-    DECIMAL         reduce using rule 45 (comparisonterm -> term .)
-    TILDE           reduce using rule 45 (comparisonterm -> term .)
-    COMMA           reduce using rule 45 (comparisonterm -> term .)
+    PLUS            reduce using rule 46 (comparisonterm -> term .)
+    MINUS           reduce using rule 46 (comparisonterm -> term .)
+    DIVISION        reduce using rule 46 (comparisonterm -> term .)
+    MULTIPLY        reduce using rule 46 (comparisonterm -> term .)
+    EQUAL           reduce using rule 46 (comparisonterm -> term .)
+    NOT_EQUAL       reduce using rule 46 (comparisonterm -> term .)
+    LESS_THAN       reduce using rule 46 (comparisonterm -> term .)
+    MORE_THAN       reduce using rule 46 (comparisonterm -> term .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 46 (comparisonterm -> term .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 46 (comparisonterm -> term .)
+    NOT_EQUAL_ALT   reduce using rule 46 (comparisonterm -> term .)
+    QUESTION_MARK   reduce using rule 46 (comparisonterm -> term .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 46 (comparisonterm -> term .)
+    DECIMAL         reduce using rule 46 (comparisonterm -> term .)
+    TILDE           reduce using rule 46 (comparisonterm -> term .)
+    COMMA           reduce using rule 46 (comparisonterm -> term .)
 
 
 state 19
@@ -554,58 +562,81 @@ state 20
 
 state 21
 
-    (31) constant -> INTEGER .
+    (31) constant -> DATETIME .
 
-    PLUS            reduce using rule 31 (constant -> INTEGER .)
-    MINUS           reduce using rule 31 (constant -> INTEGER .)
-    DIVISION        reduce using rule 31 (constant -> INTEGER .)
-    MULTIPLY        reduce using rule 31 (constant -> INTEGER .)
-    EQUAL           reduce using rule 31 (constant -> INTEGER .)
-    NOT_EQUAL       reduce using rule 31 (constant -> INTEGER .)
-    LESS_THAN       reduce using rule 31 (constant -> INTEGER .)
-    MORE_THAN       reduce using rule 31 (constant -> INTEGER .)
-    LESS_THAN_OR_EQUAL_TO reduce using rule 31 (constant -> INTEGER .)
-    MORE_THAN_OR_EQUAL_TO reduce using rule 31 (constant -> INTEGER .)
-    NOT_EQUAL_ALT   reduce using rule 31 (constant -> INTEGER .)
-    COMMA           reduce using rule 31 (constant -> INTEGER .)
-    RIGHT_BRACKET   reduce using rule 31 (constant -> INTEGER .)
-    QUESTION_MARK   reduce using rule 31 (constant -> INTEGER .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 31 (constant -> INTEGER .)
-    DECIMAL         reduce using rule 31 (constant -> INTEGER .)
-    TILDE           reduce using rule 31 (constant -> INTEGER .)
+    PLUS            reduce using rule 31 (constant -> DATETIME .)
+    MINUS           reduce using rule 31 (constant -> DATETIME .)
+    DIVISION        reduce using rule 31 (constant -> DATETIME .)
+    MULTIPLY        reduce using rule 31 (constant -> DATETIME .)
+    EQUAL           reduce using rule 31 (constant -> DATETIME .)
+    NOT_EQUAL       reduce using rule 31 (constant -> DATETIME .)
+    LESS_THAN       reduce using rule 31 (constant -> DATETIME .)
+    MORE_THAN       reduce using rule 31 (constant -> DATETIME .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 31 (constant -> DATETIME .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 31 (constant -> DATETIME .)
+    NOT_EQUAL_ALT   reduce using rule 31 (constant -> DATETIME .)
+    COMMA           reduce using rule 31 (constant -> DATETIME .)
+    RIGHT_BRACKET   reduce using rule 31 (constant -> DATETIME .)
+    QUESTION_MARK   reduce using rule 31 (constant -> DATETIME .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 31 (constant -> DATETIME .)
+    DECIMAL         reduce using rule 31 (constant -> DATETIME .)
+    TILDE           reduce using rule 31 (constant -> DATETIME .)
 
 
 state 22
 
-    (32) constant -> BOOLEAN .
+    (32) constant -> INTEGER .
 
-    PLUS            reduce using rule 32 (constant -> BOOLEAN .)
-    MINUS           reduce using rule 32 (constant -> BOOLEAN .)
-    DIVISION        reduce using rule 32 (constant -> BOOLEAN .)
-    MULTIPLY        reduce using rule 32 (constant -> BOOLEAN .)
-    EQUAL           reduce using rule 32 (constant -> BOOLEAN .)
-    NOT_EQUAL       reduce using rule 32 (constant -> BOOLEAN .)
-    LESS_THAN       reduce using rule 32 (constant -> BOOLEAN .)
-    MORE_THAN       reduce using rule 32 (constant -> BOOLEAN .)
-    LESS_THAN_OR_EQUAL_TO reduce using rule 32 (constant -> BOOLEAN .)
-    MORE_THAN_OR_EQUAL_TO reduce using rule 32 (constant -> BOOLEAN .)
-    NOT_EQUAL_ALT   reduce using rule 32 (constant -> BOOLEAN .)
-    COMMA           reduce using rule 32 (constant -> BOOLEAN .)
-    RIGHT_BRACKET   reduce using rule 32 (constant -> BOOLEAN .)
-    QUESTION_MARK   reduce using rule 32 (constant -> BOOLEAN .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 32 (constant -> BOOLEAN .)
-    DECIMAL         reduce using rule 32 (constant -> BOOLEAN .)
-    TILDE           reduce using rule 32 (constant -> BOOLEAN .)
+    PLUS            reduce using rule 32 (constant -> INTEGER .)
+    MINUS           reduce using rule 32 (constant -> INTEGER .)
+    DIVISION        reduce using rule 32 (constant -> INTEGER .)
+    MULTIPLY        reduce using rule 32 (constant -> INTEGER .)
+    EQUAL           reduce using rule 32 (constant -> INTEGER .)
+    NOT_EQUAL       reduce using rule 32 (constant -> INTEGER .)
+    LESS_THAN       reduce using rule 32 (constant -> INTEGER .)
+    MORE_THAN       reduce using rule 32 (constant -> INTEGER .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 32 (constant -> INTEGER .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 32 (constant -> INTEGER .)
+    NOT_EQUAL_ALT   reduce using rule 32 (constant -> INTEGER .)
+    COMMA           reduce using rule 32 (constant -> INTEGER .)
+    RIGHT_BRACKET   reduce using rule 32 (constant -> INTEGER .)
+    QUESTION_MARK   reduce using rule 32 (constant -> INTEGER .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 32 (constant -> INTEGER .)
+    DECIMAL         reduce using rule 32 (constant -> INTEGER .)
+    TILDE           reduce using rule 32 (constant -> INTEGER .)
 
 
 state 23
+
+    (33) constant -> BOOLEAN .
+
+    PLUS            reduce using rule 33 (constant -> BOOLEAN .)
+    MINUS           reduce using rule 33 (constant -> BOOLEAN .)
+    DIVISION        reduce using rule 33 (constant -> BOOLEAN .)
+    MULTIPLY        reduce using rule 33 (constant -> BOOLEAN .)
+    EQUAL           reduce using rule 33 (constant -> BOOLEAN .)
+    NOT_EQUAL       reduce using rule 33 (constant -> BOOLEAN .)
+    LESS_THAN       reduce using rule 33 (constant -> BOOLEAN .)
+    MORE_THAN       reduce using rule 33 (constant -> BOOLEAN .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 33 (constant -> BOOLEAN .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 33 (constant -> BOOLEAN .)
+    NOT_EQUAL_ALT   reduce using rule 33 (constant -> BOOLEAN .)
+    COMMA           reduce using rule 33 (constant -> BOOLEAN .)
+    RIGHT_BRACKET   reduce using rule 33 (constant -> BOOLEAN .)
+    QUESTION_MARK   reduce using rule 33 (constant -> BOOLEAN .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 33 (constant -> BOOLEAN .)
+    DECIMAL         reduce using rule 33 (constant -> BOOLEAN .)
+    TILDE           reduce using rule 33 (constant -> BOOLEAN .)
+
+
+state 24
 
     (1) program -> statement program .
 
     $end            reduce using rule 1 (program -> statement program .)
 
 
-state 24
+state 25
 
     (9) assertion -> clause DECIMAL .
 
@@ -614,12 +645,13 @@ state 24
     IDENTIFIER      reduce using rule 9 (assertion -> clause DECIMAL .)
     STRING          reduce using rule 9 (assertion -> clause DECIMAL .)
     IGNORE          reduce using rule 9 (assertion -> clause DECIMAL .)
+    DATETIME        reduce using rule 9 (assertion -> clause DECIMAL .)
     INTEGER         reduce using rule 9 (assertion -> clause DECIMAL .)
     BOOLEAN         reduce using rule 9 (assertion -> clause DECIMAL .)
     $end            reduce using rule 9 (assertion -> clause DECIMAL .)
 
 
-state 25
+state 26
 
     (10) retraction -> clause TILDE .
 
@@ -628,12 +660,13 @@ state 25
     IDENTIFIER      reduce using rule 10 (retraction -> clause TILDE .)
     STRING          reduce using rule 10 (retraction -> clause TILDE .)
     IGNORE          reduce using rule 10 (retraction -> clause TILDE .)
+    DATETIME        reduce using rule 10 (retraction -> clause TILDE .)
     INTEGER         reduce using rule 10 (retraction -> clause TILDE .)
     BOOLEAN         reduce using rule 10 (retraction -> clause TILDE .)
     $end            reduce using rule 10 (retraction -> clause TILDE .)
 
 
-state 26
+state 27
 
     (11) query -> literal QUESTION_MARK .
 
@@ -642,12 +675,13 @@ state 26
     IDENTIFIER      reduce using rule 11 (query -> literal QUESTION_MARK .)
     STRING          reduce using rule 11 (query -> literal QUESTION_MARK .)
     IGNORE          reduce using rule 11 (query -> literal QUESTION_MARK .)
+    DATETIME        reduce using rule 11 (query -> literal QUESTION_MARK .)
     INTEGER         reduce using rule 11 (query -> literal QUESTION_MARK .)
     BOOLEAN         reduce using rule 11 (query -> literal QUESTION_MARK .)
     $end            reduce using rule 11 (query -> literal QUESTION_MARK .)
 
 
-state 27
+state 28
 
     (13) clause -> literal HEAD_AND_BODY_SEPARATOR . body
     (15) body -> . literal COMMA body
@@ -659,36 +693,38 @@ state 27
     (21) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     (22) predicate -> . IDENTIFIER
     (23) predicate -> . STRING
-    (33) comparison -> . comparisonterms EQUAL comparisonterms
-    (34) comparison -> . comparisonterms NOT_EQUAL comparisonterms
-    (35) comparison -> . comparisonterms LESS_THAN comparisonterms
-    (36) comparison -> . comparisonterms MORE_THAN comparisonterms
-    (37) comparison -> . comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
-    (38) comparison -> . comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
-    (39) comparison -> . comparisonterms NOT_EQUAL_ALT comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (34) comparison -> . comparisonterms EQUAL comparisonterms
+    (35) comparison -> . comparisonterms NOT_EQUAL comparisonterms
+    (36) comparison -> . comparisonterms LESS_THAN comparisonterms
+    (37) comparison -> . comparisonterms MORE_THAN comparisonterms
+    (38) comparison -> . comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
+    (39) comparison -> . comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
+    (40) comparison -> . comparisonterms NOT_EQUAL_ALT comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
     VARIABLE        shift and go to state 14
     IDENTIFIER      shift and go to state 11
     STRING          shift and go to state 15
     IGNORE          shift and go to state 20
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
-    literal                        shift and go to state 42
-    body                           shift and go to state 43
+    literal                        shift and go to state 43
+    body                           shift and go to state 44
     predicate                      shift and go to state 12
     comparison                     shift and go to state 13
     comparisonterms                shift and go to state 16
@@ -696,14 +732,14 @@ state 27
     term                           shift and go to state 18
     constant                       shift and go to state 19
 
-state 28
+state 29
 
     (12) requirement -> LEFT_BRACKET IDENTIFIER . RIGHT_BRACKET DECIMAL
 
-    RIGHT_BRACKET   shift and go to state 44
+    RIGHT_BRACKET   shift and go to state 45
 
 
-state 29
+state 30
 
     (17) literal -> predicate LEFT_BRACKET . RIGHT_BRACKET
     (18) literal -> predicate LEFT_BRACKET . terms RIGHT_BRACKET
@@ -714,80 +750,55 @@ state 29
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    RIGHT_BRACKET   shift and go to state 45
-    VARIABLE        shift and go to state 48
+    RIGHT_BRACKET   shift and go to state 46
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
-    terms                          shift and go to state 46
-    term                           shift and go to state 47
+    terms                          shift and go to state 47
+    term                           shift and go to state 48
     constant                       shift and go to state 19
-
-state 30
-
-    (21) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR . IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
-
-    IDENTIFIER      shift and go to state 51
-
 
 state 31
 
-    (33) comparison -> comparisonterms EQUAL . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
-    (26) term -> . VARIABLE
-    (27) term -> . constant
-    (28) term -> . IGNORE
-    (29) constant -> . IDENTIFIER
-    (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (21) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR . IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
 
-    VARIABLE        shift and go to state 48
-    IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 52
 
-    comparisonterms                shift and go to state 52
-    comparisonterm                 shift and go to state 17
-    term                           shift and go to state 18
-    constant                       shift and go to state 19
 
 state 32
 
-    (34) comparison -> comparisonterms NOT_EQUAL . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (34) comparison -> comparisonterms EQUAL . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterms                shift and go to state 53
     comparisonterm                 shift and go to state 17
@@ -796,27 +807,29 @@ state 32
 
 state 33
 
-    (35) comparison -> comparisonterms LESS_THAN . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (35) comparison -> comparisonterms NOT_EQUAL . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterms                shift and go to state 54
     comparisonterm                 shift and go to state 17
@@ -825,27 +838,29 @@ state 33
 
 state 34
 
-    (36) comparison -> comparisonterms MORE_THAN . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (36) comparison -> comparisonterms LESS_THAN . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterms                shift and go to state 55
     comparisonterm                 shift and go to state 17
@@ -854,27 +869,29 @@ state 34
 
 state 35
 
-    (37) comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (37) comparison -> comparisonterms MORE_THAN . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterms                shift and go to state 56
     comparisonterm                 shift and go to state 17
@@ -883,27 +900,29 @@ state 35
 
 state 36
 
-    (38) comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (38) comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterms                shift and go to state 57
     comparisonterm                 shift and go to state 17
@@ -912,27 +931,29 @@ state 36
 
 state 37
 
-    (39) comparison -> comparisonterms NOT_EQUAL_ALT . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (39) comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterms                shift and go to state 58
     comparisonterm                 shift and go to state 17
@@ -941,56 +962,60 @@ state 37
 
 state 38
 
-    (41) comparisonterms -> comparisonterm PLUS . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (40) comparison -> comparisonterms NOT_EQUAL_ALT . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
-    comparisonterm                 shift and go to state 17
     comparisonterms                shift and go to state 59
+    comparisonterm                 shift and go to state 17
     term                           shift and go to state 18
     constant                       shift and go to state 19
 
 state 39
 
-    (42) comparisonterms -> comparisonterm MINUS . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (42) comparisonterms -> comparisonterm PLUS . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterm                 shift and go to state 17
     comparisonterms                shift and go to state 60
@@ -999,27 +1024,29 @@ state 39
 
 state 40
 
-    (43) comparisonterms -> comparisonterm DIVISION . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (43) comparisonterms -> comparisonterm MINUS . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterm                 shift and go to state 17
     comparisonterms                shift and go to state 61
@@ -1028,27 +1055,29 @@ state 40
 
 state 41
 
-    (44) comparisonterms -> comparisonterm MULTIPLY . comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (44) comparisonterms -> comparisonterm DIVISION . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
     comparisonterm                 shift and go to state 17
     comparisonterms                shift and go to state 62
@@ -1057,15 +1086,46 @@ state 41
 
 state 42
 
+    (45) comparisonterms -> comparisonterm MULTIPLY . comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
+    (26) term -> . VARIABLE
+    (27) term -> . constant
+    (28) term -> . IGNORE
+    (29) constant -> . IDENTIFIER
+    (30) constant -> . STRING
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
+
+    VARIABLE        shift and go to state 49
+    IGNORE          shift and go to state 20
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
+
+    comparisonterm                 shift and go to state 17
+    comparisonterms                shift and go to state 63
+    term                           shift and go to state 18
+    constant                       shift and go to state 19
+
+state 43
+
     (15) body -> literal . COMMA body
     (16) body -> literal .
 
-    COMMA           shift and go to state 63
+    COMMA           shift and go to state 64
     DECIMAL         reduce using rule 16 (body -> literal .)
     TILDE           reduce using rule 16 (body -> literal .)
 
 
-state 43
+state 44
 
     (13) clause -> literal HEAD_AND_BODY_SEPARATOR body .
 
@@ -1073,14 +1133,14 @@ state 43
     TILDE           reduce using rule 13 (clause -> literal HEAD_AND_BODY_SEPARATOR body .)
 
 
-state 44
+state 45
 
     (12) requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET . DECIMAL
 
-    DECIMAL         shift and go to state 64
+    DECIMAL         shift and go to state 65
 
 
-state 45
+state 46
 
     (17) literal -> predicate LEFT_BRACKET RIGHT_BRACKET .
 
@@ -1091,23 +1151,23 @@ state 45
     COMMA           reduce using rule 17 (literal -> predicate LEFT_BRACKET RIGHT_BRACKET .)
 
 
-state 46
+state 47
 
     (18) literal -> predicate LEFT_BRACKET terms . RIGHT_BRACKET
 
-    RIGHT_BRACKET   shift and go to state 65
+    RIGHT_BRACKET   shift and go to state 66
 
 
-state 47
+state 48
 
     (24) terms -> term . COMMA terms
     (25) terms -> term .
 
-    COMMA           shift and go to state 66
+    COMMA           shift and go to state 67
     RIGHT_BRACKET   reduce using rule 25 (terms -> term .)
 
 
-state 48
+state 49
 
     (26) term -> VARIABLE .
 
@@ -1130,7 +1190,7 @@ state 48
     NOT_EQUAL_ALT   reduce using rule 26 (term -> VARIABLE .)
 
 
-state 49
+state 50
 
     (29) constant -> IDENTIFIER .
 
@@ -1153,7 +1213,7 @@ state 49
     NOT_EQUAL_ALT   reduce using rule 29 (constant -> IDENTIFIER .)
 
 
-state 50
+state 51
 
     (30) constant -> STRING .
 
@@ -1176,163 +1236,163 @@ state 50
     NOT_EQUAL_ALT   reduce using rule 30 (constant -> STRING .)
 
 
-state 51
+state 52
 
     (21) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER . LEFT_BRACKET terms RIGHT_BRACKET
 
-    LEFT_BRACKET    shift and go to state 67
-
-
-state 52
-
-    (33) comparison -> comparisonterms EQUAL comparisonterms .
-
-    QUESTION_MARK   reduce using rule 33 (comparison -> comparisonterms EQUAL comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 33 (comparison -> comparisonterms EQUAL comparisonterms .)
-    DECIMAL         reduce using rule 33 (comparison -> comparisonterms EQUAL comparisonterms .)
-    TILDE           reduce using rule 33 (comparison -> comparisonterms EQUAL comparisonterms .)
-    COMMA           reduce using rule 33 (comparison -> comparisonterms EQUAL comparisonterms .)
+    LEFT_BRACKET    shift and go to state 68
 
 
 state 53
 
-    (34) comparison -> comparisonterms NOT_EQUAL comparisonterms .
+    (34) comparison -> comparisonterms EQUAL comparisonterms .
 
-    QUESTION_MARK   reduce using rule 34 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 34 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
-    DECIMAL         reduce using rule 34 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
-    TILDE           reduce using rule 34 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
-    COMMA           reduce using rule 34 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
+    QUESTION_MARK   reduce using rule 34 (comparison -> comparisonterms EQUAL comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 34 (comparison -> comparisonterms EQUAL comparisonterms .)
+    DECIMAL         reduce using rule 34 (comparison -> comparisonterms EQUAL comparisonterms .)
+    TILDE           reduce using rule 34 (comparison -> comparisonterms EQUAL comparisonterms .)
+    COMMA           reduce using rule 34 (comparison -> comparisonterms EQUAL comparisonterms .)
 
 
 state 54
 
-    (35) comparison -> comparisonterms LESS_THAN comparisonterms .
+    (35) comparison -> comparisonterms NOT_EQUAL comparisonterms .
 
-    QUESTION_MARK   reduce using rule 35 (comparison -> comparisonterms LESS_THAN comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 35 (comparison -> comparisonterms LESS_THAN comparisonterms .)
-    DECIMAL         reduce using rule 35 (comparison -> comparisonterms LESS_THAN comparisonterms .)
-    TILDE           reduce using rule 35 (comparison -> comparisonterms LESS_THAN comparisonterms .)
-    COMMA           reduce using rule 35 (comparison -> comparisonterms LESS_THAN comparisonterms .)
+    QUESTION_MARK   reduce using rule 35 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 35 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
+    DECIMAL         reduce using rule 35 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
+    TILDE           reduce using rule 35 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
+    COMMA           reduce using rule 35 (comparison -> comparisonterms NOT_EQUAL comparisonterms .)
 
 
 state 55
 
-    (36) comparison -> comparisonterms MORE_THAN comparisonterms .
+    (36) comparison -> comparisonterms LESS_THAN comparisonterms .
 
-    QUESTION_MARK   reduce using rule 36 (comparison -> comparisonterms MORE_THAN comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 36 (comparison -> comparisonterms MORE_THAN comparisonterms .)
-    DECIMAL         reduce using rule 36 (comparison -> comparisonterms MORE_THAN comparisonterms .)
-    TILDE           reduce using rule 36 (comparison -> comparisonterms MORE_THAN comparisonterms .)
-    COMMA           reduce using rule 36 (comparison -> comparisonterms MORE_THAN comparisonterms .)
+    QUESTION_MARK   reduce using rule 36 (comparison -> comparisonterms LESS_THAN comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 36 (comparison -> comparisonterms LESS_THAN comparisonterms .)
+    DECIMAL         reduce using rule 36 (comparison -> comparisonterms LESS_THAN comparisonterms .)
+    TILDE           reduce using rule 36 (comparison -> comparisonterms LESS_THAN comparisonterms .)
+    COMMA           reduce using rule 36 (comparison -> comparisonterms LESS_THAN comparisonterms .)
 
 
 state 56
 
-    (37) comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .
+    (37) comparison -> comparisonterms MORE_THAN comparisonterms .
 
-    QUESTION_MARK   reduce using rule 37 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 37 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
-    DECIMAL         reduce using rule 37 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
-    TILDE           reduce using rule 37 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
-    COMMA           reduce using rule 37 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
+    QUESTION_MARK   reduce using rule 37 (comparison -> comparisonterms MORE_THAN comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 37 (comparison -> comparisonterms MORE_THAN comparisonterms .)
+    DECIMAL         reduce using rule 37 (comparison -> comparisonterms MORE_THAN comparisonterms .)
+    TILDE           reduce using rule 37 (comparison -> comparisonterms MORE_THAN comparisonterms .)
+    COMMA           reduce using rule 37 (comparison -> comparisonterms MORE_THAN comparisonterms .)
 
 
 state 57
 
-    (38) comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .
+    (38) comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .
 
-    QUESTION_MARK   reduce using rule 38 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 38 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
-    DECIMAL         reduce using rule 38 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
-    TILDE           reduce using rule 38 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
-    COMMA           reduce using rule 38 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
+    QUESTION_MARK   reduce using rule 38 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 38 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
+    DECIMAL         reduce using rule 38 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
+    TILDE           reduce using rule 38 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
+    COMMA           reduce using rule 38 (comparison -> comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms .)
 
 
 state 58
 
-    (39) comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .
+    (39) comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .
 
-    QUESTION_MARK   reduce using rule 39 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 39 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
-    DECIMAL         reduce using rule 39 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
-    TILDE           reduce using rule 39 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
-    COMMA           reduce using rule 39 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
+    QUESTION_MARK   reduce using rule 39 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 39 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
+    DECIMAL         reduce using rule 39 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
+    TILDE           reduce using rule 39 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
+    COMMA           reduce using rule 39 (comparison -> comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms .)
 
 
 state 59
 
-    (41) comparisonterms -> comparisonterm PLUS comparisonterms .
+    (40) comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .
 
-    EQUAL           reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    NOT_EQUAL       reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    LESS_THAN       reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    MORE_THAN       reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    LESS_THAN_OR_EQUAL_TO reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    MORE_THAN_OR_EQUAL_TO reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    NOT_EQUAL_ALT   reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    QUESTION_MARK   reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    DECIMAL         reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    TILDE           reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
-    COMMA           reduce using rule 41 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    QUESTION_MARK   reduce using rule 40 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 40 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
+    DECIMAL         reduce using rule 40 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
+    TILDE           reduce using rule 40 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
+    COMMA           reduce using rule 40 (comparison -> comparisonterms NOT_EQUAL_ALT comparisonterms .)
 
 
 state 60
 
-    (42) comparisonterms -> comparisonterm MINUS comparisonterms .
+    (42) comparisonterms -> comparisonterm PLUS comparisonterms .
 
-    EQUAL           reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    NOT_EQUAL       reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    LESS_THAN       reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    MORE_THAN       reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    LESS_THAN_OR_EQUAL_TO reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    MORE_THAN_OR_EQUAL_TO reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    NOT_EQUAL_ALT   reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    QUESTION_MARK   reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    DECIMAL         reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    TILDE           reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
-    COMMA           reduce using rule 42 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    EQUAL           reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    NOT_EQUAL       reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    LESS_THAN       reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    MORE_THAN       reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    NOT_EQUAL_ALT   reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    QUESTION_MARK   reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    DECIMAL         reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    TILDE           reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
+    COMMA           reduce using rule 42 (comparisonterms -> comparisonterm PLUS comparisonterms .)
 
 
 state 61
 
-    (43) comparisonterms -> comparisonterm DIVISION comparisonterms .
+    (43) comparisonterms -> comparisonterm MINUS comparisonterms .
 
-    EQUAL           reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    NOT_EQUAL       reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    LESS_THAN       reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    MORE_THAN       reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    LESS_THAN_OR_EQUAL_TO reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    MORE_THAN_OR_EQUAL_TO reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    NOT_EQUAL_ALT   reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    QUESTION_MARK   reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    DECIMAL         reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    TILDE           reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
-    COMMA           reduce using rule 43 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    EQUAL           reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    NOT_EQUAL       reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    LESS_THAN       reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    MORE_THAN       reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    NOT_EQUAL_ALT   reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    QUESTION_MARK   reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    DECIMAL         reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    TILDE           reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
+    COMMA           reduce using rule 43 (comparisonterms -> comparisonterm MINUS comparisonterms .)
 
 
 state 62
 
-    (44) comparisonterms -> comparisonterm MULTIPLY comparisonterms .
+    (44) comparisonterms -> comparisonterm DIVISION comparisonterms .
 
-    EQUAL           reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    NOT_EQUAL       reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    LESS_THAN       reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    MORE_THAN       reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    LESS_THAN_OR_EQUAL_TO reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    MORE_THAN_OR_EQUAL_TO reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    NOT_EQUAL_ALT   reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    QUESTION_MARK   reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    HEAD_AND_BODY_SEPARATOR reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    DECIMAL         reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    TILDE           reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
-    COMMA           reduce using rule 44 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    EQUAL           reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    NOT_EQUAL       reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    LESS_THAN       reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    MORE_THAN       reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    NOT_EQUAL_ALT   reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    QUESTION_MARK   reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    DECIMAL         reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    TILDE           reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
+    COMMA           reduce using rule 44 (comparisonterms -> comparisonterm DIVISION comparisonterms .)
 
 
 state 63
+
+    (45) comparisonterms -> comparisonterm MULTIPLY comparisonterms .
+
+    EQUAL           reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    NOT_EQUAL       reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    LESS_THAN       reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    MORE_THAN       reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    LESS_THAN_OR_EQUAL_TO reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    MORE_THAN_OR_EQUAL_TO reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    NOT_EQUAL_ALT   reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    QUESTION_MARK   reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    HEAD_AND_BODY_SEPARATOR reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    DECIMAL         reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    TILDE           reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+    COMMA           reduce using rule 45 (comparisonterms -> comparisonterm MULTIPLY comparisonterms .)
+
+
+state 64
 
     (15) body -> literal COMMA . body
     (15) body -> . literal COMMA body
@@ -1344,36 +1404,38 @@ state 63
     (21) literal -> . VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     (22) predicate -> . IDENTIFIER
     (23) predicate -> . STRING
-    (33) comparison -> . comparisonterms EQUAL comparisonterms
-    (34) comparison -> . comparisonterms NOT_EQUAL comparisonterms
-    (35) comparison -> . comparisonterms LESS_THAN comparisonterms
-    (36) comparison -> . comparisonterms MORE_THAN comparisonterms
-    (37) comparison -> . comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
-    (38) comparison -> . comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
-    (39) comparison -> . comparisonterms NOT_EQUAL_ALT comparisonterms
-    (40) comparisonterms -> . comparisonterm
-    (41) comparisonterms -> . comparisonterm PLUS comparisonterms
-    (42) comparisonterms -> . comparisonterm MINUS comparisonterms
-    (43) comparisonterms -> . comparisonterm DIVISION comparisonterms
-    (44) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
-    (45) comparisonterm -> . term
+    (34) comparison -> . comparisonterms EQUAL comparisonterms
+    (35) comparison -> . comparisonterms NOT_EQUAL comparisonterms
+    (36) comparison -> . comparisonterms LESS_THAN comparisonterms
+    (37) comparison -> . comparisonterms MORE_THAN comparisonterms
+    (38) comparison -> . comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
+    (39) comparison -> . comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
+    (40) comparison -> . comparisonterms NOT_EQUAL_ALT comparisonterms
+    (41) comparisonterms -> . comparisonterm
+    (42) comparisonterms -> . comparisonterm PLUS comparisonterms
+    (43) comparisonterms -> . comparisonterm MINUS comparisonterms
+    (44) comparisonterms -> . comparisonterm DIVISION comparisonterms
+    (45) comparisonterms -> . comparisonterm MULTIPLY comparisonterms
+    (46) comparisonterm -> . term
     (26) term -> . VARIABLE
     (27) term -> . constant
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
     VARIABLE        shift and go to state 14
     IDENTIFIER      shift and go to state 11
     STRING          shift and go to state 15
     IGNORE          shift and go to state 20
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
-    literal                        shift and go to state 42
-    body                           shift and go to state 68
+    literal                        shift and go to state 43
+    body                           shift and go to state 69
     predicate                      shift and go to state 12
     comparison                     shift and go to state 13
     comparisonterms                shift and go to state 16
@@ -1381,7 +1443,7 @@ state 63
     term                           shift and go to state 18
     constant                       shift and go to state 19
 
-state 64
+state 65
 
     (12) requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .
 
@@ -1390,12 +1452,13 @@ state 64
     IDENTIFIER      reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
     STRING          reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
     IGNORE          reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
+    DATETIME        reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
     INTEGER         reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
     BOOLEAN         reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
     $end            reduce using rule 12 (requirement -> LEFT_BRACKET IDENTIFIER RIGHT_BRACKET DECIMAL .)
 
 
-state 65
+state 66
 
     (18) literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET .
 
@@ -1406,7 +1469,7 @@ state 65
     COMMA           reduce using rule 18 (literal -> predicate LEFT_BRACKET terms RIGHT_BRACKET .)
 
 
-state 66
+state 67
 
     (24) terms -> term COMMA . terms
     (24) terms -> . term COMMA terms
@@ -1416,21 +1479,23 @@ state 66
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
-    term                           shift and go to state 47
-    terms                          shift and go to state 69
+    term                           shift and go to state 48
+    terms                          shift and go to state 70
     constant                       shift and go to state 19
 
-state 67
+state 68
 
     (21) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET . terms RIGHT_BRACKET
     (24) terms -> . term COMMA terms
@@ -1440,21 +1505,23 @@ state 67
     (28) term -> . IGNORE
     (29) constant -> . IDENTIFIER
     (30) constant -> . STRING
-    (31) constant -> . INTEGER
-    (32) constant -> . BOOLEAN
+    (31) constant -> . DATETIME
+    (32) constant -> . INTEGER
+    (33) constant -> . BOOLEAN
 
-    VARIABLE        shift and go to state 48
+    VARIABLE        shift and go to state 49
     IGNORE          shift and go to state 20
-    IDENTIFIER      shift and go to state 49
-    STRING          shift and go to state 50
-    INTEGER         shift and go to state 21
-    BOOLEAN         shift and go to state 22
+    IDENTIFIER      shift and go to state 50
+    STRING          shift and go to state 51
+    DATETIME        shift and go to state 21
+    INTEGER         shift and go to state 22
+    BOOLEAN         shift and go to state 23
 
-    terms                          shift and go to state 70
-    term                           shift and go to state 47
+    terms                          shift and go to state 71
+    term                           shift and go to state 48
     constant                       shift and go to state 19
 
-state 68
+state 69
 
     (15) body -> literal COMMA body .
 
@@ -1462,21 +1529,21 @@ state 68
     TILDE           reduce using rule 15 (body -> literal COMMA body .)
 
 
-state 69
+state 70
 
     (24) terms -> term COMMA terms .
 
     RIGHT_BRACKET   reduce using rule 24 (terms -> term COMMA terms .)
 
 
-state 70
+state 71
 
     (21) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms . RIGHT_BRACKET
 
-    RIGHT_BRACKET   shift and go to state 71
+    RIGHT_BRACKET   shift and go to state 72
 
 
-state 71
+state 72
 
     (21) literal -> VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET .
 
