@@ -54,7 +54,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: textInput}),
+        body: JSON.stringify({ text: textInput , password: password, username: username, database: database, port: port}),
       });
       const data = await response.json();
       console.log(data.translate)
@@ -124,7 +124,7 @@ function App() {
       <button onClick={handleExecute}>Execute SQL Query</button>
       <div className="response-container">
         <h2>DB Response:</h2>
-        <p>{dbResponse}</p>
+        <p>{dbResponse && dbResponse.join(', ')}</p>
       </div>
     </div>
   );  
