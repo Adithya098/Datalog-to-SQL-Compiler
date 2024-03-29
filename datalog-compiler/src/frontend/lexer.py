@@ -27,7 +27,8 @@ tokens = (
     'PLUS',
     'MINUS',
     'DIVISION',
-    'MULTIPLY'
+    'MULTIPLY',
+    'FUNCTION'
 )
 
 def t_BOOLEAN(t):
@@ -48,6 +49,14 @@ def t_DATETIME(t):
 def t_INTEGER(t):
     r'-?(?:0|[1-9][0-9]*)'
     t.value = int(t.value)
+    return t
+
+def t_FUNCTION(t):
+    r'\w+\(.*\)'
+    index_of_opening_bracket = t.value.index('(')
+    len_of_string = len(t.value)
+    t.value = t.value[:index_of_opening_bracket]
+    t.lexer.lexpos -= len_of_string - index_of_opening_bracket
     return t
 
 t_DECIMAL = r'\.'
