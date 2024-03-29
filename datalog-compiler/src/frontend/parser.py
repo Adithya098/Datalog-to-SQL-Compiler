@@ -125,15 +125,21 @@ def p_constant(p):
 
 def p_comparison(p):
     '''
-    comparison : term EQUAL term
-               | term NOT_EQUAL term
-               | term LESS_THAN term
-               | term MORE_THAN term
-               | term LESS_THAN_OR_EQUAL_TO term
-               | term MORE_THAN_OR_EQUAL_TO term
-               | term NOT_EQUAL_ALT term
+    comparison : comparisonterm EQUAL comparisonterm
+               | comparisonterm NOT_EQUAL comparisonterm
+               | comparisonterm LESS_THAN comparisonterm
+               | comparisonterm MORE_THAN comparisonterm
+               | comparisonterm LESS_THAN_OR_EQUAL_TO comparisonterm
+               | comparisonterm MORE_THAN_OR_EQUAL_TO comparisonterm
+               | comparisonterm NOT_EQUAL_ALT comparisonterm
     '''
     p[0] = (COMPARISON_NODE, p[1], p[2], p[3])
+
+def p_comparisonterm(p):
+    '''
+    comparisonterm : term
+    '''
+    p[0] = (COMPARISON_TERM_NODE, p[1])
 
 def p_error(p):
     print("Error when parsing: " + str(p))

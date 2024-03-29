@@ -128,9 +128,9 @@ class Interpreter:
         raise Exception("Comparison term is not supported yet")
     
     def process_constraints(self, comparison, columns_seen):
-        left_side = self.get_value(COMPARISON_NODE, comparison, 1)
+        left_side = self.get_value(COMPARISON_TERM_NODE, self.get_value(COMPARISON_NODE, comparison, 1))
         operator =  self.get_value(COMPARISON_NODE, comparison, 2)
-        right_side = self.get_value(COMPARISON_NODE, comparison, 3)
+        right_side = self.get_value(COMPARISON_TERM_NODE, self.get_value(COMPARISON_NODE, comparison, 3))
         return Comparison(self.process_comparison_term(left_side, columns_seen), operator, self.process_comparison_term(right_side, columns_seen))
     
     def process_body_when_creating_view(self, body):
