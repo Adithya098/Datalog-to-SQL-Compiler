@@ -10,7 +10,7 @@ sys.path.append(module_dir)
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from datalog_compiler.src.main import generate_sql_query_from_datalog_query
+from datalog_compiler.src.main import generate_sql_query_from_datalog_query, sql_connection, append_to_sql_file
 # import datalog_compiler.src.main  as a
 # import datalog_compiler.src.backend.interpreter as b
 from datalog_compiler.src.backend.interpreter import Interpreter
@@ -35,6 +35,31 @@ def translate():
     return jsonify({'translate':  generate_sql_query_from_datalog_query(datalog_query, interpreter)})
 
 
+@app.route('/execute_query', methods=['POST'])
+def execute_query():
+    data = request.get_json()
+    datalog_query = data.get('text')
+
+    db_username = data.get('username')
+    db_password = data.get('password')
+    db_port = data.get('port')
+    db_database = data.get('database')
+
+    output_file = "output.sql"
+    sql_handler = sql_connection(output_file, db_database, db_username, db_password, db_port)
+    interpreter = Interpreter()
+    # generate_sql_query_from_datalog_query(datalog_query, interpreter)
+
+    # return jsonify({'echo':  a.generate_sql_query_from_datalog_query(datalog_query, interpreter)})
+    sql_queries = generate_sql_query_from_datalog_query(datalog_query, interpreter)
+
+    try:
+        for sql_query in sql_queries:
+            sql_handler.execute_sql_query(sql_query)
+            append_to_sql_file(sql_query, output_file)
+    except Exception as e:
+        return jsonify({'execute_query':"Execution failed, please check compiler logs."})
+    return jsonify({'execute_query':"Executed successfully, please check postgresDB."})
 
 
 if __name__ == '__main__':
