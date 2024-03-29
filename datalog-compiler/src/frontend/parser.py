@@ -144,7 +144,7 @@ def p_comparisonterms(p):
                     | comparisonterm MULTIPLY comparisonterms
     '''
     if len(p) == 4:
-        p[0] = (COMPARISON_TERMS_NODE, [p[1]] + p[3][1])
+        p[0] = (COMPARISON_TERMS_NODE, [p[1]] + [p[2]] + p[3][1])
     else:
         p[0] = (COMPARISON_TERMS_NODE, [p[1]])
 

@@ -125,5 +125,35 @@ class TestMain(unittest.TestCase):
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
             self.assertEqual(actual_translated_query, expected_translated_query)
 
+    def test_complex_comparision_query(self):
+        datalog_queries = '''
+        s(1, 2).
+        s(2, 3).
+        s(2, 4).
+        s(3, 2).
+        s(4, 2).
+        t(X, Y) :- s(X, Y), X + Y = 5.
+        t(X, Y) :- s(X, Y), X + 2 = 5.
+        t(X, Y) :- s(X, Y), Y + 2 = 5.
+        t(X, Y)?
+        u(X, Y) :- s(X, Y), X > 3.
+        u(X, Y)? 
+        '''
+        expected_translated_queries = [
+            'CREATE TABLE s (z0 INT NOT NULL, z1 INT NOT NULL, PRIMARY KEY (z0, z1));',
+            'INSERT INTO s VALUES (1, 2);',
+            'INSERT INTO s VALUES (2, 3);',
+            'INSERT INTO s VALUES (2, 4);',
+            'INSERT INTO s VALUES (3, 2);',
+            'INSERT INTO s VALUES (4, 2);',
+            'CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s WHERE s.z0 + s.z1 = 5) UNION (SELECT s.z0, s.z1 FROM s WHERE s.z0 + 2 = 5) UNION (SELECT s.z0, s.z1 FROM s WHERE s.z1 + 2 = 5);',
+            'SELECT * FROM t;',
+            'CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE s.z0 > 3);',
+            'SELECT * FROM u;'
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
 if __name__ == '__main__':
     unittest.main()
