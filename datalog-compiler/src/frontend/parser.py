@@ -125,17 +125,30 @@ def p_constant(p):
 
 def p_comparison(p):
     '''
-    comparison : comparisonterm EQUAL comparisonterm
-               | comparisonterm NOT_EQUAL comparisonterm
-               | comparisonterm LESS_THAN comparisonterm
-               | comparisonterm MORE_THAN comparisonterm
-               | comparisonterm LESS_THAN_OR_EQUAL_TO comparisonterm
-               | comparisonterm MORE_THAN_OR_EQUAL_TO comparisonterm
-               | comparisonterm NOT_EQUAL_ALT comparisonterm
+    comparison : comparisonterms EQUAL comparisonterms
+               | comparisonterms NOT_EQUAL comparisonterms
+               | comparisonterms LESS_THAN comparisonterms
+               | comparisonterms MORE_THAN comparisonterms
+               | comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
+               | comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
+               | comparisonterms NOT_EQUAL_ALT comparisonterms
     '''
     p[0] = (COMPARISON_NODE, p[1], p[2], p[3])
 
-def p_comparisonterm(p):
+def p_comparisonterms(p):
+    '''
+    comparisonterms : comparisonterm
+                    | comparisonterm PLUS comparisonterms
+                    | comparisonterm MINUS comparisonterms
+                    | comparisonterm DIVISION comparisonterms
+                    | comparisonterm MULTIPLY comparisonterms
+    '''
+    if len(p) == 4:
+        p[0] = (COMPARISON_TERMS_NODE, [p[1]] + p[3][1])
+    else:
+        p[0] = (COMPARISON_TERMS_NODE, [p[1]])
+
+def p_comparisionterm(p):
     '''
     comparisonterm : term
     '''

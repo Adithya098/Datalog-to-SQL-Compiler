@@ -21,7 +21,11 @@ tokens = (
     'MORE_THAN',
     'LESS_THAN_OR_EQUAL_TO',
     'MORE_THAN_OR_EQUAL_TO',
-    'NOT_EQUAL_ALT'
+    'NOT_EQUAL_ALT',
+    'PLUS',
+    'MINUS',
+    'DIVISION',
+    'MULTIPLY'
 )
 
 def t_BOOLEAN(t):
@@ -56,6 +60,10 @@ t_NOT_EQUAL_ALT = r'\<>'
 t_VARIABLE = r'[A-Z]\w*'
 t_IDENTIFIER=r'[a-z][a-zA-Z0-9_-]*'
 t_IGNORE = r'\_'
+t_PLUS = r'\+'
+t_MINUS = r'\-'
+t_DIVISION = r'\/'
+t_MULTIPLY = r'\*'
 
 t_ignore_COMMENT = r'\%.*'
 

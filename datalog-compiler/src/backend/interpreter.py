@@ -122,16 +122,21 @@ class Interpreter:
         if not isinstance(term, tuple):
             if term not in columns_seen:
                 raise Exception("Assessing a column that is not seen yet")
-            return [(VAR_KEY, term)]
+            return (VAR_KEY, term)
         if term[0] == CONSTANT_NODE:
-            return [(CONSTANT_KEY, self.get_value(CONSTANT_NODE, term))]
+            return (CONSTANT_KEY, self.get_value(CONSTANT_NODE, term))
         raise Exception("Comparison term is not supported yet")
     
+    def process_comparison_terms(self, comparisons, columns_seen):
+        return [
+            self.process_comparison_term(self.get_value(COMPARISON_TERM_NODE, comparison), columns_seen) if comparison[0] == COMPARISON_TERM_NODE else comparison[0] for comparison in comparisons
+        ]
+    
     def process_constraints(self, comparison, columns_seen):
-        left_side = self.get_value(COMPARISON_TERM_NODE, self.get_value(COMPARISON_NODE, comparison, 1))
+        left_side = self.process_comparison_terms(self.get_value(COMPARISON_TERMS_NODE, self.get_value(COMPARISON_NODE, comparison, 1)), columns_seen)
         operator =  self.get_value(COMPARISON_NODE, comparison, 2)
-        right_side = self.get_value(COMPARISON_TERM_NODE, self.get_value(COMPARISON_NODE, comparison, 3))
-        return Comparison(self.process_comparison_term(left_side, columns_seen), operator, self.process_comparison_term(right_side, columns_seen))
+        right_side = self.process_comparison_terms(self.get_value(COMPARISON_TERMS_NODE, self.get_value(COMPARISON_NODE, comparison, 3)), columns_seen)
+        return Comparison(left_side, operator, right_side)
     
     def process_body_when_creating_view(self, body):
         results = BodyProcessedResults()

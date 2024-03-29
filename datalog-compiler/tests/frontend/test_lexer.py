@@ -25,7 +25,11 @@ class TestLexer(unittest.TestCase):
         [">", "MORE_THAN", ">"],
         ["<=", "LESS_THAN_OR_EQUAL_TO", "<="],
         [">=", "MORE_THAN_OR_EQUAL_TO", ">="],
-        ["<>", "NOT_EQUAL_ALT", "<>"]
+        ["<>", "NOT_EQUAL_ALT", "<>"],
+        ["+", "PLUS", "+"],
+        ["-", "MINUS", "-"],
+        ["*", "MULTIPLY", "*"],
+        ["/", "DIVISION", "/"]
     ])
     def test_individual_characters(self, arg, expected_token_type, expected_value):
         tokens = get_tokens(arg)
