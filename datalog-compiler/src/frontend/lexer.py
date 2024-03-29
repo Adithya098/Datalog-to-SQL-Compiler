@@ -51,8 +51,9 @@ def t_INTEGER(t):
     t.value = int(t.value)
     return t
 
+# Add supported functions here
 def t_FUNCTION(t):
-    r'\w+\(.*\)'
+    r'(?i:\bNOW\(.*\))'
     index_of_opening_bracket = t.value.index('(')
     len_of_string = len(t.value)
     t.value = t.value[:index_of_opening_bracket]

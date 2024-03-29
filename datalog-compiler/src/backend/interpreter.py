@@ -117,7 +117,25 @@ class Interpreter:
         ]
         return view_name, columns_of_head
     
-    def process_comparison_term(self, comparison_term, columns_seen):
+    def process_function(self, function_name, function_args=None):
+        if not function_args:
+            return (FUNC_KEY, function_name, [])
+        terms = self.get_value(TERMS_NODE, function_args)
+        args = []
+        for term in terms:
+            term_node = self.get_value(TERM_NODE, term)
+            if term_node[0] == CONSTANT_NODE:
+                args.append(self.get_value(CONSTANT_NODE, term_node[1]))
+            elif term_node[1] != "_":
+                args.append(term_node[1])
+            else:
+                raise Exception("Term node is not supported yet")
+        return (FUNC_KEY, function_name, [])
+    
+    def process_comparison_term(self, comparison_term_node, columns_seen):
+        comparison_term = self.get_value(COMPARISON_TERM_NODE, comparison_term_node)
+        if comparison_term[0] == FUNCTION_NODE:
+            return self.process_function(self.get_value(FUNCTION_NODE, comparison_term), self.get_value(COMPARISON_TERM_NODE, comparison_term_node, 2))
         term = self.get_value(TERM_NODE, comparison_term)
         if not isinstance(term, tuple):
             if term not in columns_seen:
@@ -128,14 +146,15 @@ class Interpreter:
         raise Exception("Comparison term is not supported yet")
     
     def process_comparison_terms(self, comparisons, columns_seen):
+        comparison_terms = self.get_value(COMPARISON_TERMS_NODE, comparisons)
         return [
-            self.process_comparison_term(self.get_value(COMPARISON_TERM_NODE, comparison), columns_seen) if comparison[0] == COMPARISON_TERM_NODE else comparison[0] for comparison in comparisons
+            self.process_comparison_term(comparison_term, columns_seen) if comparison_term[0] == COMPARISON_TERM_NODE else comparison_term[0] for comparison_term in comparison_terms
         ]
     
-    def process_constraints(self, comparison, columns_seen):
-        left_side = self.process_comparison_terms(self.get_value(COMPARISON_TERMS_NODE, self.get_value(COMPARISON_NODE, comparison, 1)), columns_seen)
-        operator =  self.get_value(COMPARISON_NODE, comparison, 2)
-        right_side = self.process_comparison_terms(self.get_value(COMPARISON_TERMS_NODE, self.get_value(COMPARISON_NODE, comparison, 3)), columns_seen)
+    def process_constraints(self, comparison_node, columns_seen):
+        left_side = self.process_comparison_terms(self.get_value(COMPARISON_NODE, comparison_node, 1), columns_seen)
+        operator =  self.get_value(COMPARISON_NODE, comparison_node, 2)
+        right_side = self.process_comparison_terms(self.get_value(COMPARISON_NODE, comparison_node, 3), columns_seen)
         return Comparison(left_side, operator, right_side)
     
     def process_body_when_creating_view(self, body):

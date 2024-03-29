@@ -152,8 +152,21 @@ def p_comparisonterms(p):
 def p_comparisionterm(p):
     '''
     comparisonterm : term
+                   | function LEFT_BRACKET RIGHT_BRACKET
+                   | function LEFT_BRACKET terms RIGHT_BRACKET
     '''
-    p[0] = (COMPARISON_TERM_NODE, p[1])
+    if len(p) == 5:
+        p[0] = (COMPARISON_TERM_NODE, p[1], p[3])
+    elif len(p) == 4:
+        p[0] = (COMPARISON_TERM_NODE, p[1], None)
+    else:
+        p[0] = (COMPARISON_TERM_NODE, p[1])
+
+def p_function(p):
+    '''
+    function : FUNCTION
+    '''
+    p[0] = (FUNCTION_NODE, p[1])
 
 def p_error(p):
     print("Error when parsing: " + str(p))

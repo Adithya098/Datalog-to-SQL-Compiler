@@ -157,20 +157,25 @@ class TestMain(unittest.TestCase):
 
     def test_timestamp_insertion(self):
         datalog_queries = '''
-        s3(2019-05-19).
-        s3(2019-05-19 18:38:00).
-        s3(2019-05-19T18:39:00).
-        s3(2019-05-19T18:39:22Z).
-        s3(2019-05-19T18:40:22+08:00).
-        s3(X)?
+        s(2019-05-19).
+        s(2019-05-19 18:38:00).
+        s(2019-05-19T18:39:00).
+        s(2019-05-19T18:39:22Z).
+        s(2019-05-19T18:40:22+08:00).
+        s(X)?
+        t(X) :- s(X), X < NOW().
+        t(X)?
         '''
         expected_translated_queries = [
-            "CREATE TABLE s3 (z0 TIMESTAMP NOT NULL, PRIMARY KEY (z0));",
-            "INSERT INTO s3 VALUES ('2019-05-19 00:00:00');",
-            "INSERT INTO s3 VALUES ('2019-05-19 18:38:00');",
-            "INSERT INTO s3 VALUES ('2019-05-19 18:39:00');",
-            "INSERT INTO s3 VALUES ('2019-05-19 18:39:22+00:00');",
-            "INSERT INTO s3 VALUES ('2019-05-19 18:40:22+08:00');"
+            "CREATE TABLE s (z0 TIMESTAMP NOT NULL, PRIMARY KEY (z0));",
+            "INSERT INTO s VALUES ('2019-05-19 00:00:00');",
+            "INSERT INTO s VALUES ('2019-05-19 18:38:00');",
+            "INSERT INTO s VALUES ('2019-05-19 18:39:00');",
+            "INSERT INTO s VALUES ('2019-05-19 18:39:22+00:00');",
+            "INSERT INTO s VALUES ('2019-05-19 18:40:22+08:00');",
+            "SELECT * FROM s;",
+            "CREATE VIEW t AS (SELECT s.z0 FROM s WHERE s.z0 < NOW());",
+            "SELECT * FROM t;"
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):

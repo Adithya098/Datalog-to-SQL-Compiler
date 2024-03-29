@@ -92,6 +92,9 @@ def process_left_or_right_term(constraints_alignment_dic, left_or_right_term):
         if left_or_right_term in {'+', '-', '*', '/'}:
             return stringify_constants(left_or_right_term, add_quotes=False)
         raise Exception("Unsupported Term")
+    if left_or_right_term[0] == FUNC_KEY:
+        function_name, args = left_or_right_term[1:]
+        return "{function_name}({args})".format(function_name=function_name, args=", ".join([stringify_constants(arg) for arg in args]))
     left_or_right_term_key, left_or_right_term_value = left_or_right_term
     if left_or_right_term_key == VAR_KEY:
         table_to_join_to, idx_to_join_to = constraints_alignment_dic[left_or_right_term_value]
