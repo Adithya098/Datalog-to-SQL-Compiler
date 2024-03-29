@@ -1,6 +1,7 @@
 import unittest
 from src.frontend.lexer import get_tokens
 from parameterized import parameterized
+from datetime import datetime
 
 
 class TestLexer(unittest.TestCase):
@@ -29,7 +30,11 @@ class TestLexer(unittest.TestCase):
         ["+", "PLUS", "+"],
         ["-", "MINUS", "-"],
         ["*", "MULTIPLY", "*"],
-        ["/", "DIVISION", "/"]
+        ["/", "DIVISION", "/"],
+        ["2019-05-19", "DATETIME", datetime.fromisoformat("2019-05-19")],
+        ["2019-05-19 18:39:22", "DATETIME", datetime.fromisoformat("2019-05-19 18:39:22")],
+        ["2019-05-19T23:39:22", "DATETIME", datetime.fromisoformat("2019-05-19T23:39:22")],
+        ["2019-05-19T00:39:22Z", "DATETIME", datetime.fromisoformat("2019-05-19T00:39:22Z")]
     ])
     def test_individual_characters(self, arg, expected_token_type, expected_value):
         tokens = get_tokens(arg)

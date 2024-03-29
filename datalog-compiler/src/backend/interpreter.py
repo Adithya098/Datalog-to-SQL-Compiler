@@ -134,10 +134,8 @@ class Interpreter:
     
     def process_constraints(self, comparison, columns_seen):
         left_side = self.process_comparison_terms(self.get_value(COMPARISON_TERMS_NODE, self.get_value(COMPARISON_NODE, comparison, 1)), columns_seen)
-        print(left_side)
         operator =  self.get_value(COMPARISON_NODE, comparison, 2)
         right_side = self.process_comparison_terms(self.get_value(COMPARISON_TERMS_NODE, self.get_value(COMPARISON_NODE, comparison, 3)), columns_seen)
-        print(right_side)
         return Comparison(left_side, operator, right_side)
     
     def process_body_when_creating_view(self, body):

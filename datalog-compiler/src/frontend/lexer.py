@@ -1,9 +1,11 @@
 import ply.lex as lex
+from datetime import datetime
 
 tokens = (
     'IDENTIFIER',
     'VARIABLE',
     'STRING',
+    'DATETIME',
     'INTEGER',
     'BOOLEAN',
     'DECIMAL',
@@ -36,6 +38,11 @@ def t_BOOLEAN(t):
 def t_STRING(t):
     r'"(?:[^\\]|\\.)*"'
     t.value = t.value[1:-1]
+    return t
+
+def t_DATETIME(t):
+    r'^\d{4}(-\d\d(-\d\d((T|\s)\d\d:\d\d(:\d\d)?(\.\d+)?(([+-]\d\d:\d\d)|Z)?)?)?)?$'
+    t.value = datetime.fromisoformat(t.value)
     return t
 
 def t_INTEGER(t):
