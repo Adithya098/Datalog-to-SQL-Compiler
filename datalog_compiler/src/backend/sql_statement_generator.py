@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from backend.constants import *
+from datetime import datetime
 
 COLUMN_PREFIX = "z"
 
@@ -10,8 +11,14 @@ def get_create_statement(table_name, columns):
     sql_statement = "CREATE TABLE {table_name} (".format(table_name=table_name)
     column_type_statement = []
     for idx, col in enumerate(columns):
-        if isinstance(col, int):
-            column_type_statement.append(get_column_name(idx) + " INT NOT NULL")
+        if type(col) == type(True):
+            column_type_statement.append(get_column_name(idx) + " BOOLEAN NOT NULL")
+        elif isinstance(col, int):
+            column_type_statement.append(get_column_name(idx) + " DECIMAL NOT NULL")
+        elif isinstance(col, float):
+            column_type_statement.append(get_column_name(idx) + " DECIMAL NOT NULL")
+        elif isinstance(col, datetime):
+            column_type_statement.append(get_column_name(idx) + " TIMESTAMP NOT NULL")
         else:
             column_type_statement.append(get_column_name(idx) + " TEXT NOT NULL")
     sql_statement += ", ".join(column_type_statement)
@@ -79,19 +86,31 @@ def create_select_statements_when_creating_view(cols_alignment_dic):
         ))
     return "SELECT {cols}".format(cols = ", ".join(cols))
 
-def stringify_constants(constant):
-    if isinstance(constant, str):
-        return "'" + constant + "'"
+def stringify_constants(constant, add_quotes=True):
+    if (isinstance(constant, str) or isinstance(constant, datetime)) and add_quotes:
+        return "'" + str(constant) + "'"
+    if type(constant) == type(True):
+        return "TRUE" if constant else "FALSE"
     return str(constant)
 
-def process_left_or_right_term(constraints_alignment_dic, left_or_right_term):
-    left_or_right_term_key, left_or_right_term_value = left_or_right_term
+def process_left_or_right_term_key_and_value(left_or_right_term_key, left_or_right_term_value, constraints_alignment_dic):
     if left_or_right_term_key == VAR_KEY:
         table_to_join_to, idx_to_join_to = constraints_alignment_dic[left_or_right_term_value]
         return "{table_to_join_to}.{col_to_join_to}".format(table_to_join_to=table_to_join_to, col_to_join_to=get_column_name(idx_to_join_to))
     elif left_or_right_term_key == CONSTANT_KEY:
         return stringify_constants(left_or_right_term_value)
     raise Exception("Unsupported Term")
+
+def process_left_or_right_term(constraints_alignment_dic, left_or_right_term):
+    if not isinstance(left_or_right_term, tuple):
+        if left_or_right_term in {'+', '-', '*', '/'}:
+            return stringify_constants(left_or_right_term, add_quotes=False)
+        raise Exception("Unsupported Term")
+    if left_or_right_term[0] == FUNC_KEY:
+        function_name, args = left_or_right_term[1:]
+        return "{function_name}({args})".format(function_name=function_name, args=", ".join([process_left_or_right_term_key_and_value(arg[0], arg[1], constraints_alignment_dic) for arg in args]))
+    left_or_right_term_key, left_or_right_term_value = left_or_right_term
+    return process_left_or_right_term_key_and_value(left_or_right_term_key, left_or_right_term_value, constraints_alignment_dic)
 
 def create_where_statement_when_creating_view(joins_dic, constraints_alignment_dic, constraints):
     where_conditions = []

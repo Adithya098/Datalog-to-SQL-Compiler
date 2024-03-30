@@ -77,13 +77,7 @@ def p_literal(p):
     literal : predicate LEFT_BRACKET RIGHT_BRACKET
             | predicate LEFT_BRACKET terms RIGHT_BRACKET
             | predicate
-            | term EQUAL term
-            | term NOT_EQUAL term
-            | term LESS_THAN term
-            | term MORE_THAN term
-            | term LESS_THAN_OR_EQUAL_TO term
-            | term MORE_THAN_OR_EQUAL_TO term
-            | term NOT_EQUAL_ALT term
+            | comparison
             | VARIABLE HEAD_AND_BODY_SEPARATOR IDENTIFIER LEFT_BRACKET terms RIGHT_BRACKET
     '''
     if len(p) == 6:
@@ -124,10 +118,56 @@ def p_constant(p):
     '''
     constant : IDENTIFIER
              | STRING
+             | DATETIME
              | INTEGER
              | BOOLEAN
+             | FLOAT
     '''
     p[0] = (CONSTANT_NODE, p[1])
+
+def p_comparison(p):
+    '''
+    comparison : comparisonterms EQUAL comparisonterms
+               | comparisonterms NOT_EQUAL comparisonterms
+               | comparisonterms LESS_THAN comparisonterms
+               | comparisonterms MORE_THAN comparisonterms
+               | comparisonterms LESS_THAN_OR_EQUAL_TO comparisonterms
+               | comparisonterms MORE_THAN_OR_EQUAL_TO comparisonterms
+               | comparisonterms NOT_EQUAL_ALT comparisonterms
+    '''
+    p[0] = (COMPARISON_NODE, p[1], p[2], p[3])
+
+def p_comparisonterms(p):
+    '''
+    comparisonterms : comparisonterm
+                    | comparisonterm PLUS comparisonterms
+                    | comparisonterm MINUS comparisonterms
+                    | comparisonterm DIVISION comparisonterms
+                    | comparisonterm MULTIPLY comparisonterms
+    '''
+    if len(p) == 4:
+        p[0] = (COMPARISON_TERMS_NODE, [p[1]] + [p[2]] + p[3][1])
+    else:
+        p[0] = (COMPARISON_TERMS_NODE, [p[1]])
+
+def p_comparisionterm(p):
+    '''
+    comparisonterm : term
+                   | function LEFT_BRACKET RIGHT_BRACKET
+                   | function LEFT_BRACKET terms RIGHT_BRACKET
+    '''
+    if len(p) == 5:
+        p[0] = (COMPARISON_TERM_NODE, p[1], p[3])
+    elif len(p) == 4:
+        p[0] = (COMPARISON_TERM_NODE, p[1], None)
+    else:
+        p[0] = (COMPARISON_TERM_NODE, p[1])
+
+def p_function(p):
+    '''
+    function : FUNCTION
+    '''
+    p[0] = (FUNCTION_NODE, p[1])
 
 def p_error(p):
     print("Error when parsing: " + str(p))

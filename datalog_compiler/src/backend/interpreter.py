@@ -8,7 +8,7 @@ import traceback
 
 # Rule Types
 INTERPRET_RULE_TYPE = "INTERPRET RULE"
-CREATE_AND_INSERT_RULE_TYPE = "CREATE AND INSERT"
+CREATE_AND_INSERT_TYPE = "CREATE AND INSERT"
 QUERY_RULE_TYPE = "QUERY"
 UNSUPPORTED_RULE_TYPE = "UNSUPPORTED"
 
@@ -37,7 +37,7 @@ class Interpreter:
         if self.get_node_name(statement) == ASSERTION_NODE:
             if self.traverse_and_get_value([ASSERTION_NODE, CLAUSE_NODE], statement) == ':-':
                 return INTERPRET_RULE_TYPE
-            return CREATE_AND_INSERT_RULE_TYPE
+            return CREATE_AND_INSERT_TYPE
         if self.get_node_name(statement) == QUERY_NODE:
             return QUERY_RULE_TYPE
         return UNSUPPORTED_RULE_TYPE
@@ -82,9 +82,11 @@ class Interpreter:
         for term in terms:
             columns.append(self.traverse_and_get_value([TERM_NODE, CONSTANT_NODE], term))
         if table_name in self.tables_dic:
-            return [(INSERT_TABLE_STATEMENT_TYPE, table_name, get_insert_statement(table_name, columns))]
+            result = [(INSERT_TABLE_STATEMENT_TYPE, table_name, get_insert_statement(table_name, columns))]
+        else:
+            result = self.get_create_and_insert_table_statement(table_name, columns)
         self.tables_dic[table_name] = len(columns)
-        return self.get_create_and_insert_table_statement(table_name, columns)
+        return result
     
     def get_create_and_insert_table_statement(self, table_name, columns):
         sql_statements = []
@@ -117,29 +119,56 @@ class Interpreter:
         ]
         return view_name, columns_of_head
     
-    def process_comparison_term(self, comparison_term, columns_seen):
+    def process_function(self, function_name, function_args=None):
+        if not function_args:
+            return (FUNC_KEY, function_name, [])
+        terms = self.get_value(TERMS_NODE, function_args)
+        args = []
+        for term in terms:
+            term_node = self.get_value(TERM_NODE, term)
+            if not isinstance(term_node, tuple):
+                args.append((VAR_KEY, term_node))
+            elif term_node[0] == CONSTANT_NODE:
+                args.append((CONSTANT_KEY, self.get_value(CONSTANT_NODE, term_node)))
+            elif term_node[1] != "_":
+                args.append((CONSTANT_KEY, term_node[1]))
+            else:
+                raise Exception("Term node is not supported yet")
+        return (FUNC_KEY, function_name, args)
+    
+    def process_comparison_term(self, comparison_term_node, columns_seen):
+        comparison_term = self.get_value(COMPARISON_TERM_NODE, comparison_term_node)
+        if comparison_term[0] == FUNCTION_NODE:
+            return self.process_function(self.get_value(FUNCTION_NODE, comparison_term), self.get_value(COMPARISON_TERM_NODE, comparison_term_node, 2))
         term = self.get_value(TERM_NODE, comparison_term)
         if not isinstance(term, tuple):
             if term not in columns_seen:
                 raise Exception("Assessing a column that is not seen yet")
-            return [(VAR_KEY, term)]
+            return (VAR_KEY, term)
         if term[0] == CONSTANT_NODE:
-            return [(CONSTANT_KEY, self.get_value(CONSTANT_NODE, term))]
+            return (CONSTANT_KEY, self.get_value(CONSTANT_NODE, term))
         raise Exception("Comparison term is not supported yet")
     
-    def process_constraints(self, literal, columns_seen):
-        left_side = self.get_value(LITERAL_NODE, literal, 1)
-        operator =  self.get_value(LITERAL_NODE, literal, 2)
-        right_side = self.get_value(LITERAL_NODE, literal, 3)
-        return Comparison(self.process_comparison_term(left_side, columns_seen), operator, self.process_comparison_term(right_side, columns_seen))
+    def process_comparison_terms(self, comparisons, columns_seen):
+        comparison_terms = self.get_value(COMPARISON_TERMS_NODE, comparisons)
+        return [
+            self.process_comparison_term(comparison_term, columns_seen) if comparison_term[0] == COMPARISON_TERM_NODE else comparison_term[0] for comparison_term in comparison_terms
+        ]
+    
+    def process_constraints(self, comparison_node, columns_seen):
+        left_side = self.process_comparison_terms(self.get_value(COMPARISON_NODE, comparison_node, 1), columns_seen)
+        operator =  self.get_value(COMPARISON_NODE, comparison_node, 2)
+        right_side = self.process_comparison_terms(self.get_value(COMPARISON_NODE, comparison_node, 3), columns_seen)
+        return Comparison(left_side, operator, right_side)
     
     def process_body_when_creating_view(self, body):
         results = BodyProcessedResults()
         literals = self.get_value(BODY_NODE, body)
         columns_seen = set()
         for literal in literals:
-            if len(literal) == 4 and literal[2] in COMPARISON_OPERATORS:
-                results.constraints.append(self.process_constraints(literal, columns_seen))
+            literal_child = self.get_value(LITERAL_NODE, literal)
+            if literal_child[0] == COMPARISON_NODE:
+                results.constraints.append(self.process_constraints(literal_child, columns_seen))
                 continue
             table_or_view_name = self.get_name_of_view_or_table(literal)
             terms = self.get_terms_of_view_or_table(literal)
@@ -178,7 +207,7 @@ class Interpreter:
     def interpret_creation_of_view(self, view_name):
         statements = []
         view = self.views_dic[view_name]
-        if view.is_executed:
+        if view.is_created:
             statements.append((DROP_VIEW_STATEMENT_TYPE, view_name, get_drop_view_statement(view_name)))
         for body in view.body_processed_results:
             for dependent_table_or_view_name in body.table_or_view_name_to_columns_dic.keys():
@@ -186,15 +215,12 @@ class Interpreter:
                     continue
                 if dependent_table_or_view_name in self.tables_dic:
                     continue
-                if dependent_table_or_view_name in self.views_dic:
-                    if not self.views_dic[dependent_table_or_view_name].is_executed:
-                        # Shouldn't reach here ideally after lazy evaluation of rule, but no harm processing this code
-                        statements.extend(self.interpret_creation_of_view(dependent_table_or_view_name))
+                if dependent_table_or_view_name in self.views_dic and self.views_dic[dependent_table_or_view_name].is_created:
                     continue
                 # Shouldn't reached here
                 raise Exception("Referencing a view or table not created previously")
         statements.append((CREATE_VEW_STATEMENT_TYPE, view_name, create_view_statement(view)))
-        view.is_executed = True
+        view.is_created = True
         return statements
     
     def interpret_query_statement(self, statement):
@@ -206,6 +232,7 @@ class Interpreter:
         if table_or_view_name in self.tables_dic:
             len_of_columns = self.tables_dic[table_or_view_name]
         else:
+            assert self.views_dic[table_or_view_name].is_created
             len_of_columns = len(self.views_dic[table_or_view_name].cols)
         terms = self.traverse_and_get_value(
             [QUERY_NODE, LITERAL_NODE, TERMS_NODE],
@@ -226,10 +253,10 @@ class Interpreter:
         for statement_node, statement in statements:
             assert statement_node == STATEMENT_NODE
             type_of_statement = self.check_value_of_statement(statement)
-            if type_of_statement not in {CREATE_AND_INSERT_RULE_TYPE, INTERPRET_RULE_TYPE, QUERY_RULE_TYPE}:
+            if type_of_statement not in {CREATE_AND_INSERT_TYPE, INTERPRET_RULE_TYPE, QUERY_RULE_TYPE}:
                 raise Exception("Unsupported statement type")
             try:
-                if type_of_statement == CREATE_AND_INSERT_RULE_TYPE:
+                if type_of_statement == CREATE_AND_INSERT_TYPE:
                     sql_translation_tuples.extend(self.interpret_create_and_insert_table_statement(statement))
                 elif type_of_statement == INTERPRET_RULE_TYPE:
                     interpret_rules_statements_tuple = self.create_view_graph_and_create_view(statement)

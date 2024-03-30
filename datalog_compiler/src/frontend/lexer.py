@@ -1,9 +1,12 @@
 import ply.lex as lex
+from datetime import datetime
 
 tokens = (
     'IDENTIFIER',
     'VARIABLE',
     'STRING',
+    'DATETIME',
+    'FLOAT',
     'INTEGER',
     'BOOLEAN',
     'DECIMAL',
@@ -21,7 +24,12 @@ tokens = (
     'MORE_THAN',
     'LESS_THAN_OR_EQUAL_TO',
     'MORE_THAN_OR_EQUAL_TO',
-    'NOT_EQUAL_ALT'
+    'NOT_EQUAL_ALT',
+    'PLUS',
+    'MINUS',
+    'DIVISION',
+    'MULTIPLY',
+    'FUNCTION',
 )
 
 def t_BOOLEAN(t):
@@ -30,13 +38,32 @@ def t_BOOLEAN(t):
     return t
 
 def t_STRING(t):
-    r'"(?:[^\\]|\\.)*"'
+    r'\".*?\"'
     t.value = t.value[1:-1]
+    return t
+
+def t_DATETIME(t):
+    r'\d{4}(-\d\d(-\d\d((T|\s)\d\d:\d\d(:\d\d)?(\.\d+)?(([+-]\d\d:\d\d)|Z)?)?)?)?'
+    t.value = datetime.fromisoformat(t.value)
+    return t
+
+def t_FLOAT(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)
     return t
 
 def t_INTEGER(t):
     r'-?(?:0|[1-9][0-9]*)'
     t.value = int(t.value)
+    return t
+
+# Add supported functions here
+def t_FUNCTION(t):
+    r'(?i:\b(NOW|UPPER|LOWER|ABS|CEIL|CEILING|FLOOR|ROUND)\(.*?\))'
+    index_of_opening_bracket = t.value.index('(')
+    len_of_string = len(t.value)
+    t.value = t.value[:index_of_opening_bracket]
+    t.lexer.lexpos -= len_of_string - index_of_opening_bracket
     return t
 
 t_DECIMAL = r'\.'
@@ -56,6 +83,10 @@ t_NOT_EQUAL_ALT = r'\<>'
 t_VARIABLE = r'[A-Z]\w*'
 t_IDENTIFIER=r'[a-z][a-zA-Z0-9_-]*'
 t_IGNORE = r'\_'
+t_PLUS = r'\+'
+t_MINUS = r'\-'
+t_DIVISION = r'\/'
+t_MULTIPLY = r'\*'
 
 t_ignore_COMMENT = r'\%.*'
 

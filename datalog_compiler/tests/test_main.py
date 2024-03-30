@@ -21,7 +21,7 @@ class TestMain(unittest.TestCase):
             "SELECT * FROM s WHERE z0='x';",
             "SELECT * FROM s WHERE z1='y';",
             "SELECT * FROM s;",
-            "CREATE TABLE x (z0 INT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "CREATE TABLE x (z0 DECIMAL NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO x VALUES (1, 'x');"
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
@@ -113,12 +113,187 @@ class TestMain(unittest.TestCase):
         u(X, Y)?
         '''
         expected_translated_queries = [
-            "CREATE TABLE s (z0 TEXT NOT NULL, z1 INT NOT NULL, PRIMARY KEY (z0, z1));",
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO s VALUES ('x', 1);",
             "INSERT INTO s VALUES ('y', 2);",
             "CREATE VIEW t AS (SELECT s.z1 FROM s WHERE s.z1 > 1);",
             "SELECT * FROM t;",
             "CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE s.z0 = 'y' AND s.z1 = 2);",
+            "SELECT * FROM u;",
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
+    def test_complex_comparision_query(self):
+        datalog_queries = '''
+        s(1, 2).
+        s(2, 3).
+        s(2, 4).
+        s(3, 2).
+        s(4, 2).
+        t(X, Y) :- s(X, Y), X + Y = 5.
+        t(X, Y) :- s(X, Y), X + 2 = 5.
+        t(X, Y) :- s(X, Y), Y + 2 = 5.
+        t(X, Y)?
+        u(X, Y) :- s(X, Y), X > 3.
+        u(X, Y)? 
+        '''
+        expected_translated_queries = [
+            'CREATE TABLE s (z0 DECIMAL NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));',
+            'INSERT INTO s VALUES (1, 2);',
+            'INSERT INTO s VALUES (2, 3);',
+            'INSERT INTO s VALUES (2, 4);',
+            'INSERT INTO s VALUES (3, 2);',
+            'INSERT INTO s VALUES (4, 2);',
+            'CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s WHERE s.z0 + s.z1 = 5) UNION (SELECT s.z0, s.z1 FROM s WHERE s.z0 + 2 = 5) UNION (SELECT s.z0, s.z1 FROM s WHERE s.z1 + 2 = 5);',
+            'SELECT * FROM t;',
+            'CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE s.z0 > 3);',
+            'SELECT * FROM u;'
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
+    def test_timestamp_insertion(self):
+        datalog_queries = '''
+        s(2019-05-19).
+        s(2019-05-19 18:38:00).
+        s(2019-05-19T18:39:00).
+        s(2019-05-19T18:39:22Z).
+        s(2019-05-19T18:40:22+08:00).
+        s(X)?
+        t(X) :- s(X), X < NOW().
+        t(X)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TIMESTAMP NOT NULL, PRIMARY KEY (z0));",
+            "INSERT INTO s VALUES ('2019-05-19 00:00:00');",
+            "INSERT INTO s VALUES ('2019-05-19 18:38:00');",
+            "INSERT INTO s VALUES ('2019-05-19 18:39:00');",
+            "INSERT INTO s VALUES ('2019-05-19 18:39:22+00:00');",
+            "INSERT INTO s VALUES ('2019-05-19 18:40:22+08:00');",
+            "SELECT * FROM s;",
+            "CREATE VIEW t AS (SELECT s.z0 FROM s WHERE s.z0 < NOW());",
+            "SELECT * FROM t;"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
+    def test_support_string_functions(self):
+        datalog_queries = '''
+        s("X").
+        s("Y").
+        s(x).
+        s(y).
+        t(X) :- s(X), X = UPPER(x).
+        t(X)?
+        u(X) :- s(X), X = LOWER("X").
+        u(X)?
+        v(X) :- s(X), "X" = UPPER(X).
+        v(X)?
+        w(X) :- s(X), LOWER(X) = "x".
+        w(X)?
+        x(X) :- s(X), LOWER(X) = LOWER("X").
+        x(X)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TEXT NOT NULL, PRIMARY KEY (z0));",
+            "INSERT INTO s VALUES ('X');",
+            "INSERT INTO s VALUES ('Y');",
+            "INSERT INTO s VALUES ('x');",
+            "INSERT INTO s VALUES ('y');",
+            "CREATE VIEW t AS (SELECT s.z0 FROM s WHERE s.z0 = UPPER('x'));",
+            "SELECT * FROM t;",
+            "CREATE VIEW u AS (SELECT s.z0 FROM s WHERE s.z0 = LOWER('X'));",
+            "SELECT * FROM u;",
+            "CREATE VIEW v AS (SELECT s.z0 FROM s WHERE 'X' = UPPER(s.z0));",
+            "SELECT * FROM v;",
+            "CREATE VIEW w AS (SELECT s.z0 FROM s WHERE LOWER(s.z0) = 'x');",
+            "SELECT * FROM w;",
+            "CREATE VIEW x AS (SELECT s.z0 FROM s WHERE LOWER(s.z0) = LOWER('X'));",
+            "SELECT * FROM x;"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
+    def test_inserting_float(self):
+        datalog_queries = '''
+        s("X", 1.234).
+        s("Y", 2.312).
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES ('X', 1.234);",
+            "INSERT INTO s VALUES ('Y', 2.312);"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
+
+    def test_mathematical_functions(self):
+        datalog_queries = '''
+        s(2, 3).
+        s(2.1, 3).
+        s(2.1, 2.9).
+        s(2.1, 3.1).
+        s(1.9, 3).
+        s(1.9, 3.1).
+        s(1.9, 2.9).
+        s(2, 3.1).
+        s(2, 2.9).
+        t(X, Y) :- s(X, Y), ROUND(X) = 2.
+        t(X, Y)?
+        u(X, Y) :- s(X, Y), 2 = FLOOR(Y).
+        u(X, Y)?
+        v(X, Y) :- s(X, Y), FlOOR(2.1) = CEIL(X), CEIL(2) = FLOOR(Y).
+        v(X, Y)?
+        w(X, Y) :- s(X, Y), CEILING(X) = 3.
+        w(X, Y)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 DECIMAL NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES (2, 3);",
+            "INSERT INTO s VALUES (2.1, 3);",
+            "INSERT INTO s VALUES (2.1, 2.9);",
+            "INSERT INTO s VALUES (2.1, 3.1);",
+            "INSERT INTO s VALUES (1.9, 3);",
+            "INSERT INTO s VALUES (1.9, 3.1);",
+            "INSERT INTO s VALUES (1.9, 2.9);",
+            "INSERT INTO s VALUES (2, 3.1);",
+            "INSERT INTO s VALUES (2, 2.9);",
+            "CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s WHERE ROUND(s.z0) = 2);",
+            "SELECT * FROM t;",
+            "CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE 2 = FLOOR(s.z1));",
+            "SELECT * FROM u;",
+            "CREATE VIEW v AS (SELECT s.z0, s.z1 FROM s WHERE FlOOR(2.1) = CEIL(s.z0) AND CEIL(2) = FLOOR(s.z1));",
+            "SELECT * FROM v;",
+            "CREATE VIEW w AS (SELECT s.z0, s.z1 FROM s WHERE CEILING(s.z0) = 3);",
+            "SELECT * FROM w;"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+    
+    def test_boolean(self):
+        datalog_queries = '''
+        s("X", true).
+        s("Y", false).
+        t(X, Y) :- s(X, Y), Y = true.
+        t(X, Y)?
+        u(X, Y) :- s(X, Y), false = Y.
+        u(X, Y)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 BOOLEAN NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES ('X', TRUE);",
+            "INSERT INTO s VALUES ('Y', FALSE);",
+            "CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s WHERE s.z1 = TRUE);",
+            "SELECT * FROM t;",
+            "CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE FALSE = s.z1);",
             "SELECT * FROM u;",
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)

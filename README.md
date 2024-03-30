@@ -24,7 +24,7 @@
     └── test_main.py (Contains sample queries you can refer to)
 ```
 
-### Running the application
+### Running the datalog-compiler as standalone application
 
 Application can be run from the `datalog-compiler` using the following command:
 ```
@@ -39,8 +39,27 @@ Select the options as you want
 
 Also, sample queries that has been tested with can be found in datalog.txt and in the unittests test_main.py
 
+### Running the datalog-compiler as web services
+
+#### Starting the frontend webservice
+CD to frontend directory
+```cd frontend```
+
+Check if npm is intalled. I just download it from https://nodejs.org/en/download
+```npm -v```
+
+To install all react dependencies, cd to directory containing package.json.
+``` npm install react-scripts --save-dev```
+
+To start the frontend, open another terminal.
+```npm start```
+
+#### Starting the backend webservice
+To start the backend, open a terminal.
+```python3 app.py```
+
 ### Dependencies:
-Dependencies can be installed in the `datalog-compiler` directory using the following command:
+Dependencies can be installed using the following command:
 ```
 python3 -m pip install -r requirements.txt
 ```
