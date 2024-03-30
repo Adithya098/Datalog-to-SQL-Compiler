@@ -1,3 +1,4 @@
+import sys
 from frontend import parser
 from backend.interpreter import Interpreter
 from watchdog.observers import Observer
@@ -18,7 +19,31 @@ class SQLFileHandler(FileSystemEventHandler):
             print("SQL file modified. Reloading...")
             self.sql_handler.reload_sql_file(self.file_path)
 
+def sql_connection(output_file, database="datalog_to_sql_db", username="postgres", pwd="", port_id=5432):
+    # database = "datalog_compiler"
+    # username = "postgres"
+    # pwd = "postgres"
+    # port_id = 5432
+
+    try:
+        conn = psycopg2.connect(dbname=database, user=username, password=pwd, port=port_id)
+    except psycopg2.Error as e:
+        print("Unable to connect to the database:", e)
+        sys.exit(1)
+
+    sql_handler = SQLHandler(conn)
+    sql_handler.drop_all_objects()
+
+    file_handler = SQLFileHandler(sql_handler, output_file)
+    observer = Observer()
+    observer.schedule(file_handler, os.path.dirname(os.path.abspath(output_file)), recursive=False)
+    observer.start()
+
+    return sql_handler
+
+
 def generate_sql_query_from_datalog_query(datalog_query, interpreter=None):
+    print (sys.path)
     if not interpreter:
         interpreter = Interpreter()
     ast = parser.parse(datalog_query)
@@ -53,24 +78,25 @@ if __name__ == "__main__":
 
     interpreter = Interpreter()
 
-    database = "datalog_compiler"
-    username = "postgres"
-    pwd = "postgres"
-    port_id = 5432
+    sql_handler = sql_connection(output_file)
+    # database = "datalog_compiler"
+    # username = "postgres"
+    # pwd = "postgres"
+    # port_id = 5432
 
-    try:
-        conn = psycopg2.connect(dbname=database, user=username, password=pwd, port=port_id)
-    except psycopg2.Error as e:
-        print("Unable to connect to the database:", e)
-        sys.exit(1)
+    # try:
+    #     conn = psycopg2.connect(dbname=database, user=username, password=pwd, port=port_id)
+    # except psycopg2.Error as e:
+    #     print("Unable to connect to the database:", e)
+    #     sys.exit(1)
 
-    sql_handler = SQLHandler(conn)
-    sql_handler.drop_all_objects()
+    # sql_handler = SQLHandler(conn)
+    # sql_handler.drop_all_objects()
 
-    file_handler = SQLFileHandler(sql_handler, output_file)
-    observer = Observer()
-    observer.schedule(file_handler, os.path.dirname(os.path.abspath(output_file)), recursive=False)
-    observer.start()
+    # file_handler = SQLFileHandler(sql_handler, output_file)
+    # observer = Observer()
+    # observer.schedule(file_handler, os.path.dirname(os.path.abspath(output_file)), recursive=False)
+    # observer.start()
 
     while True:
         try:
