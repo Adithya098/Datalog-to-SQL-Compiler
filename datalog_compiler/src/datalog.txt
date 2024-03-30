@@ -47,3 +47,17 @@ s3(2019-05-19T18:40:22+08:00).
 s3(X)?
 t3(X) :- s3(X), X < NOW().
 t3(X)?
+s4("X").
+s4("Y").
+s4(x).
+s4(y).
+t4(X) :- s4(X), X = UPPER(x).
+t4(X)?
+u4(X) :- s4(X), X = LOWER("X").
+u4(X)?
+v4(X) :- s4(X), "X" = UPPER(X).
+v4(X)?
+w4(X) :- s4(X), LOWER(X) = "x".
+w4(X)?
+x4(X) :- s4(X), LOWER(X) = LOWER("X").
+x4(X)?

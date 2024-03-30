@@ -181,6 +181,43 @@ class TestMain(unittest.TestCase):
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
             self.assertEqual(actual_translated_query, expected_translated_query)
 
+    def test_support_string_functions(self):
+        datalog_queries = '''
+        s("X").
+        s("Y").
+        s(x).
+        s(y).
+        t(X) :- s(X), X = UPPER(x).
+        t(X)?
+        u(X) :- s(X), X = LOWER("X").
+        u(X)?
+        v(X) :- s(X), "X" = UPPER(X).
+        v(X)?
+        w(X) :- s(X), LOWER(X) = "x".
+        w(X)?
+        x(X) :- s(X), LOWER(X) = LOWER("X").
+        x(X)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TEXT NOT NULL, PRIMARY KEY (z0));",
+            "INSERT INTO s VALUES ('X');",
+            "INSERT INTO s VALUES ('Y');",
+            "INSERT INTO s VALUES ('x');",
+            "INSERT INTO s VALUES ('y');",
+            "CREATE VIEW t AS (SELECT s.z0 FROM s WHERE s.z0 = UPPER('x'));",
+            "SELECT * FROM t;",
+            "CREATE VIEW u AS (SELECT s.z0 FROM s WHERE s.z0 = LOWER('X'));",
+            "SELECT * FROM u;",
+            "CREATE VIEW v AS (SELECT s.z0 FROM s WHERE 'X' = UPPER(s.z0));",
+            "SELECT * FROM v;",
+            "CREATE VIEW w AS (SELECT s.z0 FROM s WHERE LOWER(s.z0) = 'x');",
+            "SELECT * FROM w;",
+            "CREATE VIEW x AS (SELECT s.z0 FROM s WHERE LOWER(s.z0) = LOWER('X'));",
+            "SELECT * FROM x;"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
 
 if __name__ == '__main__':
     unittest.main()

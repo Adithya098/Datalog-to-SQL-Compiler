@@ -87,6 +87,14 @@ def stringify_constants(constant, add_quotes=True):
         return "'" + str(constant) + "'"
     return str(constant)
 
+def process_left_or_right_term_key_and_value(left_or_right_term_key, left_or_right_term_value, constraints_alignment_dic):
+    if left_or_right_term_key == VAR_KEY:
+        table_to_join_to, idx_to_join_to = constraints_alignment_dic[left_or_right_term_value]
+        return "{table_to_join_to}.{col_to_join_to}".format(table_to_join_to=table_to_join_to, col_to_join_to=get_column_name(idx_to_join_to))
+    elif left_or_right_term_key == CONSTANT_KEY:
+        return stringify_constants(left_or_right_term_value)
+    raise Exception("Unsupported Term")
+
 def process_left_or_right_term(constraints_alignment_dic, left_or_right_term):
     if not isinstance(left_or_right_term, tuple):
         if left_or_right_term in {'+', '-', '*', '/'}:
@@ -94,14 +102,9 @@ def process_left_or_right_term(constraints_alignment_dic, left_or_right_term):
         raise Exception("Unsupported Term")
     if left_or_right_term[0] == FUNC_KEY:
         function_name, args = left_or_right_term[1:]
-        return "{function_name}({args})".format(function_name=function_name, args=", ".join([stringify_constants(arg) for arg in args]))
+        return "{function_name}({args})".format(function_name=function_name, args=", ".join([process_left_or_right_term_key_and_value(arg[0], arg[1], constraints_alignment_dic) for arg in args]))
     left_or_right_term_key, left_or_right_term_value = left_or_right_term
-    if left_or_right_term_key == VAR_KEY:
-        table_to_join_to, idx_to_join_to = constraints_alignment_dic[left_or_right_term_value]
-        return "{table_to_join_to}.{col_to_join_to}".format(table_to_join_to=table_to_join_to, col_to_join_to=get_column_name(idx_to_join_to))
-    elif left_or_right_term_key == CONSTANT_KEY:
-        return stringify_constants(left_or_right_term_value)
-    raise Exception("Unsupported Term")
+    return process_left_or_right_term_key_and_value(left_or_right_term_key, left_or_right_term_value, constraints_alignment_dic)
 
 def create_where_statement_when_creating_view(joins_dic, constraints_alignment_dic, constraints):
     where_conditions = []

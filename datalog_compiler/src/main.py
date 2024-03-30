@@ -43,7 +43,7 @@ def sql_connection(output_file, database="datalog_to_sql_db", username="postgres
 
 
 def generate_sql_query_from_datalog_query(datalog_query, interpreter=None):
-    print (sys.path)
+    # print (sys.path)
     if not interpreter:
         interpreter = Interpreter()
     ast = parser.parse(datalog_query)
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     interpreter = Interpreter()
 
-    sql_handler = sql_connection(output_file)
+    # sql_handler = sql_connection(output_file)
     # database = "datalog_compiler"
     # username = "postgres"
     # pwd = "postgres"

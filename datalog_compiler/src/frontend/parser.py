@@ -174,5 +174,5 @@ def p_error(p):
 
 def parse(datalog_query):
     parser = yacc.yacc()
-    result = parser.parse(datalog_query)
+    result = parser.parse(datalog_query, debug=True)
     return result

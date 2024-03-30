@@ -28,7 +28,7 @@ tokens = (
     'MINUS',
     'DIVISION',
     'MULTIPLY',
-    'FUNCTION'
+    'FUNCTION',
 )
 
 def t_BOOLEAN(t):
@@ -37,7 +37,7 @@ def t_BOOLEAN(t):
     return t
 
 def t_STRING(t):
-    r'"(?:[^\\]|\\.)*"'
+    r'\".*?\"'
     t.value = t.value[1:-1]
     return t
 
@@ -53,7 +53,7 @@ def t_INTEGER(t):
 
 # Add supported functions here
 def t_FUNCTION(t):
-    r'(?i:\bNOW\(.*\))'
+    r'(?i:\b(NOW|UPPER|LOWER)\(.*?\))'
     index_of_opening_bracket = t.value.index('(')
     len_of_string = len(t.value)
     t.value = t.value[:index_of_opening_bracket]

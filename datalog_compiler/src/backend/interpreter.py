@@ -8,7 +8,7 @@ import traceback
 
 # Rule Types
 INTERPRET_RULE_TYPE = "INTERPRET RULE"
-CREATE_AND_INSERT_RULE_TYPE = "CREATE AND INSERT"
+CREATE_AND_INSERT_TYPE = "CREATE AND INSERT"
 QUERY_RULE_TYPE = "QUERY"
 UNSUPPORTED_RULE_TYPE = "UNSUPPORTED"
 
@@ -37,7 +37,7 @@ class Interpreter:
         if self.get_node_name(statement) == ASSERTION_NODE:
             if self.traverse_and_get_value([ASSERTION_NODE, CLAUSE_NODE], statement) == ':-':
                 return INTERPRET_RULE_TYPE
-            return CREATE_AND_INSERT_RULE_TYPE
+            return CREATE_AND_INSERT_TYPE
         if self.get_node_name(statement) == QUERY_NODE:
             return QUERY_RULE_TYPE
         return UNSUPPORTED_RULE_TYPE
@@ -124,13 +124,15 @@ class Interpreter:
         args = []
         for term in terms:
             term_node = self.get_value(TERM_NODE, term)
-            if term_node[0] == CONSTANT_NODE:
-                args.append(self.get_value(CONSTANT_NODE, term_node[1]))
+            if not isinstance(term_node, tuple):
+                args.append((VAR_KEY, term_node))
+            elif term_node[0] == CONSTANT_NODE:
+                args.append((CONSTANT_KEY, self.get_value(CONSTANT_NODE, term_node)))
             elif term_node[1] != "_":
-                args.append(term_node[1])
+                args.append((CONSTANT_KEY, term_node[1]))
             else:
                 raise Exception("Term node is not supported yet")
-        return (FUNC_KEY, function_name, [])
+        return (FUNC_KEY, function_name, args)
     
     def process_comparison_term(self, comparison_term_node, columns_seen):
         comparison_term = self.get_value(COMPARISON_TERM_NODE, comparison_term_node)
@@ -251,10 +253,10 @@ class Interpreter:
         for statement_node, statement in statements:
             assert statement_node == STATEMENT_NODE
             type_of_statement = self.check_value_of_statement(statement)
-            if type_of_statement not in {CREATE_AND_INSERT_RULE_TYPE, INTERPRET_RULE_TYPE, QUERY_RULE_TYPE}:
+            if type_of_statement not in {CREATE_AND_INSERT_TYPE, INTERPRET_RULE_TYPE, QUERY_RULE_TYPE}:
                 raise Exception("Unsupported statement type")
             try:
-                if type_of_statement == CREATE_AND_INSERT_RULE_TYPE:
+                if type_of_statement == CREATE_AND_INSERT_TYPE:
                     sql_translation_tuples.extend(self.interpret_create_and_insert_table_statement(statement))
                 elif type_of_statement == INTERPRET_RULE_TYPE:
                     interpret_rules_statements_tuple = self.create_view_graph_and_create_view(statement)
