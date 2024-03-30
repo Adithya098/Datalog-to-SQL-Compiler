@@ -54,7 +54,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: textInput , password: password, username: username, database: database, port: port}),
+        body: JSON.stringify({ text: textInput }),
       });
       const data = await response.json();
       console.log(data.translate)
