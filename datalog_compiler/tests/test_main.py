@@ -249,7 +249,7 @@ class TestMain(unittest.TestCase):
         t(X, Y)?
         u(X, Y) :- s(X, Y), 2 = FLOOR(Y).
         u(X, Y)?
-        v(X, Y) :- s(X, Y), FlOOR(2.1) = CEIL(X), CEIL(2) = FLOOR(Y).
+        v(X, Y) :- s(X, Y), FLOOR(2.1) = CEIL(X), CEIL(2) = FLOOR(Y).
         v(X, Y)?
         w(X, Y) :- s(X, Y), CEILING(X) = 3.
         w(X, Y)?
@@ -269,7 +269,7 @@ class TestMain(unittest.TestCase):
             "SELECT * FROM t;",
             "CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE 2 = FLOOR(s.z1));",
             "SELECT * FROM u;",
-            "CREATE VIEW v AS (SELECT s.z0, s.z1 FROM s WHERE FlOOR(2.1) = CEIL(s.z0) AND CEIL(2) = FLOOR(s.z1));",
+            "CREATE VIEW v AS (SELECT s.z0, s.z1 FROM s WHERE FLOOR(2.1) = CEIL(s.z0) AND CEIL(2) = FLOOR(s.z1));",
             "SELECT * FROM v;",
             "CREATE VIEW w AS (SELECT s.z0, s.z1 FROM s WHERE CEILING(s.z0) = 3);",
             "SELECT * FROM w;"

@@ -76,7 +76,7 @@ t6(X, Y) :- s6(X, Y), ROUND(X) = 2.
 t6(X, Y)?
 u6(X, Y) :- s6(X, Y), 2 = FLOOR(Y).
 u6(X, Y)?
-v6(X, Y) :- s6(X, Y), FlOOR(2.1) = CEIL(X), CEIL(2) = FLOOR(Y).
+v6(X, Y) :- s6(X, Y), FLOOR(2.1) = CEIL(X), CEIL(2) = FLOOR(Y).
 v6(X, Y)?
 w6(X, Y) :- s6(X, Y), CEILING(X) = 3.
 w6(X, Y)?
