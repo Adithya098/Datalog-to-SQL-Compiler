@@ -277,6 +277,28 @@ class TestMain(unittest.TestCase):
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
             self.assertEqual(actual_translated_query, expected_translated_query)
+    
+    def test_boolean(self):
+        datalog_queries = '''
+        s("X", true).
+        s("Y", false).
+        t(X, Y) :- s(X, Y), Y = true.
+        t(X, Y)?
+        u(X, Y) :- s(X, Y), false = Y.
+        u(X, Y)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 BOOLEAN NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES ('X', TRUE);",
+            "INSERT INTO s VALUES ('Y', FALSE);",
+            "CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s WHERE s.z1 = TRUE);",
+            "SELECT * FROM t;",
+            "CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE FALSE = s.z1);",
+            "SELECT * FROM u;",
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
 
 if __name__ == '__main__':
     unittest.main()

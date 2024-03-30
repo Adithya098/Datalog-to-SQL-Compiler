@@ -11,7 +11,9 @@ def get_create_statement(table_name, columns):
     sql_statement = "CREATE TABLE {table_name} (".format(table_name=table_name)
     column_type_statement = []
     for idx, col in enumerate(columns):
-        if isinstance(col, int):
+        if type(col) == type(True):
+            column_type_statement.append(get_column_name(idx) + " BOOLEAN NOT NULL")
+        elif isinstance(col, int):
             column_type_statement.append(get_column_name(idx) + " DECIMAL NOT NULL")
         elif isinstance(col, float):
             column_type_statement.append(get_column_name(idx) + " DECIMAL NOT NULL")
@@ -87,6 +89,8 @@ def create_select_statements_when_creating_view(cols_alignment_dic):
 def stringify_constants(constant, add_quotes=True):
     if (isinstance(constant, str) or isinstance(constant, datetime)) and add_quotes:
         return "'" + str(constant) + "'"
+    if type(constant) == type(True):
+        return "TRUE" if constant else "FALSE"
     return str(constant)
 
 def process_left_or_right_term_key_and_value(left_or_right_term_key, left_or_right_term_value, constraints_alignment_dic):

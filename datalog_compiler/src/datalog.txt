@@ -80,3 +80,9 @@ v6(X, Y) :- s6(X, Y), FlOOR(2.1) = CEIL(X), CEIL(2) = FLOOR(Y).
 v6(X, Y)?
 w6(X, Y) :- s6(X, Y), CEILING(X) = 3.
 w6(X, Y)?
+s7("X", true).
+s7("Y", false).
+t7(X, Y) :- s7(X, Y), Y = true.
+t7(X, Y)?
+u7(X, Y) :- s7(X, Y), false = Y.
+u7(X, Y)?
