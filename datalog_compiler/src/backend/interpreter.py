@@ -215,10 +215,7 @@ class Interpreter:
                     continue
                 if dependent_table_or_view_name in self.tables_dic:
                     continue
-                if dependent_table_or_view_name in self.views_dic:
-                    if not self.views_dic[dependent_table_or_view_name].is_created:
-                        # Shouldn't reach here ideally after lazy evaluation of rule, but no harm processing this code
-                        statements.extend(self.interpret_creation_of_view(dependent_table_or_view_name))
+                if dependent_table_or_view_name in self.views_dic and self.views_dic[dependent_table_or_view_name].is_created:
                     continue
                 # Shouldn't reached here
                 raise Exception("Referencing a view or table not created previously")
@@ -235,6 +232,7 @@ class Interpreter:
         if table_or_view_name in self.tables_dic:
             len_of_columns = self.tables_dic[table_or_view_name]
         else:
+            assert self.views_dic[table_or_view_name].is_created
             len_of_columns = len(self.views_dic[table_or_view_name].cols)
         terms = self.traverse_and_get_value(
             [QUERY_NODE, LITERAL_NODE, TERMS_NODE],
