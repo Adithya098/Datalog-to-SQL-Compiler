@@ -40,7 +40,7 @@ Select the options as you want
 Also, sample queries that has been tested with can be found in datalog.txt and in the unittests test_main.py
 
 ### Dependencies:
-Dependencies can be installed in the `datalog-compiler` directory using the following command:
+Dependencies can be installed using the following command:
 ```
 python3 -m pip install -r requirements.txt
 ```
