@@ -42,7 +42,15 @@ class TestLexer(unittest.TestCase):
         ["upper(\"x\")", "FUNCTION", 4, "upper"],
         ["LOWER(\"X\")", "FUNCTION", 4, "LOWER"],
         ["lower(\"X\")", "FUNCTION", 4, "lower"],
-        ["2.34", "FLOAT", 1, 2.34]
+        ["2.34", "FLOAT", 1, 2.34],
+        ["CEIL(2.34)", "FUNCTION", 4, "CEIL"],
+        ["ceil(2.34)", "FUNCTION", 4, "ceil"],
+        ["CEILING(2.45)", "FUNCTION", 4, "CEILING"],
+        ["ceiling(2.45)", "FUNCTION", 4, "ceiling"],
+        ["FLOOR(1.34)", "FUNCTION", 4, "FLOOR"],
+        ["floor(1.34)", "FUNCTION", 4, "floor"],
+        ["ROUND(1.34)", "FUNCTION", 4, "ROUND"],
+        ["round(1.34)", "FUNCTION", 4, "round"],
     ])
     def test_individual_characters(self, arg, expected_token_type, expected_length, expected_value):
         tokens = get_tokens(arg)

@@ -59,7 +59,7 @@ def t_INTEGER(t):
 
 # Add supported functions here
 def t_FUNCTION(t):
-    r'(?i:\b(NOW|UPPER|LOWER)\(.*?\))'
+    r'(?i:\b(NOW|UPPER|LOWER|ABS|CEIL|CEILING|FLOOR|ROUND)\(.*?\))'
     index_of_opening_bracket = t.value.index('(')
     len_of_string = len(t.value)
     t.value = t.value[:index_of_opening_bracket]

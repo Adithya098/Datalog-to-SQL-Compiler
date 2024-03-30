@@ -21,7 +21,7 @@ class TestMain(unittest.TestCase):
             "SELECT * FROM s WHERE z0='x';",
             "SELECT * FROM s WHERE z1='y';",
             "SELECT * FROM s;",
-            "CREATE TABLE x (z0 INT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "CREATE TABLE x (z0 DECIMAL NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO x VALUES (1, 'x');"
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
@@ -113,7 +113,7 @@ class TestMain(unittest.TestCase):
         u(X, Y)?
         '''
         expected_translated_queries = [
-            "CREATE TABLE s (z0 TEXT NOT NULL, z1 INT NOT NULL, PRIMARY KEY (z0, z1));",
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO s VALUES ('x', 1);",
             "INSERT INTO s VALUES ('y', 2);",
             "CREATE VIEW t AS (SELECT s.z1 FROM s WHERE s.z1 > 1);",
@@ -140,7 +140,7 @@ class TestMain(unittest.TestCase):
         u(X, Y)? 
         '''
         expected_translated_queries = [
-            'CREATE TABLE s (z0 INT NOT NULL, z1 INT NOT NULL, PRIMARY KEY (z0, z1));',
+            'CREATE TABLE s (z0 DECIMAL NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));',
             'INSERT INTO s VALUES (1, 2);',
             'INSERT INTO s VALUES (2, 3);',
             'INSERT INTO s VALUES (2, 4);',
@@ -228,6 +228,51 @@ class TestMain(unittest.TestCase):
             "CREATE TABLE s (z0 TEXT NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));",
             "INSERT INTO s VALUES ('X', 1.234);",
             "INSERT INTO s VALUES ('Y', 2.312);"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
+
+    def test_mathematical_functions(self):
+        datalog_queries = '''
+        s(2, 3).
+        s(2.1, 3).
+        s(2.1, 2.9).
+        s(2.1, 3.1).
+        s(1.9, 3).
+        s(1.9, 3.1).
+        s(1.9, 2.9).
+        s(2, 3.1).
+        s(2, 2.9).
+        t(X, Y) :- s(X, Y), ROUND(X) = 2.
+        t(X, Y)?
+        u(X, Y) :- s(X, Y), 2 = FLOOR(Y).
+        u(X, Y)?
+        v(X, Y) :- s(X, Y), FlOOR(2.1) = CEIL(X), CEIL(2) = FLOOR(Y).
+        v(X, Y)?
+        w(X, Y) :- s(X, Y), CEILING(X) = 3.
+        w(X, Y)?
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 DECIMAL NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES (2, 3);",
+            "INSERT INTO s VALUES (2.1, 3);",
+            "INSERT INTO s VALUES (2.1, 2.9);",
+            "INSERT INTO s VALUES (2.1, 3.1);",
+            "INSERT INTO s VALUES (1.9, 3);",
+            "INSERT INTO s VALUES (1.9, 3.1);",
+            "INSERT INTO s VALUES (1.9, 2.9);",
+            "INSERT INTO s VALUES (2, 3.1);",
+            "INSERT INTO s VALUES (2, 2.9);",
+            "CREATE VIEW t AS (SELECT s.z0, s.z1 FROM s WHERE ROUND(s.z0) = 2);",
+            "SELECT * FROM t;",
+            "CREATE VIEW u AS (SELECT s.z0, s.z1 FROM s WHERE 2 = FLOOR(s.z1));",
+            "SELECT * FROM u;",
+            "CREATE VIEW v AS (SELECT s.z0, s.z1 FROM s WHERE FlOOR(2.1) = CEIL(s.z0) AND CEIL(2) = FLOOR(s.z1));",
+            "SELECT * FROM v;",
+            "CREATE VIEW w AS (SELECT s.z0, s.z1 FROM s WHERE CEILING(s.z0) = 3);",
+            "SELECT * FROM w;"
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
