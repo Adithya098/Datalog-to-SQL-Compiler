@@ -21,6 +21,16 @@ QUERY_STATEMENT_TYPE = "QUERY"
 
 COMPARISON_OPERATORS = {'>', '<', '=', '!=', '<>', '>=', '<='}
 
+SUPPORTED_FUNCTIONS = {
+    'NOW': [],
+    'UPPER': [[str]],
+    'LOWER': [[str]],
+    'CEIL': [[int, float]],
+    'CEILING': [[int, float]],
+    'FLOOR': [[int, float]],
+    'ROUND': [[int, float]]
+}
+
 class Interpreter:
     def __init__(self):
         self.tables_dic = {}
@@ -119,9 +129,24 @@ class Interpreter:
         ]
         return view_name, columns_of_head
     
+    def validate_function_args(self, function_tuple):
+        assert function_tuple[0] == FUNC_KEY
+        function_name, args = function_tuple[1], function_tuple[2]
+        function_name_upper_cased = function_name.upper()
+        if function_name_upper_cased not in SUPPORTED_FUNCTIONS:
+            raise Exception("Function not supported yet")
+        supported_function_constraints = SUPPORTED_FUNCTIONS[function_name_upper_cased]
+        assert len(supported_function_constraints) == len(args)
+        for arg, supported_function_constraint in zip(args, supported_function_constraints):
+            arg_key, actual_arg = arg
+            if arg_key != VAR_KEY and type(actual_arg) not in supported_function_constraint:
+                raise Exception("Argument is of incorrect type")
+    
     def process_function(self, function_name, function_args=None):
         if not function_args:
-            return (FUNC_KEY, function_name, [])
+            res = (FUNC_KEY, function_name, [])
+            self.validate_function_args(res)
+            return res
         terms = self.get_value(TERMS_NODE, function_args)
         args = []
         for term in terms:
@@ -134,7 +159,9 @@ class Interpreter:
                 args.append((CONSTANT_KEY, term_node[1]))
             else:
                 raise Exception("Term node is not supported yet")
-        return (FUNC_KEY, function_name, args)
+        res = (FUNC_KEY, function_name, args)
+        self.validate_function_args(res)
+        return res
     
     def process_comparison_term(self, comparison_term_node, columns_seen):
         comparison_term = self.get_value(COMPARISON_TERM_NODE, comparison_term_node)
