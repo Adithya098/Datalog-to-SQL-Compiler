@@ -61,3 +61,5 @@ w4(X) :- s4(X), LOWER(X) = "x".
 w4(X)?
 x4(X) :- s4(X), LOWER(X) = LOWER("X").
 x4(X)?
+s5("X", 1.234).
+s5("Y", 2.312).

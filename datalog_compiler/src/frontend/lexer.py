@@ -6,6 +6,7 @@ tokens = (
     'VARIABLE',
     'STRING',
     'DATETIME',
+    'FLOAT',
     'INTEGER',
     'BOOLEAN',
     'DECIMAL',
@@ -44,6 +45,11 @@ def t_STRING(t):
 def t_DATETIME(t):
     r'\d{4}(-\d\d(-\d\d((T|\s)\d\d:\d\d(:\d\d)?(\.\d+)?(([+-]\d\d:\d\d)|Z)?)?)?)?'
     t.value = datetime.fromisoformat(t.value)
+    return t
+
+def t_FLOAT(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)
     return t
 
 def t_INTEGER(t):

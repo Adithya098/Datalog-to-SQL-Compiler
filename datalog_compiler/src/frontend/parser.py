@@ -121,6 +121,7 @@ def p_constant(p):
              | DATETIME
              | INTEGER
              | BOOLEAN
+             | FLOAT
     '''
     p[0] = (CONSTANT_NODE, p[1])
 
@@ -174,5 +175,5 @@ def p_error(p):
 
 def parse(datalog_query):
     parser = yacc.yacc()
-    result = parser.parse(datalog_query, debug=True)
+    result = parser.parse(datalog_query)
     return result

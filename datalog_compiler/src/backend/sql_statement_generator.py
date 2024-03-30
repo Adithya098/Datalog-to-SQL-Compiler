@@ -13,6 +13,8 @@ def get_create_statement(table_name, columns):
     for idx, col in enumerate(columns):
         if isinstance(col, int):
             column_type_statement.append(get_column_name(idx) + " INT NOT NULL")
+        elif isinstance(col, float):
+            column_type_statement.append(get_column_name(idx) + " DECIMAL NOT NULL")
         elif isinstance(col, datetime):
             column_type_statement.append(get_column_name(idx) + " TIMESTAMP NOT NULL")
         else:

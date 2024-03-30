@@ -42,9 +42,11 @@ class TestLexer(unittest.TestCase):
         ["upper(\"x\")", "FUNCTION", 4, "upper"],
         ["LOWER(\"X\")", "FUNCTION", 4, "LOWER"],
         ["lower(\"X\")", "FUNCTION", 4, "lower"],
+        ["2.34", "FLOAT", 1, 2.34]
     ])
     def test_individual_characters(self, arg, expected_token_type, expected_length, expected_value):
         tokens = get_tokens(arg)
+        print(tokens)
         self.assertEqual(len(tokens), expected_length)
         self.assertEqual(tokens[0].type, expected_token_type)
         if expected_value is not None:

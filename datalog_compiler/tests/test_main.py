@@ -219,5 +219,19 @@ class TestMain(unittest.TestCase):
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
             self.assertEqual(actual_translated_query, expected_translated_query)
 
+    def test_inserting_float(self):
+        datalog_queries = '''
+        s("X", 1.234).
+        s("Y", 2.312).
+        '''
+        expected_translated_queries = [
+            "CREATE TABLE s (z0 TEXT NOT NULL, z1 DECIMAL NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO s VALUES ('X', 1.234);",
+            "INSERT INTO s VALUES ('Y', 2.312);"
+        ]
+        actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
+        for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):
+            self.assertEqual(actual_translated_query, expected_translated_query)
+
 if __name__ == '__main__':
     unittest.main()
