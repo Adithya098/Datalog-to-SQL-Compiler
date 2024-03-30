@@ -27,6 +27,29 @@ class SQLHandler:
         except Exception as e:
             print("Error reloading SQL file:", e)
 
+    def execute_sql_query_from_frontend(self, sql_query):
+        """
+        Executes a given SQL query.
+
+        Args:
+        - sql_query (str): The SQL query to execute.
+        """
+        try:
+            cur = self.conn.cursor()
+            cur.execute(sql_query)
+            if 'SELECT' in sql_query:
+                rows = cur.fetchall()  # Fetch all rows from the result set
+                self.conn.commit()
+                cur.close()
+                return rows
+            self.conn.commit()
+            cur.close()
+            return ["Successfully executed"]
+        except Exception as e:
+            self.conn.rollback()  
+            print("Error executing SQL query:", e)
+            return []
+
     def execute_sql_query(self, sql_query):
         """
         Executes a given SQL query.
