@@ -82,9 +82,11 @@ class Interpreter:
         for term in terms:
             columns.append(self.traverse_and_get_value([TERM_NODE, CONSTANT_NODE], term))
         if table_name in self.tables_dic:
-            return [(INSERT_TABLE_STATEMENT_TYPE, table_name, get_insert_statement(table_name, columns))]
+            result = [(INSERT_TABLE_STATEMENT_TYPE, table_name, get_insert_statement(table_name, columns))]
+        else:
+            result = self.get_create_and_insert_table_statement(table_name, columns)
         self.tables_dic[table_name] = len(columns)
-        return self.get_create_and_insert_table_statement(table_name, columns)
+        return result
     
     def get_create_and_insert_table_statement(self, table_name, columns):
         sql_statements = []
@@ -205,7 +207,7 @@ class Interpreter:
     def interpret_creation_of_view(self, view_name):
         statements = []
         view = self.views_dic[view_name]
-        if view.is_executed:
+        if view.is_created:
             statements.append((DROP_VIEW_STATEMENT_TYPE, view_name, get_drop_view_statement(view_name)))
         for body in view.body_processed_results:
             for dependent_table_or_view_name in body.table_or_view_name_to_columns_dic.keys():
@@ -214,14 +216,14 @@ class Interpreter:
                 if dependent_table_or_view_name in self.tables_dic:
                     continue
                 if dependent_table_or_view_name in self.views_dic:
-                    if not self.views_dic[dependent_table_or_view_name].is_executed:
+                    if not self.views_dic[dependent_table_or_view_name].is_created:
                         # Shouldn't reach here ideally after lazy evaluation of rule, but no harm processing this code
                         statements.extend(self.interpret_creation_of_view(dependent_table_or_view_name))
                     continue
                 # Shouldn't reached here
                 raise Exception("Referencing a view or table not created previously")
         statements.append((CREATE_VEW_STATEMENT_TYPE, view_name, create_view_statement(view)))
-        view.is_executed = True
+        view.is_created = True
         return statements
     
     def interpret_query_statement(self, statement):
