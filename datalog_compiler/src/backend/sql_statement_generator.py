@@ -33,7 +33,7 @@ def get_insert_statement(table_name, columns):
     col_values = []
     for column in columns:
         col_values.append(stringify_constants(column))
-    sql_statement += "{col_values});".format(col_values=", ".join(col_values))
+    sql_statement += "{col_values}) ON CONFLICT DO NOTHING;".format(col_values=", ".join(col_values))
     return sql_statement
 
 def get_basic_query_statement(table_name, constraints):
