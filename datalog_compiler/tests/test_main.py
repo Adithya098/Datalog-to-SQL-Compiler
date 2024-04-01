@@ -67,6 +67,13 @@ class TestMain(unittest.TestCase):
         reachable(X, Y) :- link(X, Y).
         reachable(X, Y) :- link(X, Z), reachable(Z, Y).
         reachable(X, Y)?
+        parent("Alex", "Elliot").
+        parent("Brenda", "Elliot").
+        parent("Carl", "Fiona").
+        parent("Diana", "Fiona").
+        ancestor(X, Y) :- parent(X, Y).
+        ancestor(X, Z) :- parent(X, Y), ancestor(Y,Z).
+        ancestor(X, Y)?
         '''
         expected_translated_queries = [
             "CREATE TABLE link (z0 TEXT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
@@ -75,7 +82,14 @@ class TestMain(unittest.TestCase):
             "INSERT INTO link VALUES ('c', 'c') ON CONFLICT DO NOTHING;",
             "INSERT INTO link VALUES ('c', 'd') ON CONFLICT DO NOTHING;",
             "CREATE VIEW reachable AS WITH RECURSIVE reachable (z0, z1) AS ((SELECT link.z0, link.z1 FROM link) UNION DISTINCT (SELECT link.z0, reachable.z1 FROM link, reachable WHERE link.z1=reachable.z0)) SELECT * FROM reachable;",
-            "SELECT * FROM reachable;"
+            "SELECT * FROM reachable;",
+            "CREATE TABLE parent (z0 TEXT NOT NULL, z1 TEXT NOT NULL, PRIMARY KEY (z0, z1));",
+            "INSERT INTO parent VALUES ('Alex', 'Elliot') ON CONFLICT DO NOTHING;",
+            "INSERT INTO parent VALUES ('Brenda', 'Elliot') ON CONFLICT DO NOTHING;",
+            "INSERT INTO parent VALUES ('Carl', 'Fiona') ON CONFLICT DO NOTHING;",
+            "INSERT INTO parent VALUES ('Diana', 'Fiona') ON CONFLICT DO NOTHING;",
+            "CREATE VIEW ancestor AS WITH RECURSIVE ancestor (z0, z1) AS ((SELECT parent.z0, parent.z1 FROM parent) UNION DISTINCT (SELECT parent.z0, ancestor.z1 FROM parent, ancestor WHERE parent.z1=ancestor.z0)) SELECT * FROM ancestor;",
+            "SELECT * FROM ancestor;"
         ]
         actual_translated_queries = generate_sql_query_from_datalog_query(datalog_queries)
         for actual_translated_query, expected_translated_query in zip(actual_translated_queries, expected_translated_queries):

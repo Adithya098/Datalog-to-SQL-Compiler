@@ -17,6 +17,13 @@ link(c, d).
 reachable(X, Y) :- link(X, Y).
 reachable(X, Y) :- link(X, Z), reachable(Z, Y).
 reachable(X, Y)?
+parent("Alex", "Elliot").
+parent("Brenda", "Elliot").
+parent("Carl", "Fiona").
+parent("Diana", "Fiona").
+ancestor(X, Y) :- parent(X, Y).
+ancestor(X, Z) :- parent(X, Y), ancestor(Y,Z).
+ancestor(X, Y)?
 w(X) :- s(X, Y).
 w(X)?
 x(1, x).
