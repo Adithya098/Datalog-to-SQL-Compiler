@@ -74,6 +74,8 @@ function App() {
         body: JSON.stringify({ text: textInput , password: password, username: username, database: database, port: port}),
       });
       const data = await response.json();
+      console.log(data.translate)
+      setResponse(data.translate);
       console.log(data.execute_query)
       setdbResponse(data.execute_query);
     } catch (error) {
@@ -114,14 +116,14 @@ function App() {
         onChange={handleInputChange}
         placeholder="Enter your datalog query here.."
       />
-      <button onClick={handleTranslate}>Translate</button>
+      <button onClick={handleExecute}>Translate</button>
       <div className="response-container">
         <h2>Response:</h2>
         {response && response.map((responseItem, index) => (
           <p key={index} className="response-item">{responseItem}</p>
         ))}
       </div>
-      <button onClick={handleExecute}>Execute SQL Query</button>
+      {/* <button onClick={handleExecute}>Execute SQL Query</button> */}
       <div className="response-container">
         <h2>DB Response:</h2>
         <p>{dbResponse && dbResponse.join(', ')}</p>

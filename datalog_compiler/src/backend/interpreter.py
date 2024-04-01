@@ -225,7 +225,7 @@ class Interpreter:
         self.validate_view_graph(columns_of_view, body_processed_result.table_or_view_name_to_columns_dic)
         if view_name in self.views_dic:
             view = self.views_dic[view_name]
-            assert view.cols == columns_of_view
+            assert len(view.cols) == len(columns_of_view)
             view.body_processed_results.append(body_processed_result)
         else:
             self.views_dic[view_name] = Views(view_name, columns_of_view, False, [body_processed_result])

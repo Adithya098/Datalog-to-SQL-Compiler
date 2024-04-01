@@ -37,7 +37,7 @@ class SQLHandler:
         try:
             cur = self.conn.cursor()
             cur.execute(sql_query)
-            if 'SELECT' in sql_query:
+            if sql_query.startswith("SELECT"):
                 rows = cur.fetchall()  # Fetch all rows from the result set
                 self.conn.commit()
                 cur.close()

@@ -71,16 +71,20 @@ def execute_query():
     initialize_execute_interpreter()
     initialize_sql_handler(output_file, db_database, db_username, db_password, db_port)
 
-    sql_queries = generate_sql_query_from_datalog_query(datalog_query, execute_interpreter)
-    
-    for sql_query in sql_queries:
-        info = sql_handler.execute_sql_query_from_frontend(sql_query)
-        if []:
-            return jsonify({'execute_query': info})
-        else:
-            append_to_sql_file(sql_query, output_file)
+    def is_valid_statement(statement):
+        return not statement == "---- Invalid statement"
 
-    return jsonify({'execute_query': info})
+    sql_queries = generate_sql_query_from_datalog_query(datalog_query, execute_interpreter)
+    infos = []
+    for sql_query in sql_queries:
+        if not is_valid_statement(sql_query):
+            infos.append("Not executed")
+            continue
+        info = sql_handler.execute_sql_query_from_frontend(sql_query)
+        if not []:
+            append_to_sql_file(sql_query, output_file)
+        infos.extend(info)
+    return jsonify({'execute_query': infos, 'translate': sql_queries})
 
 
 if __name__ == '__main__':
