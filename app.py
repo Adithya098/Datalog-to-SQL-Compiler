@@ -14,6 +14,10 @@ from datalog_compiler.src.main import generate_sql_query_from_datalog_query, sql
 # import datalog_compiler.src.main  as a
 # import datalog_compiler.src.backend.interpreter as b
 from datalog_compiler.src.backend.interpreter import Interpreter
+
+from datetime import datetime
+from decimal import Decimal
+
 app = Flask(__name__)
 CORS(app)
 # Initialize the interpreter as a global variable
@@ -38,6 +42,16 @@ def initialize_sql_handler(output_file, db_database, db_username, db_password, d
     if sql_handler is None:
         sql_handler = sql_connection(output_file, db_database, db_username, db_password, db_port)
 
+def prettify_tuple_response(tuple_response):
+    def prettify(response):
+        if isinstance(response, datetime):
+            return response.isoformat()
+        if isinstance(response, Decimal):
+            if Decimal(response) % 1 == 0:
+                return str(int(response))
+            return str(float(response))
+        return str(response)
+    return ", ".join([prettify(response) for response in tuple_response])
 
 @app.route('/echo', methods=['POST'])
 def echo():
@@ -84,6 +98,7 @@ def execute_query():
         if not []:
             append_to_sql_file(sql_query, output_file)
         infos.extend(info)
+    infos = [prettify_tuple_response(info) if type(info) is tuple else info for info in infos]
     return jsonify({'execute_query': infos, 'translate': sql_queries})
 
 

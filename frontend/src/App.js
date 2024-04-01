@@ -126,7 +126,9 @@ function App() {
       {/* <button onClick={handleExecute}>Execute SQL Query</button> */}
       <div className="response-container">
         <h2>DB Response:</h2>
-        <p>{dbResponse && dbResponse.join(', ')}</p>
+        {dbResponse && dbResponse.map((responseItem, index) => (
+          <p key={index} className="response-item">{responseItem}</p>
+        ))}
       </div>
     </div>
   );  

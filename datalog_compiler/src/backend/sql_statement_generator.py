@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from backend.constants import *
-from datetime import datetime
+from datetime import datetime, timezone
 
 COLUMN_PREFIX = "z"
 
@@ -87,8 +87,13 @@ def create_select_statements_when_creating_view(cols_alignment_dic):
     return "SELECT {cols}".format(cols = ", ".join(cols))
 
 def stringify_constants(constant, add_quotes=True):
-    if (isinstance(constant, str) or isinstance(constant, datetime)) and add_quotes:
+    if (isinstance(constant, str)) and add_quotes:
         return "'" + str(constant) + "'"
+    if isinstance(constant, datetime):
+        constant = constant.astimezone(timezone.utc)
+        if add_quotes:
+            return "'" + str(constant) + "'"
+        return str(constant)
     if type(constant) == type(True):
         return "TRUE" if constant else "FALSE"
     return str(constant)
