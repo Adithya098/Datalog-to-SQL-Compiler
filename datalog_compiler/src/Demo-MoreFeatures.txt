@@ -1,0 +1,31 @@
+% person(name, date-of-birth, salary, is married).
+person("Alex", 1946-05-19, 5000, true).
+person("Brenda", 1948-03-17, 2000, true).
+person("Carl", 1945-07-21, 0, true).
+person("Diana", 1946-05-19, 1999.50, true).
+person("Elliot", 1979-09-19, 10000, true).
+person("Fiona", 1981-10-19, 10000, true).
+person("Greg", 2003-08-08, 500, false).
+person("Hector", 2005-10-07, 0, false).
+person("Ian", 2005-10-07, 0, false).
+
+% find persons named alex with date of birth
+person_alex(X, Y) :- person(X, Y, _, _), LOWER(X) = "alex".
+person_alex(X, Y)?
+
+% find name of persons with birth days older than Y2K
+older_than_y2k(X) :- person(X, Y, _, _), Y < 2000-01-01.
+older_than_y2k(X)?
+
+% find people younger than now
+younger_than_now(X) :- person(X, Y, _, _), Y > NOW().
+younger_than_now(X)?
+
+% find name of persons with salary close to 2000 when rounded
+salary_2k(X) :- person(X, _, Y, _), ROUND(Y) = 2000.
+salary_2k(X)?
+
+% find name of persons not married
+not_married(X) :- person(X, _, _, Y), false = Y.
+not_married(X)?
+
