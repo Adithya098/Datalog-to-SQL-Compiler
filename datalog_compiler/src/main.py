@@ -83,7 +83,7 @@ if __name__ == "__main__":
                 datalog_query = input('What is the datalog query?\n')
                 sql_queries = generate_sql_query_from_datalog_query(datalog_query, interpreter)
             else:
-                file_path = input('What file do you want to read it from? Please provide the absolute path. Default: datalog.txt from current directory')
+                file_path = input('What file do you want to read it from? Please provide the absolute path. Default: datalog.txt from current directory:\n')
                 if not file_path:
                     file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "datalog.txt")
                 datalog_queries = get_datalog_queries_from_file(file_path)

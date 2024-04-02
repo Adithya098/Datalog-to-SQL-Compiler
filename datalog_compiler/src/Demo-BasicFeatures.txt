@@ -1,0 +1,54 @@
+% person(name, age)
+person("Alex", 67).
+person("Brenda", 65).
+person("Carl", 70).
+person("Diana", 67).
+person("Elliot", 45).
+person("Fiona", 43).
+person("Greg", 21).
+person("Hector", 19).
+person("Ian", 19).
+
+% Find Grandpa Alex
+person("Alex", 67)?
+person("Alex", X)?
+
+% Find people who are 67 years old
+person(X, 67)?
+
+% parent(parent name, child name)
+parent("Alex", "Elliot").
+parent("Brenda", "Elliot").
+parent("Carl", "Fiona").
+parent("Diana", "Fiona").
+parent("Elliot", "Greg").
+parent("Fiona", "Greg").
+parent("Elliot", "Hector").
+parent("Fiona", "Hector").
+parent("Elliot", "Ian").
+parent("Fiona", "Ian").
+
+% Find the sons of Fiona
+parent("Fiona", X)?
+
+% Find the parents of Fiona
+parent(X, "Fiona")?
+
+% Create the ancestor view
+ancestor(X, Y) :- parent(X, Y).
+
+% Descendants of Alex
+ancestor("Alex", Y)?
+
+% Ancestor of Ian
+ancestor(X, "Ian")?
+
+% Recursive query for ancestor
+ancestor(X, Z) :- parent(X, Y), ancestor(Y,Z).
+
+% Descendants of Alex
+ancestor("Alex", Y)?
+
+% Ancestor of Ian
+ancestor(X, "Ian")?
+
