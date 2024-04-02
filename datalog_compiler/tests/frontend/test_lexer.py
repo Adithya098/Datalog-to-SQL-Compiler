@@ -1,7 +1,7 @@
 import unittest
 from src.frontend.lexer import get_tokens
 from parameterized import parameterized
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class TestLexer(unittest.TestCase):
@@ -31,9 +31,9 @@ class TestLexer(unittest.TestCase):
         ["-", "MINUS", 1, "-"],
         ["*", "MULTIPLY", 1, "*"],
         ["/", "DIVISION", 1, "/"],
-        ["2019-05-19", "DATETIME", 1, datetime.fromisoformat("2019-05-19")],
-        ["2019-05-19 18:39:22", "DATETIME", 1, datetime.fromisoformat("2019-05-19 18:39:22")],
-        ["2019-05-19T23:39:22", "DATETIME", 1, datetime.fromisoformat("2019-05-19T23:39:22")],
+        ["2019-05-19", "DATETIME", 1, datetime.fromisoformat("2019-05-19").replace(tzinfo=timezone.utc)],
+        ["2019-05-19 18:39:22", "DATETIME", 1, datetime.fromisoformat("2019-05-19 18:39:22").replace(tzinfo=timezone.utc)],
+        ["2019-05-19T23:39:22", "DATETIME", 1, datetime.fromisoformat("2019-05-19T23:39:22").replace(tzinfo=timezone.utc)],
         ["2019-05-19T00:39:22Z", "DATETIME", 1, datetime.fromisoformat("2019-05-19T00:39:22Z")],
         ["2017-01-01 23:12:23+08:00", "DATETIME", 1, datetime.fromisoformat("2017-01-01 23:12:23+08:00")],
         ["NOW()", "FUNCTION", 3, "NOW"],
