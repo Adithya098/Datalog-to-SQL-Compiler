@@ -225,10 +225,11 @@ class Interpreter:
         self.validate_view_graph(columns_of_view, body_processed_result.table_or_view_name_to_columns_dic)
         if view_name in self.views_dic:
             view = self.views_dic[view_name]
-            assert view.cols == columns_of_view
+            assert len(view.cols[0]) == len(columns_of_view)
+            view.cols.append(columns_of_view)
             view.body_processed_results.append(body_processed_result)
         else:
-            self.views_dic[view_name] = Views(view_name, columns_of_view, False, [body_processed_result])
+            self.views_dic[view_name] = Views(view_name, [columns_of_view], False, [body_processed_result])
         return self.interpret_creation_of_view(view_name)
 
     def interpret_creation_of_view(self, view_name):
@@ -260,7 +261,7 @@ class Interpreter:
             len_of_columns = self.tables_dic[table_or_view_name]
         else:
             assert self.views_dic[table_or_view_name].is_created
-            len_of_columns = len(self.views_dic[table_or_view_name].cols)
+            len_of_columns = len(self.views_dic[table_or_view_name].cols[0])
         terms = self.traverse_and_get_value(
             [QUERY_NODE, LITERAL_NODE, TERMS_NODE],
             statement,

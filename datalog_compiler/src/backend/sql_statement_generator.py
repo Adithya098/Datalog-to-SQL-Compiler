@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from backend.constants import *
-from datetime import datetime
+from datetime import datetime, timezone
 
 COLUMN_PREFIX = "z"
 
@@ -33,7 +33,7 @@ def get_insert_statement(table_name, columns):
     col_values = []
     for column in columns:
         col_values.append(stringify_constants(column))
-    sql_statement += "{col_values});".format(col_values=", ".join(col_values))
+    sql_statement += "{col_values}) ON CONFLICT DO NOTHING;".format(col_values=", ".join(col_values))
     return sql_statement
 
 def get_basic_query_statement(table_name, constraints):
@@ -51,14 +51,14 @@ def get_drop_view_statement(view_name):
     sql_statement = "DROP VIEW {view_name};".format(view_name=view_name)
     return sql_statement
 
-def create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recursive):
+def create_cols_aligned_dic_and_joins_dic_when_creating_view(view_name, cols, body, is_recursive):
     cols_alignment_dic = OrderedDict()
-    for col in view.cols:
+    for col in cols:
         cols_alignment_dic[col] = None
     joins_dic = {}
     constraints_alignment_dic = {}
     for name, cols in body.table_or_view_name_to_columns_dic.items():
-        if view.name == name:
+        if view_name == name:
             is_recursive = True
         for idx, col in enumerate(cols):
             if col == "_":
@@ -87,8 +87,13 @@ def create_select_statements_when_creating_view(cols_alignment_dic):
     return "SELECT {cols}".format(cols = ", ".join(cols))
 
 def stringify_constants(constant, add_quotes=True):
-    if (isinstance(constant, str) or isinstance(constant, datetime)) and add_quotes:
+    if (isinstance(constant, str)) and add_quotes:
         return "'" + str(constant) + "'"
+    if isinstance(constant, datetime):
+        constant = constant.astimezone(timezone.utc)
+        if add_quotes:
+            return "'" + str(constant) + "'"
+        return str(constant)
     if type(constant) == type(True):
         return "TRUE" if constant else "FALSE"
     return str(constant)
@@ -131,8 +136,8 @@ def create_where_statement_when_creating_view(joins_dic, constraints_alignment_d
         return "WHERE {joins}".format(joins=" AND " .join(where_conditions))
     return ""
 
-def process_body_when_creating_view(view, body, is_recursive):
-    cols_alignment_dic, joins_dic, constraints_alignment_dic, is_recursive = create_cols_aligned_dic_and_joins_dic_when_creating_view(view, body, is_recursive)
+def process_body_when_creating_view(name, col, body, is_recursive):
+    cols_alignment_dic, joins_dic, constraints_alignment_dic, is_recursive = create_cols_aligned_dic_and_joins_dic_when_creating_view(name, col, body, is_recursive)
     select_statement = create_select_statements_when_creating_view(cols_alignment_dic)
     joined_statement = "FROM {joined_table}".format(joined_table=", ".join(body.table_or_view_name_to_columns_dic.keys()))
     where_statement = create_where_statement_when_creating_view(joins_dic, constraints_alignment_dic, body.constraints)
@@ -153,8 +158,8 @@ def process_body_when_creating_view(view, body, is_recursive):
 def create_view_statement(view):
     is_recursive = False
     bodies_converted = []
-    for body in view.body_processed_results:
-        body_converted, is_recursive = process_body_when_creating_view(view, body, is_recursive)
+    for col, body in zip(view.cols, view.body_processed_results):
+        body_converted, is_recursive = process_body_when_creating_view(view.name, col, body, is_recursive)
         bodies_converted.append(body_converted)
     if is_recursive:
         cols = [get_column_name(idx) for idx in range(len(view.cols))]

@@ -14,6 +14,10 @@ from datalog_compiler.src.main import generate_sql_query_from_datalog_query, sql
 # import datalog_compiler.src.main  as a
 # import datalog_compiler.src.backend.interpreter as b
 from datalog_compiler.src.backend.interpreter import Interpreter
+
+from datetime import datetime
+from decimal import Decimal
+
 app = Flask(__name__)
 CORS(app)
 # Initialize the interpreter as a global variable
@@ -38,6 +42,16 @@ def initialize_sql_handler(output_file, db_database, db_username, db_password, d
     if sql_handler is None:
         sql_handler = sql_connection(output_file, db_database, db_username, db_password, db_port)
 
+def prettify_tuple_response(tuple_response):
+    def prettify(response):
+        if isinstance(response, datetime):
+            return response.isoformat()
+        if isinstance(response, Decimal):
+            if Decimal(response) % 1 == 0:
+                return str(int(response))
+            return str(float(response))
+        return str(response)
+    return ", ".join([prettify(response) for response in tuple_response])
 
 @app.route('/echo', methods=['POST'])
 def echo():
@@ -71,16 +85,21 @@ def execute_query():
     initialize_execute_interpreter()
     initialize_sql_handler(output_file, db_database, db_username, db_password, db_port)
 
-    sql_queries = generate_sql_query_from_datalog_query(datalog_query, execute_interpreter)
-    
-    for sql_query in sql_queries:
-        info = sql_handler.execute_sql_query_from_frontend(sql_query)
-        if []:
-            return jsonify({'execute_query': info})
-        else:
-            append_to_sql_file(sql_query, output_file)
+    def is_valid_statement(statement):
+        return not statement == "---- Invalid statement"
 
-    return jsonify({'execute_query': info})
+    sql_queries = generate_sql_query_from_datalog_query(datalog_query, execute_interpreter)
+    infos = []
+    for sql_query in sql_queries:
+        if not is_valid_statement(sql_query):
+            infos.append("Not executed")
+            continue
+        info = sql_handler.execute_sql_query_from_frontend(sql_query)
+        if not []:
+            append_to_sql_file(sql_query, output_file)
+        infos.extend(info)
+    infos = [prettify_tuple_response(info) if type(info) is tuple else info for info in infos]
+    return jsonify({'execute_query': infos, 'translate': sql_queries})
 
 
 if __name__ == '__main__':
