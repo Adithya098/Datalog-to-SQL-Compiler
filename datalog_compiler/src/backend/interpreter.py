@@ -111,7 +111,12 @@ class Interpreter:
         for newly_created_view_statement_tuple in newly_created_view_statements_tuple:
             statement_type, view_name, _ = newly_created_view_statement_tuple
             if statement_type == DROP_VIEW_STATEMENT_TYPE:
-                extra_indexes_to_delete = [i for i in range(len(existing_sql_translations)) if existing_sql_translations[i][0] == CREATE_VEW_STATEMENT_TYPE and existing_sql_translations[i][1] == view_name]
+                extra_indexes_to_delete = []
+                for i in reversed(range(len(existing_sql_translations))):
+                    if existing_sql_translations[i][0] == QUERY_STATEMENT_TYPE and existing_sql_translations[i][1] == view_name:
+                        break
+                    if existing_sql_translations[i][0] == CREATE_VEW_STATEMENT_TYPE and existing_sql_translations[i][1] == view_name:
+                        extra_indexes_to_delete.insert(0, i)
                 if extra_indexes_to_delete:
                     indexes_in_existing_sql_translations_to_delete.extend(extra_indexes_to_delete)
                     continue
