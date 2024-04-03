@@ -6,10 +6,10 @@ from backend.body_processed_results import BodyProcessedResults
 from backend.constants import *
 import traceback
 
-# Rule Types
+# Statement Types
 INTERPRET_RULE_TYPE = "INTERPRET RULE"
-CREATE_AND_INSERT_TYPE = "CREATE AND INSERT"
-QUERY_RULE_TYPE = "QUERY"
+CREATE_AND_INSERT_TABLE_TYPE = "CREATE AND INSERT TABLE"
+QUERY_TYPE = "QUERY"
 UNSUPPORTED_RULE_TYPE = "UNSUPPORTED"
 
 # Statement Types
@@ -47,9 +47,9 @@ class Interpreter:
         if self.get_node_name(statement) == ASSERTION_NODE:
             if self.traverse_and_get_value([ASSERTION_NODE, CLAUSE_NODE], statement) == ':-':
                 return INTERPRET_RULE_TYPE
-            return CREATE_AND_INSERT_TYPE
+            return CREATE_AND_INSERT_TABLE_TYPE
         if self.get_node_name(statement) == QUERY_NODE:
-            return QUERY_RULE_TYPE
+            return QUERY_TYPE
         return UNSUPPORTED_RULE_TYPE
 
     def traverse_and_get_value(self, list_of_node_names, node, list_of_idx=None):
@@ -281,10 +281,10 @@ class Interpreter:
         for statement_node, statement in statements:
             assert statement_node == STATEMENT_NODE
             type_of_statement = self.check_value_of_statement(statement)
-            if type_of_statement not in {CREATE_AND_INSERT_TYPE, INTERPRET_RULE_TYPE, QUERY_RULE_TYPE}:
+            if type_of_statement not in {CREATE_AND_INSERT_TABLE_TYPE, INTERPRET_RULE_TYPE, QUERY_TYPE}:
                 raise Exception("Unsupported statement type")
             try:
-                if type_of_statement == CREATE_AND_INSERT_TYPE:
+                if type_of_statement == CREATE_AND_INSERT_TABLE_TYPE:
                     sql_translation_tuples.extend(self.interpret_create_and_insert_table_statement(statement))
                 elif type_of_statement == INTERPRET_RULE_TYPE:
                     interpret_rules_statements_tuple = self.create_view_graph_and_create_view(statement)
