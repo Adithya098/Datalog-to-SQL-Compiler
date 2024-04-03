@@ -282,7 +282,9 @@ class Interpreter:
             assert statement_node == STATEMENT_NODE
             type_of_statement = self.check_value_of_statement(statement)
             if type_of_statement not in {CREATE_AND_INSERT_TABLE_TYPE, INTERPRET_RULE_TYPE, QUERY_TYPE}:
-                raise Exception("Unsupported statement type")
+                print("This statement type is not supported yet")
+                sql_translation_tuples.append((None, None, '---- Invalid statement'))
+                continue
             try:
                 if type_of_statement == CREATE_AND_INSERT_TABLE_TYPE:
                     sql_translation_tuples.extend(self.interpret_create_and_insert_table_statement(statement))
